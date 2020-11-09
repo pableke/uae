@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+	<base href="../../">
+	<meta charset="utf-8" />
+
+	<title>Visor de FACe</title>
+	<link rel="icon" type="image/x-icon" href="img/upct.png" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+	<script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="js/jq/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jq/jquery-ui.min.js"></script>
+	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
+
+	<!-- vanilla JS -->
+	<script type="text/javascript" src="js/data-box.js"></script>
+	<script type="text/javascript" src="js/number-box.js"></script>
+	<script type="text/javascript" src="js/date-box.js"></script>
+	<script type="text/javascript" src="js/dom-box.js"></script>
+
+	<script type="text/javascript" src="js/cv/core-box.js"></script>
+	<script type="text/javascript" src="js/cv/date-bd.js"></script>
+	<script type="text/javascript" src="js/cv/date-box.js"></script>
+	<script type="text/javascript" src="js/cv/image-box.js"></script>
+	<script type="text/javascript" src="js/cv/message-box.js"></script>
+	<script type="text/javascript" src="js/cv/message-es.js"></script>
+	<script type="text/javascript" src="js/cv/table-box-v3.js"></script>
+	<script type="text/javascript" src="js/cv/form-box-v3.js"></script>
+	<script type="text/javascript" src="js/cv/form-box-validators.js"></script>
+	<script type="text/javascript" src="js/util.js"></script>
+</head>
+<body>
+
+<div id="main">
+	<header>
+		<h1><img src="img/png/scroll_view.png" class="icon" /> Visor de Facturas FACe by UPCT</h1>
+		<a id="back" href="index.html" class="btn btn-default" title="Volver al inicio">&#8678;</a>
+		<input type="file" id="xsig" name="files[]" multiple title="Seleccionar fichero .XSIG" />
+		<a id="add" href="#" class="btn btn-success" title="Visualizar fichero .xsig">&#10133;</a>
+		<a id="reload" href="#" class="btn btn-default" title="Elimina los ficheros cargados">&olarr;</a>
+		<a id="download" href="#" class="btn btn-primary" download="descarga.pdf" title="Descargar adjunto">&#8681;</a> |
+		<a href="https://face.gob.es/#/es" title="Enlace a la WEB de FACe">FACe</a>
+		<hr>
+	</header>
+
+	<section>
+		<div id="container" class="hide"></div>
+		<div id="iframes"></div>
+	</section>
+
+	<footer>
+	</footer>
+</div>
+
+<script type="text/javascript">
+	var reader = {
+		//encoding: "ISO-8859-1", //"UTF-8"
+		onStart: function() { $(".mbox").ibOpen().mbHideAll(); },
+		onLoad: function(ev, file, i) {
+			$("div#container").html(ev.target.result);
+			var data = $("AttachmentData").text();
+			if (data) {
+				var iframe = newElem("iframe");
+				iframe.src = B64MT.pdf + data;
+				$("div#iframes").append(iframe);
+			}
+			else
+				$(".mbox").mbError("¡Fichero adjunto " + (i+1) + " no encontrado!");
+		},
+		complete: function() { $(".mbox").ibClose(); }
+	};
+
+	var fr = $("input:file").change(function() { $(this).fbRead(reader); });
+	$("a#add").click(function() { return !fr.fbRead(reader); });
+	$("a#reload").click(function() { return !$("section").mbHideAll().children().empty(); });
+	$("a#download").click(function() {
+		return !$("iframe").each(function() {
+			var link = newElem("a");
+			link.download = "descarga.pdf";
+			link.href = this.src;
+			link.click();
+		});
+	});
+</script>
+
+</body>
+</html>

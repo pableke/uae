@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="author" content="Pablo Rosique Vidal" />
+	<meta name="keywords" content="upct, uae, económicos, asuntos económicos, contratación" />
+	<meta name="description" content="Unidad de Asuntos Económicos y Presupuestarios de la Universidad Politécnica de Cartagena" />
+	<!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>Electron & MySQL</title>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+	<link rel="stylesheet" type="text/css" href="../public/dist/style.css" />
+</head>
+<body>
+
+	<div id="main" class="container-fluid">
+		<div class="row">
+			<div class="col-md4 m-2">
+				<!-- Product Form -->
+				<form id="product" action="" class="card card-body">
+					<input type="hidden" id="pid" value="">
+					<div class="form-group">
+						<input type="text" id="name" class="form-control" tabindex="1" placeholder="Product's Name" autofocus>
+					</div>
+					<div class="form-group">
+						<input type="number" id="price" class="form-control" tabindex="2" placeholder="Product's Price" autofocus="">
+					</div>
+					<div class="form-group">
+						<textarea type="text" id="info" class="form-control" tabindex="3" placeholder="Product's Description" autofocus=""></textarea>
+					</div>
+					<hr>
+					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="reset" class="btn btn-secondary mt-1">Clear</button>
+				</form>
+			</div>
+
+			<!-- Product List -->
+			<div class="col-md-8">
+				<div id="products"></div>
+			</div>
+		</div>
+
+		<!--<h1>Hello World!</h1>
+		<ul>
+			<li>We are using node <script>document.write(process.versions.node)</script></li>
+			<li>Chrome <script>document.write(process.versions.chrome)</script></li>
+			<li>And Electron <script>document.write(process.versions.electron)</script></li>
+		</ul>
+		<p>Bye Bye!</p>-->
+	</div>
+
+	<script src="./producto.js"></script>
+</body>
+</html>

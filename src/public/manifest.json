@@ -1,0 +1,38 @@
+{
+  "short_name": "UAE",
+  "name": "UPCT / UAE",
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#3367D6",
+  "description": "A news app.",
+  "icons": [
+    {
+      "src": "img/upct-azul-logo.png",
+      "sizes": "386x386",
+      "type": "image/png"
+    },
+    {
+      "src": "img/upct-negro-logo.png",
+      "sizes": "225x225",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "How's weather today?",
+      "short_name": "Today",
+      "description": "View weather information for today",
+      "url": "/today?source=pwa",
+      "icons": [{ "src": "img/png/weather.png", "sizes": "128x128" }]
+    },
+    {
+      "name": "How's weather tomorrow?",
+      "short_name": "Tomorrow",
+      "description": "View weather information for tomorrow",
+      "url": "/tomorrow?source=pwa",
+      "icons": [{ "src": "img/png/calendar.png", "sizes": "128x128" }]
+    }
+  ]
+}

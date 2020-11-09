@@ -16,7 +16,7 @@ exports.save = function(_id, name, price, info) {
 	initError(); //reset error messages
 	valid.size(name, 1, 200) || setError("name", "Nonmbre del producto no válido", 1);
 	price = price ? valid.nb.toFloat(price) : 0;
-	(price > 0) || setError("price", "El importe del producto debe ser mayor de 0", 2);
+	(price > 0) || setError("price", "El importe debe ser mayor de " + valid.nb.float(0) + " &euro;", 2);
 	valid.size(info, 1, 400) || setError("info", "La descripción asociada no es válida", 3);
 
 	if (ERROR.errno) //exists?

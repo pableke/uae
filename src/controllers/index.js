@@ -43,14 +43,14 @@ exports.logView = fnLogView;
 
 exports.login = function(req, res) {
 	let fields = req.body; //request fields
-	let ok = (valid.size(fields.usuario, 8, 200) && valid.login(fields.usuario)) ? res.flush("usuarioErrText") : !res.copy("usuarioErrText", "errUsuario");
-	ok = (valid.size(fields.clave, 8, 200) && valid.login(fields.clave)) ? (res.flush("claveErrText") && ok) : !res.copy("claveErrText", "errClave");
-	if (!ok) //fields error?
-		return fnLogin(req, res.i18nError("errLogin"));
-
+	(valid.init().size(fields.usuario, 8, 200) && valid.login(fields.usuario)) || valid.setError("usuario", res.get("errUsuario"));
+	(valid.size(fields.clave, 8, 200) && valid.login(fields.clave)) || valid.setError("clave", res.get("errClave"));
+	if (valid.isError()) //fields error?
+		return fnLogError(req, res.addBySuffix(valid.getErrors(), "ErrText"));
 	let user = dao.myjson.usuarios.findByLogin(fields.usuario);
 	if (!user)
 		return fnLogError(req, res.copy("usuarioErrText", "errUsuario"));
+
 	res.set("usuarioValue", fields.usuario);
 	if (bcrypt.compareSync(fields.clave, user.clave)) {
 		res.set("idUserSession", user._id).set("userMail", user.correo)
@@ -134,7 +134,7 @@ exports.reactive = function(req, res) {
 				//return dao.mysql.usuarios.updatePassByMail(fields.email, pass);
 				return dao.myjson.usuarios.updatePassByMail(fields.email, pass);
 			else
-				throw fnError(res.get("errCaptcha"), "captcha"); //stop resolves and call catch
+				throw valid.setError("captcha", res.get("errCaptcha")).setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
 		})
 		.then(result => {
 			//if (result.changedRows == 1) {

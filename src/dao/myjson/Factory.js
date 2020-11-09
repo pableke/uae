@@ -9,6 +9,7 @@ const self = this; //self instance
 
 exports.open = async function() {
 	myjson.open().then(dbs => {
+		self.format = dbs.company.format;
 		dbs.company.get("usuarios").then(table => {
 			self.usuarios = usuarios(dbs.company, table);
 			return table.get("menu-usuario");

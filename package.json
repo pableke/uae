@@ -27,7 +27,7 @@
     "formidable": "^1.2.2",
     "html-pdf": "^2.2.0",
     "mongoose": "^5.10.9",
-    "myjson-box": "0.0.8",
+    "myjson-box": "0.0.9",
     "mysession": "^1.0.2",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "electron": "^10.1.3",
+    "electron": "^10.1.5",
     "electron-packager": "^15.1.0",
     "electron-reload": "^1.5.0",
     "gulp": "^4.0.2",

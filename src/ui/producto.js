@@ -1,6 +1,7 @@
 
 const { remote } = require("electron");
 const main = remote.require("./main");
+const valid = require("validate-box"); //validators
 
 const form = document.querySelector("form#product");
 const pid = document.querySelector("input#pid");
@@ -18,31 +19,47 @@ function getProducts() { //init function
 
 function editProduct(id) {
 	let product = main.producto.getById(id);
+	reset.click(); //clear inputs
 	pid.value = product._id;
 	name.value = product.name;
-	price.value = product.price;
+	price.value = valid.nb.float(product.price);
 	info.value = product.info;
-	name.focus();
 }
 
 function deleteProduct(id) {
 	if (confirm("¿Confirma que desea eliminar este producto?")) {
 		main.producto.deleteById(id).then(table => {
-			main.showNotification("Electron App", "Producto eliminado correctamente");
+			main.showNotification("Electron App", name.value + " eliminado correctamente");
 			getProducts();
 		});
 	}
 }
 
+function setError(el, msg) {
+	el.focus();
+	el.classList.add("is-invalid");
+	document.querySelector("#invalid-" + el.id).innerHTML = msg;
+}
+
 form.addEventListener("submit", ev => {
 	ev.preventDefault();
-	main.producto.save(pid.value, name.value, price.value, info.value);
+	let data = main.producto.save(pid.value, name.value, price.value, info.value);
+	if (data.errno) {
+		data.info && setError(info, data.info);
+		data.price && setError(price, data.price);
+		data.name && setError(name, data.name);
+		return main.showNotification("Electron App", "Error al guardar los datos introducidos");
+	}
+
 	main.showNotification("Electron App", name.value + " guardado correctamente");
 	reset.click();
 	getProducts();
 });
 reset.addEventListener("click", ev => {
 	pid.value = name.value = price.value = info.value = null;
+	name.classList.remove("is-invalid");
+	price.classList.remove("is-invalid");
+	info.classList.remove("is-invalid");
 	name.focus();
 });
 

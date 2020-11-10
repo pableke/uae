@@ -15,7 +15,7 @@ exports.trabajando = function(req, res) {
 		.render();
 }
 exports.lang = function(req, res) {
-	res.lang(req).render(); //re-render same site
+	res.lang(req, res).render(); //re-render same site
 }
 
 //Public forms (loggin, contact, reactive, new user)
@@ -141,7 +141,7 @@ exports.reactive = function(req, res) {
 				//throw valid.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgReactive")); })
-		.catch(err => { res.error(err.message); });
+		.catch(err => { res.error(res.get(err.message) || err.message); });
 }
 
 function fnUsuario(req, res) {
@@ -168,21 +168,23 @@ exports.usuario = function(req, res) {
 		.then(res => res.json())
 		.then(gresponse => {
 			if (gresponse.success && (gresponse.score > 0.5))
-				return dao.mysql.usuarios.insert(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
+				//return dao.mysql.usuarios.insert(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
+				return dao.myjson.usuarios.insertData(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 			else
 				throw valid.setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
 		})
 		.then(result => {
-			if ((result.affectedRows == 1) && (result.insertId > 0)) {
+			//if ((result.affectedRows == 1) && (result.insertId > 0)) {
 				res.set("tplSection", "src/tpl/mails/user.html").set("pass", pass);
 				let html = res.build("src/tpl/mails/index.html").getValue();
 				return mailer.send(fields.email, "Email de alta", html);
-			}
-			else
+			//}
+			//else
 				throw valid.setMessage(res.get("errAlta")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgUsuario")); })
 		.catch(err => {
-			res.error((err.errno == 1062) ? res.get("errUsuarioUk") : err.message);
+			//res.error((err.errno == 1062) ? res.get("errUsuarioUk") : err.message);
+			res.error(res.get(err.message) || err.message);
 		});
 }

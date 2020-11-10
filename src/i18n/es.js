@@ -16,7 +16,8 @@ module.exports = {
 	errDigits: "Por favor introduzca solo valores numéricos",
 
 	lblRol: "Usuario / Rol", lblSudo: "Super Usuario", lblAdministrador: "Administrador", 
-	lblUsuario: "Usuario", lblUsuarios: "Usuarios", lblGU: "Grupo / Usuario", lblRegistro: "Registro", lblRegistro2: "Datos de Registro", 
+	lblUsuario: "Usuario", lblUsuarios: "Usuarios", lblGU: "Grupo / Usuario", 
+	lblRegistro: "Registro", lblRegistro2: "Datos de Registro", lblRegistro3: "Nuevo usuario", 
 	lblNombre: "Nombre", lblApellido1: "Primer Apellido", lblApellido2: "Segundo Apellido", lblApellidos: "Apellidos", 
 	phUsuario: "NIF/CIF/Correo", phNombre: "Jhon", phApellido1: "Doe", phApellido2: "Hofstadter", 
 	lblApellido1: "Indique su primer apellido", lblApellido2: "Indique su segundo apellido", titApellidos: "Indique sus apellidos",
@@ -367,9 +368,9 @@ module.exports = {
 	errSendValidate: "No se ha podido enviar el E-Mail de validación",
 	errSendRemember: "No se ha podido enviar el E-Mail recordatorio de su clave",
 
-	usuario_nif_uk: "NIF ya dado de alta en el sistema",
+	/*usuario_nif_uk: "NIF ya dado de alta en el sistema",
 	usuario_correo_uk: "El E-Mail ya existe en el sistema",
-	usuario_usuario_uk: "Usuario ya esta dado de alta en el sistema",
+	usuario_usuario_uk: "El usuario ya esta dado de alta en el sistema",
 	usuarioOwner: "Propietario del elemento no encontrado",
 	permiso_uk: "Permiso ya definido para este objeto, usuario y grupo",
 	familia_padre_fk: "La familia seleccionada contiene a otras y no se puede borrar",
@@ -384,7 +385,7 @@ module.exports = {
 	articulo_grupo_fk: "El grupo seleccionado tiene artículos asociados",
 	gu_grupo_fk: "El grupo seleccionado tiene usuarios asociados",
 	grupo_usuario_uk: "Usuario ya asociado a este grupo",
-	grupo_usuario_principal: "El usuario ya tiene asociado un grupo principal",
+	grupo_usuario_principal: "El usuario ya tiene asociado un grupo principal",*/
 
 	errSession: "Acceso restringido",
 	errEndSession: "Tiempo máximo sesión excedido",

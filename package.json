@@ -8,6 +8,7 @@
     "static": "gulp",
     "start": "node ./src/index.js",
     "dev": "nodemon --watch src ./src/index.js",
+    "dev-all": "npm-run-all --parallel static dev",
     "pc": "electron ./src/main.js",
     "zip": "rm uae.zip & npm-pack-zip & npm pack",
     "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron App\"",
@@ -24,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
     "formidable": "^1.2.2",
     "html-pdf": "^2.2.0",
     "mongoose": "^5.10.9",
@@ -37,7 +39,6 @@
     "web-push": "^3.4.4"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
     "electron": "^10.1.5",
     "electron-packager": "^15.1.0",
     "electron-reload": "^1.5.0",
@@ -49,7 +50,8 @@
     "gulp-strip-comments": "^2.5.2",
     "merge-stream": "^2.0.0",
     "nodemon": "^2.0.4",
-    "npm-pack-zip": "^1.2.7"
+    "npm-pack-zip": "^1.2.7",
+    "npm-run-all": "^4.1.5"
   },
   "directories": {
     "doc": "docs"

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<base href="../../">
+	<meta charset="utf-8" />
+
+	<title>Form-BOX Examples</title>
+	<link rel="icon" type="image/x-icon" href="img/upct.png" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+	<script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="js/jq/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jq/jquery-ui.min.js"></script>
+	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
+
+	<!-- vanilla JS -->
+	<script type="text/javascript" src="js/data-box.js"></script>
+	<script type="text/javascript" src="js/date-box.js"></script>
+	<script type="text/javascript" src="js/number-box.js"></script>
+	<script type="text/javascript" src="js/string-box.js"></script>
+	<script type="text/javascript" src="js/message-box.js"></script>
+	<script type="text/javascript" src="js/validate-box.js"></script>
+	<script type="text/javascript" src="js/dom-box.js"></script>
+
+	<!-- <script type="text/javascript" src="js/cv/core-box.js"></script>
+	<script type="text/javascript" src="js/cv/date-bd.js"></script>
+	<script type="text/javascript" src="js/cv/date-box.js"></script>
+	<script type="text/javascript" src="js/cv/image-box.js"></script>
+	<script type="text/javascript" src="js/cv/message-box.js"></script>
+	<script type="text/javascript" src="js/cv/message-es.js"></script>
+	<script type="text/javascript" src="js/cv/table-box-v3.js"></script>
+	<script type="text/javascript" src="js/cv/form-box-v3.js"></script>
+	<script type="text/javascript" src="js/cv/form-box-validators.js"></script> -->
+	<script type="text/javascript" src="js/util.js"></script>
+</head>
+<body>
+
+	<div class="mbox">
+		<div class="mbox-ok hide">Mensaje servidor ok</div>
+		<div class="mbox-error hide">Mensaje de error del servidor.<br>Mensaje extra largo: sdfklgjs lksgj sdkfljg klskl kdfl dfkljg kldfjg kjgri jklvklsfdjg i rji kfjkmvklsdfj skgjisrj irjjkfldjgkfmvm kj fkdlj krj gsdrij kfljlkvmfdsdf misrirs ikj kfgjsdlk.<br/><b>kljfas jfdk</b> laskfdj <i>jfdkhs kjh</i> asdfjlñ askljfa fjkasd jfasdklfj dskfj asdklñj fie vnknsdkjfnr  kdfjgklfdgs vdf.</div>
+		<div class="mbox-info hide"> </div>
+		<div class="mbox-warn">xxx </div>
+	</div>
+	<div class="loading hide">
+		<div class="loading-content"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+	</div>
+
+	<header>
+		<ul id="menu">
+			<li id="16" parent="4"><a href="#" title="Sub Nav Link 11">Sub Nav Link 11</a></li>
+			<li id="17" parent="4"><a href="#" title="Sub Nav Link 12">Sub Nav Link 12</a></li>
+			<li id="1"><a href="index.html" title="Nav Link 1">Inicio</a></li>
+			<li id="2"><a href="#" title="Nav Link 1">Ingresos</a>
+			<li id="3" parent="2"><a href="#" title="Sub Nav Link 1">Sub Nav Link 1</a></li>
+			<li id="4" parent="2"><a href="#" title="Sub Nav Link 2">Sub Nav Link 2</a></li>
+			<li id="5" parent="2"><a href="#" title="Sub Nav Link 3">Sub Nav Link 3</a></li>
+			<li id="6" parent="2"><a href="#" title="Sub Nav Link 4">Sub Nav Link 4</a></li>
+			<li id="7" parent="2"><a href="#" title="Sub Nav Link 5">Sub Nav Link 5</a></li>
+			<li id="8"><a href="#" title="Nav Link 1">Nav Link 3</a></li>
+			<li id="11" parent="8"><a href="#" title="Sub Nav Link 6">Sub Nav Link 6</a></li>
+			<li id="12" parent="8"><a href="#" title="Sub Nav Link 7">Sub Nav Link 7</a></li>
+			<li id="9"><a href="#" title="Nav Link 1">Nav Link 4</a></li>
+			<li id="10"><a href="#" title="Nav Link 1">Nav Link 5</a></li>
+			<li id="13" parent="12"><a href="#" title="Sub Nav Link 8">Sub Nav Link 8</a></li>
+			<li id="14" parent="12"><a href="#" title="Sub Nav Link 9">Sub Nav Link 9</a></li>
+			<li id="15" parent="12"><a href="#" title="Sub Nav Link 10">Sub Nav Link 10</a></li>
+		</ul>
+	</header>
+
+	<section>
+	<form id="test" name="test" action="tpl/tests/fbox.html" novalidate>
+		<ul class="tabs">
+			<li><a href="#tab-0">Data types</a></li>
+			<li class="active"><a href="#tab-1">Autocompletes</a></li>
+			<li><a href="#tab-2">Binaries / checklist</a></li>
+			<li><a href="#tab-3">Font Awesome / Iconify</a></li>
+		</ul>
+
+		<div id="tab-0" class="tab-content">
+			<div class="grupo">
+				<label for="number">Number Validation Examples</label>
+				<input type="text" id="number" name="number" value="152.87"
+					size="15" class="textr latin-float" title="number field" tabindex="1"
+					required="true" maxlength="12" number="LatinFloat" max="19.0" min="7.2" range="8,18" 
+					placeholder="[8, 18]" msg-onload="Server message" /> &euro;
+				<span class="tooltip"></span>
+			</div>
+			<div class="grupo">
+				<label for="email">E-Mail Validation Examples</label>
+				<i class="far fa-envelope"></i>
+				<input type="text" id="email" name="email" value="dsfaj@adsf.com" class="form-control"
+					size="20" title="email field" tabindex="2" maxlength="100" email="true" placeholder="Email address" />
+			</div>
+			<div class="grupo">
+				<label for="regex">RegEx Validation Examples</label>
+				<input type="text" id="regex" name="regex" value="123456789A"
+					size="15" title="Other regex field" tabindex="2"
+					maxlength="10" regex="RE_LOGIN" placeholder="xxx@yyy.com" />
+			</div>
+			<div class="grupo">
+				<label for="date">Date Validation Examples</label>
+				<input type="text" id="date" name="date" value="2015-01-01"
+					size="15" class="latin-date" title="date field" tabindex="3" minlength="10" maxlength="10" 
+					date="LatinDate" maxdate="2015-12-31" mindate="2015-01-01 00:00:00" placeholder="dd/mm/aaaa" />
+				<br/><small>ej.: <span class="latin-date">2019-01-01</span></small>
+			</div>
+
+			<div class="navbar">
+			<div class="grupo f2">
+				<label for="spanishIds" class="required">CIF / NIF / NIE:</label>
+				<input type="text" id="spanishIds" name="spanishIds" value="" size="15" 
+					title="Spanish ID validator" tabindex="7" required="true" maxlength="10" 
+					upper="true" remove="^ES" spanishid="true" msg-spanishid="Formato incorrecto"
+					placeholder="12345678X" />
+			</div>
+			<div class="grupo f2">
+				<label for="bool" class="required">Boolean:</label>
+				<input type="text" id="bool" name="bool" value="false" size="4" 
+					class="disabled latin-bool" readonly tabindex="7" required="true" placeholder="Sí/No" />
+			</div>
+			</div>
+
+			<div class="navbar">
+				<input type="file" name="ficheros" multiple />
+				<div id="carrusel" class="navbar"></div>
+				<hr/>
+			</div>
+
+			<div class="navbar">
+				<a id="p1" href="#" class="btn btn-success">Validate P0</a>
+			</div>
+
+			<br class="clear"/>
+			<a href="index.html" class="btn btn-default">&#8678; Back</a>
+			<a href="#next-tab" class="btn btn-default">Next Tab</a>
+		</div>
+		<div id="tab-1" class="tab-content active">
+			<div class="navbar">
+				<label for="one">Simple Autocomplete</label>
+				<div id="tb-one" name="one" class="hide tb-save">[{"idUsuario":3322,"nif":"52801892X","nombre":"JOSÉ VICENTE HELLÍN ATENZA","idGrupo":55,"utCodigo":"U06400009","utDesc":"VICERRECTORADO DE PROFESORADO E INNOVACIÓN DOCENTE","utEmail":"josevicente.hellin@dep.upct.es"},{"idUsuario":8248,"nif":"77503501X","nombre":"CARMEN POZO RABADÁN","idGrupo":8,"utCodigo":"U06400010","utDesc":"VICERRECTORADO DE INVESTIGACIÓN E INNOVACIÓN","utEmail":"salvador.martinez7@upct.es"},{"idUsuario":18,"nif":"10559758K","nombre":"MARÍA DOLORES DE LA CAÑINA FERNÁNDEZ","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":3915,"nif":"22941522B","nombre":"CARMEN ANDREU VERA","idGrupo":68,"utCodigo":"U06400067","utDesc":"CONTRATACIÓN Y SERVICIOS","utEmail":"carmen.andreu@upct.es"},{"idUsuario":2178,"nif":"22964610F","nombre":"MARÍA ROSARIO GARCÍA JARA","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":3890,"nif":"22965599F","nombre":"DOMINGO LORENTE ÁNGEL","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":7171,"nif":"22969113W","nombre":"ROSA MARÍA CARIDAD AGUILAR OCHOA","idGrupo":46,"utCodigo":"U06400029","utDesc":"DEPARTAMENTO DE ARQUITECTURA Y TECNOLOGÍA DE LA EDIFICACIÓN","utEmail":"eva.szamora@dep.upct.es"},{"idUsuario":261,"nif":"22977599R","nombre":"ELVIRA JOSEFA DÁVILA TUDELA","idGrupo":54,"utCodigo":"U06400060","utDesc":"GESTIÓN ACADÉMICA","utEmail":"mcarmen.gutierrez@dep.upct.es"},{"idUsuario":7018,"nif":"73650999P","nombre":"CARMEN LÓPEZ URREA","idGrupo":63,"utCodigo":"U06400002","utDesc":"CONSEJO SOCIAL","utEmail":"carmen.lopez@rec.upct.es"},{"idUsuario":2157,"nif":"22928617D","nombre":"MARÍA ÁNGELES BOSQUE MATA","idGrupo":33,"utCodigo":"U06400031","utDesc":"DEPARTAMENTO DE CIENCIAS JURÍDICAS","utEmail":"angeles.bosque@euitc.upct.es"},{"idUsuario":8428,"nif":"22938843T","nombre":"MARÍA DE LOS ÁNGELES FONTCUBERTA MULERO","idGrupo":19,"utCodigo":"U06400042","utDesc":"DEPARTAMENTO DE INGENIERÍA MECÁNICA","utEmail":"angela.fontcuberta@upct.es"},{"idUsuario":3944,"nif":"22944530Y","nombre":"JOSÉ ANTONIO VIDAL FLORES","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":11269,"nif":"22945394L","nombre":"JAVIER LORENZO ESPÍN NAVARRO","idGrupo":48,"utCodigo":"U06400059","utDesc":"RECURSOS HUMANOS","utEmail":"javier.espin@upct.es"},{"idUsuario":3925,"nif":"22947098K","nombre":"JOSÉ MANUEL MARTÍNEZ MARTÍNEZ","idGrupo":65,"utCodigo":"U06400057","utDesc":"GESTIÓN DE LA CALIDAD","utEmail":"lola.catalan@upct.es"},{"idUsuario":30111,"nif":"22968434J","nombre":"MARIA DEL MAR AVILÉS RODEIRO","idGrupo":32,"utCodigo":"U06400022","utDesc":"ESCUELA TÉCNICA SUPERIOR DE INGENIEROS DE CAMINOS CANALES Y PUERTOS Y DE INGENIERÍA DE MINAS","utEmail":"mariad.aviles@upct.es"},{"idUsuario":37,"nif":"22974234V","nombre":"ANDRÉS SORIANO ASUAR","idGrupo":58,"utCodigo":"U06400030","utDesc":"DEPARTAMENTO DE CIENCIA Y TECNOLOGÍA AGRARIA","utEmail":"andres.soriano@rec.upct.es"},{"idUsuario":7568,"nif":"22996413R","nombre":"EVA SÁNCHEZ ZAMORA","idGrupo":6,"utCodigo":"U06400066","utDesc":"UNIDAD TÉCNICA","utEmail":"mariarosa.ayala@rec.upct.es"},{"idUsuario":7022,"nif":"24226055V","nombre":"MARGARITA JOHANNA BIRRIEL SALCEDO","idGrupo":83,"utCodigo":"U06400043","utDesc":"DEPARTAMENTO DE INGENIERÍA MINERA, GEOLÓGICA Y CARTOGRÁFICA","utEmail":"johanna.birriel@rec.upct.es"},{"idUsuario":3502,"nif":"27439979J","nombre":"ASUNCIÓN RUIZ PARDO","idGrupo":45,"utCodigo":"U06400048","utDesc":"DEPARTAMENTO DE MÉTODOS CUANTITATIVOS E INFORMÁTICOS","utEmail":"asuncion.ruiz@dep.upct.es"},{"idUsuario":5613,"nif":"27428597Q","nombre":"SALVADOR MELGAREJO LORENTE","idGrupo":12,"utCodigo":"U06400018","utDesc":"ESCUELA TÉCNICA SUPERIOR DE INGENIERÍA INDUSTRIAL","utEmail":"domingo.lorente@upct.es"},{"idUsuario":2322,"nif":"34813664J","nombre":"JOSEFA PALAZÓN SABATER","idGrupo":3,"utCodigo":"U06400065","utDesc":"INFORMÁTICA","utEmail":"pepa.palazon@si.upct.es"},{"idUsuario":9744,"nif":"74173940K","nombre":"JOSÉ FERNANDO MONTERO RODRÍGUEZ","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":3542,"nif":"22451969J","nombre":"JOSEFA ARANDA MUÑOZ","idGrupo":5,"utCodigo":"U06400011","utDesc":"VICERRECTORADO DE PLANIFICACIÓN ECONÓMICA Y ESTRATÉGICA","utEmail":"berta.bayo@rec.upct.es"},{"idUsuario":7021,"nif":"22918702F","nombre":"ANA MARÍA MARTÍNEZ VALVERDE","idGrupo":48,"utCodigo":"U06400059","utDesc":"RECURSOS HUMANOS","utEmail":"javier.espin@upct.es"},{"idUsuario":3891,"nif":"22923403Q","nombre":"MARÍA CARMEN MATEU ERVITI","idGrupo":43,"utCodigo":"U06400035","utDesc":"DEPARTAMENTO DE ELECTRÓNICA, TECNOLOGÍA DE COMPUTADORAS Y PROYECTOS","utEmail":"mamen.mateu@rec.upct.es"},{"idUsuario":9904,"nif":"22929900G","nombre":"JOSÉ MARTÍNEZ MARTÍNEZ","idGrupo":9,"utCodigo":"U06400061","utDesc":"ESTUDIANTES Y EXTENSIÓN UNIVERSITARIA","utEmail":"rosario.garcia@upct.es"},{"idUsuario":7566,"nif":"22941114V","nombre":"ANA MARÍA RODRÍGUEZ RAMÍREZ","idGrupo":26,"utCodigo":"U06400051","utDesc":"DEPARTAMENTO DE TECNOLOGÍAS DE LA INFORMACIÓN Y LAS COMUNICACIONES","utEmail":"ana.rodriguez@dep.upct.es"},{"idUsuario":7094,"nif":"22943145R","nombre":"MARÍA DOLORES MORAL RODRÍGUEZ","idGrupo":27,"utCodigo":"U06400017","utDesc":"ESCUELA TÉCNICA SUPERIOR DE INGENIERÍA AGRONÓMICA","utEmail":"lola.moral@upct.es"},{"idUsuario":7359,"nif":"22947924L","nombre":"TRINIDAD SÁNCHEZ MATEOS","idGrupo":74,"utCodigo":"U06400052","utDesc":"UNIDAD PREDEPARTAMENTAL DE TECNOLOGÍA NAVAL","utEmail":"trini.sanchez@rec.upct.es"},{"idUsuario":3897,"nif":"22951545Y","nombre":"MANUELA BLANES ESPARZA","idGrupo":29,"utCodigo":"U06400038","utDesc":"DEPARTAMENTO DE FÍSICA APLICADA","utEmail":"manoli.blanes@dep.upct.es"},{"idUsuario":28,"nif":"09337213H","nombre":"ANA ISABEL MOSTAZA FERNÁNDEZ","idGrupo":54,"utCodigo":"U06400060","utDesc":"GESTIÓN ACADÉMICA","utEmail":"mcarmen.gutierrez@dep.upct.es"},{"idUsuario":3907,"nif":"22910106J","nombre":"MARÍA ROSA AYALA SÁNCHEZ","idGrupo":6,"utCodigo":"U06400066","utDesc":"UNIDAD TÉCNICA","utEmail":"mariarosa.ayala@rec.upct.es"},{"idUsuario":2152,"nif":"22917955L","nombre":"MARÍA TERESA GUILLAMÓN FERNÁNDEZ","idGrupo":14,"utCodigo":"U06400063","utDesc":"DOCUMENTACIÓN","utEmail":"teresa.guillamon@bib.upct.es"},{"idUsuario":7676,"nif":"22951152G","nombre":"BERTA DOLORES BAYO GARCÍA","idGrupo":5,"utCodigo":"U06400011","utDesc":"VICERRECTORADO DE PLANIFICACIÓN ECONÓMICA Y ESTRATÉGICA","utEmail":"berta.bayo@rec.upct.es"},{"idUsuario":7001,"nif":"22976162J","nombre":"MARÍA JOSEFA GUTIÉRREZ HERNÁNDEZ","idGrupo":47,"utCodigo":"U06400020","utDesc":"ESCUELA TÉCNICA SUPERIOR DE INGENIERÍA DE TELECOMUNICACIONES","utEmail":"mjose.gutierrez@rec.upct.es"},{"idUsuario":522,"nif":"22976816T","nombre":"MARÍA DE LA LUZ MEDRAÑO MARTÍN","idGrupo":4,"utCodigo":"U06400034","utDesc":"DEPARTAMENTO DE ECONOMÍA DE LA EMPRESA","utEmail":"mariluz.medrano@upct.es"},{"idUsuario":1002,"nif":"27460214P","nombre":"JOSÉ ALBERTO LUCAS MUÑOZ","idGrupo":24,"utCodigo":"U06400056","utDesc":"RELACIONES INTERNACIONALES","utEmail":"jalberto.lucas@rec.upct.es"},{"idUsuario":3901,"nif":"27469497E","nombre":"JOSEFA MARÍA NAVARRO GÓMEZ","idGrupo":25,"utCodigo":"U06400044","utDesc":"DEPARTAMENTO DE INGENIERÍA QUÍMICA Y AMBIENTAL","utEmail":"mariajo.navarro@rec.upct.es"},{"idUsuario":8905,"nif":"34810558N","nombre":"CARMEN MARÍA MESEGUER GÓMEZ","idGrupo":31,"utCodigo":"U06400021","utDesc":"FACULTAD DE CIENCIAS DE LA EMPRESA","utEmail":"josem.martinez@upct.es"},{"idUsuario":4792,"nif":"22974655R","nombre":"MARÍA JOSÉ BERNAL LIARTE","idGrupo":41,"utCodigo":"U06400039","utDesc":"DEPARTAMENTO DE INGENIERÍA DE LOS ALIMENTOS Y DEL EQUIPAMIENTO AGRÍCOLA","utEmail":"mariajose.bernal@upct.es"},{"idUsuario":8219,"nif":"22991561W","nombre":"SALVADOR MARTÍNEZ OTÓN","idGrupo":8,"utCodigo":"U06400010","utDesc":"VICERRECTORADO DE INVESTIGACIÓN E INNOVACIÓN","utEmail":"salvador.martinez7@upct.es"},{"idUsuario":10987,"nif":"23006373W","nombre":"MARTA BALERIOLA FERNÁNDEZ","idGrupo":68,"utCodigo":"U06400067","utDesc":"CONTRATACIÓN Y SERVICIOS","utEmail":"carmen.andreu@upct.es"},{"idUsuario":2013,"nif":"22960183L","nombre":"JOSÉ MARIANO JIMÉNEZ TÁRRAGA","idGrupo":22,"utCodigo":"U06400047","utDesc":"DEPARTAMENTO DE MATEMÁTICA APLICADA Y ESTADÍSTICA","utEmail":"josemariano.jimenez@dep.upct.es"},{"idUsuario":3362,"nif":"22989898H","nombre":"MERCEDES MARTÍNEZ ESCUDERO","idGrupo":66,"utCodigo":"U06400023","utDesc":"ESCUELA TÉCNICA SUPERIOR DE ARQUITECTURA Y EDIFICACIÓN","utEmail":"mercedes.escudero@rec.upct.es"},{"idUsuario":9910,"nif":"23005940Y","nombre":"ANA BELÉN VIUDES GARCÍA","idGrupo":17,"utCodigo":"U06400050","utDesc":"DEPARTAMENTO DE TECNOLOGÍA ELECTRÓNICA","utEmail":"anabelen.viudes@upct.es"},{"idUsuario":3898,"nif":"27340629T","nombre":"MARÍA LOZANO RODRÍGUEZ","idGrupo":40,"utCodigo":"U06400040","utDesc":"DEPARTAMENTO DE INGENIERÍA ELÉCTRICA","utEmail":"maria.lozano@upct.es"},{"idUsuario":7347,"nif":"27436743C","nombre":"MARÍA VIRGINIA CARLES CANO-MANUEL","idGrupo":24,"utCodigo":"U06400056","utDesc":"RELACIONES INTERNACIONALES","utEmail":"jalberto.lucas@rec.upct.es"},{"idUsuario":13034,"nif":"27459291M","nombre":"MARÍA TRINIDAD GALERA GARCÍA","idGrupo":54,"utCodigo":"U06400060","utDesc":"GESTIÓN ACADÉMICA","utEmail":"mcarmen.gutierrez@dep.upct.es"},{"idUsuario":20936,"nif":"X1718513E","nombre":"CARINA CINTA MARIE TARDY","idGrupo":24,"utCodigo":"U06400056","utDesc":"RELACIONES INTERNACIONALES","utEmail":"jalberto.lucas@rec.upct.es"},{"idUsuario":50,"nif":"EC_SIDIOMAS","nombre":"JOSÉ ALBERTO LUCAS MUÑOZ","idGrupo":11,"utCodigo":"U06400070","utDesc":"IDIOMAS","utEmail":"trini.sanchez@rec.upct.es"},{"idUsuario":52,"nif":"EC_DEPTERMICA","nombre":"ISABEL DOLORES CARVAJAL BASTIDA","idGrupo":39,"utCodigo":"U06400046","utDesc":"DEPARTAMENTO DE INGENIERÍA TÉRMICA Y DE FLUIDOS","utEmail":"isa.carvajal@upct.es"},{"idUsuario":54,"nif":"EC_UPCIVIL","nombre":"MARGARITA JOHANNA BIRRIEL SALCEDO","idGrupo":28,"utCodigo":"U06400053","utDesc":"UNIDAD PREDEPARTAMENTAL DE INGENIERÍA CIVIL","utEmail":"johanna.birriel@rec.upct.es"},{"idUsuario":55,"nif":"EC_INGELEC","nombre":"DARÍO CAÑETE CERVANTES","idGrupo":40,"utCodigo":"U06400040","utDesc":"DEPARTAMENTO DE INGENIERÍA ELÉCTRICA","utEmail":"maria.lozano@upct.es"},{"idUsuario":56,"nif":"EC_DEPARQ","nombre":"EVA SÁNCHEZ ZAMORA","idGrupo":46,"utCodigo":"U06400029","utDesc":"DEPARTAMENTO DE ARQUITECTURA Y TECNOLOGÍA DE LA EDIFICACIÓN","utEmail":"eva.szamora@dep.upct.es"},{"idUsuario":57,"nif":"EC_UCULTURA","nombre":"MERCEDES MARTÍNEZ ESCUDERO","idGrupo":134,"utCodigo":"U06400079","utDesc":"Unidad De Cultura Científica Y De La Innovación (Unidad De Cultura Científica Y Tecnológica)","utEmail":"mercedes.escudero@rec.upct.es"},{"idUsuario":58,"nif":"EC_DEFENSOR","nombre":"CARMEN LÓPEZ URREA","idGrupo":94,"utCodigo":"U06400005","utDesc":"DEFENSOR UNIVERSITARIO","utEmail":"carmen.lopez@rec.upct.es"},{"idUsuario":59,"nif":"EC_DEPETCP","nombre":"MANUELA BLANES ESPARZA","idGrupo":43,"utCodigo":"U06400035","utDesc":"DEPARTAMENTO DE ELECTRÓNICA, TECNOLOGÍA DE COMPUTADORAS Y PROYECTOS","utEmail":"mamen.mateu@rec.upct.es"},{"idUsuario":60,"nif":"EC_UPNAVAL","nombre":"JOSÉ MARIANO JIMÉNEZ TÁRRAGA","idGrupo":74,"utCodigo":"U06400052","utDesc":"UNIDAD PREDEPARTAMENTAL DE TECNOLOGÍA NAVAL","utEmail":"trini.sanchez@rec.upct.es"},{"idUsuario":70,"nif":"EC_INGALIMENTOS","nombre":"JOSEFA MARÍA NAVARRO GÓMEZ","idGrupo":41,"utCodigo":"U06400039","utDesc":"DEPARTAMENTO DE INGENIERÍA DE LOS ALIMENTOS Y DEL EQUIPAMIENTO AGRÍCOLA","utEmail":"mariajose.bernal@upct.es"},{"idUsuario":72,"nif":"EC_SERVINFOR","nombre":"DOLORES ANA FERNÁNDEZ MARTÍNEZ","idGrupo":3,"utCodigo":"U06400065","utDesc":"INFORMÁTICA","utEmail":"pepa.palazon@si.upct.es"},{"idUsuario":75,"nif":"EC_DEPMETCUAN","nombre":"DOLORES GUERRERO BELMONTE","idGrupo":45,"utCodigo":"U06400048","utDesc":"DEPARTAMENTO DE MÉTODOS CUANTITATIVOS E INFORMÁTICOS","utEmail":"asuncion.ruiz@dep.upct.es"},{"idUsuario":76,"nif":"EC_IBV","nombre":"ANA MARÍA FRUCTUOSO HERNÁNDEZ","idGrupo":61,"utCodigo":"U06400024","utDesc":"INSTITUTO DE BIOTECNOLOGÍA VEGETAL","utEmail":"maria.morote@sait.upct.es"},{"idUsuario":80,"nif":"EC_CTAGRARIA2","nombre":"DARÍO CAÑETE CERVANTES","idGrupo":58,"utCodigo":"U06400030","utDesc":"DEPARTAMENTO DE CIENCIA Y TECNOLOGÍA AGRARIA","utEmail":"andres.soriano@rec.upct.es"},{"idUsuario":82,"nif":"EC_DEPECO","nombre":"DOLORES GUERRERO BELMONTE","idGrupo":4,"utCodigo":"U06400034","utDesc":"DEPARTAMENTO DE ECONOMÍA DE LA EMPRESA","utEmail":"mariluz.medrano@upct.es"},{"idUsuario":84,"nif":"EC_ALIMENTOS2","nombre":"MARÍA ISABEL NAVARRO FERNÁNDEZ","idGrupo":41,"utCodigo":"U06400039","utDesc":"DEPARTAMENTO DE INGENIERÍA DE LOS ALIMENTOS Y DEL EQUIPAMIENTO AGRÍCOLA","utEmail":"mariajose.bernal@upct.es"},{"idUsuario":85,"nif":"EC_CTAGRARIA","nombre":"ASUNCIÓN RUIZ PARDO","idGrupo":58,"utCodigo":"U06400030","utDesc":"DEPARTAMENTO DE CIENCIA Y TECNOLOGÍA AGRARIA","utEmail":"andres.soriano@rec.upct.es"},{"idUsuario":86,"nif":"EC_SPREVENCION","nombre":"ANA MARÍA FRUCTUOSO HERNÁNDEZ","idGrupo":84,"utCodigo":"U06400069","utDesc":"SERVICIO DE PREVENCIÓN Y RIESGOS LABORALES","utEmail":"maria.morote@sait.upct.es"},{"idUsuario":87,"nif":"EC_FINCA","nombre":"MARÍA DOLORES MORAL RODRÍGUEZ","idGrupo":104,"utCodigo":"U06400025","utDesc":"ESTACIÓN EXPERIMENTAL AGROALIMENTARIA TOMÁS FERRO","utEmail":"lola.moral@upct.es"},{"idUsuario":3929,"nif":"22477271S","nombre":"PEDRO JOSÉ VICENTE BELTRÁN","idGrupo":30,"utCodigo":"U06400019","utDesc":"ESCUELA TÉCNICA SUPERIOR DE INGENIERÍA NAVAL Y OCEÁNICA","utEmail":"pedro.vicente@etsii.upct.es"},{"idUsuario":3900,"nif":"22948472S","nombre":"ANA MARÍA VIZCAÍNO MARTÍNEZ","idGrupo":8,"utCodigo":"U06400010","utDesc":"VICERRECTORADO DE INVESTIGACIÓN E INNOVACIÓN","utEmail":"salvador.martinez7@upct.es"},{"idUsuario":7266,"nif":"22951020X","nombre":"ANA MARÍA FRUCTUOSO HERNÁNDEZ","idGrupo":38,"utCodigo":"U06400064","utDesc":"APOYO A LA INVESTIGACIÓN TECNOLÓGICA (SAIT)","utEmail":"maria.morote@sait.upct.es"},{"idUsuario":7098,"nif":"22968388J","nombre":"MATILDE RUIZ CONESA","idGrupo":23,"utCodigo":"U06400037","utDesc":"DEPARTAMENTO DE EXPRESIÓN GRÁFICA","utEmail":"matilde.ruiz@rec.upct.es"},{"idUsuario":9349,"nif":"22977141A","nombre":"MARÍA ISABEL NAVARRO FERNÁNDEZ","idGrupo":21,"utCodigo":"U06400049","utDesc":"DEPARTAMENTO DE PRODUCCIÓN VEGETAL","utEmail":"misabel.navarro@upct.es"},{"idUsuario":8544,"nif":"07530635K","nombre":"ROSA MARÍA SÁNCHEZ HERNÁNDEZ","idGrupo":133,"utCodigo":"U06400073","utDesc":"Centro De Produccion De Contenidos Digitales (Centro De Producción De Contenidos Digitales)","utEmail":"rosam.sanchez@sec.upct.es"},{"idUsuario":3895,"nif":"21455514X","nombre":"DOLORES ANA FERNÁNDEZ MARTÍNEZ","idGrupo":115,"utCodigo":"U06400015","utDesc":"Vicerrectorado De Tecnologías De La Información Y Las Comunicaciones","utEmail":"ana.fernandez@dep.upct.es"},{"idUsuario":8429,"nif":"22928572X","nombre":"ANTONIA TOLOSA FERNÁNDEZ","idGrupo":49,"utCodigo":"U06400075","utDesc":"RESIDENCIAS UNIVERSITARIAS","utEmail":"antonia.tolosa@upct.es"},{"idUsuario":7146,"nif":"22963788J","nombre":"DARÍO CAÑETE CERVANTES","idGrupo":42,"utCodigo":"U06400036","utDesc":"DEPARTAMENTO DE ESTRUCTURAS Y CONSTRUCCIÓN","utEmail":"dario.canete@rec.upct.es"},{"idUsuario":27,"nif":"22993844P","nombre":"SUSANA MÁRMOL GALLEGO","idGrupo":68,"utCodigo":"U06400067","utDesc":"CONTRATACIÓN Y SERVICIOS","utEmail":"carmen.andreu@upct.es"},{"idUsuario":3462,"nif":"27451941S","nombre":"DOLORES GUERRERO BELMONTE","idGrupo":50,"utCodigo":"U06400032","utDesc":"DEPARTAMENTO DE ECONOMÍA","utEmail":"loli.guerrero@dep.upct.es"},{"idUsuario":3892,"nif":"27471603N","nombre":"JUAN ÁNGEL LÓPEZ BARCELÓ","idGrupo":13,"utCodigo":"U06400041","utDesc":"DEPARTAMENTO DE INGENIERÍA DE MATERIALES Y FABRICACIÓN","utEmail":"juanangel.lopez@dep.upct.es"},{"idUsuario":3904,"nif":"27471646D","nombre":"JOSÉ PATRICIO AGUSTÍN GARCÍA","idGrupo":44,"utCodigo":"U06400045","utDesc":"DEPARTAMENTO DE INGENIERÍA DE SISTEMAS Y AUTOMÁTICA","utEmail":"jpatricio.agustin@sec.upct.es"},{"idUsuario":6689,"nif":"22926834C","nombre":"MARÍA DEL CARMEN GUTIÉRREZ SANTOS","idGrupo":54,"utCodigo":"U06400060","utDesc":"GESTIÓN ACADÉMICA","utEmail":"mcarmen.gutierrez@dep.upct.es"},{"idUsuario":25,"nif":"22965965M","nombre":"RAQUEL LEÓN NAVARRO","idGrupo":54,"utCodigo":"U06400060","utDesc":"GESTIÓN ACADÉMICA","utEmail":"mcarmen.gutierrez@dep.upct.es"},{"idUsuario":3603,"nif":"23027739R","nombre":"PRÁXEDES SÁNCHEZ MARTÍNEZ","idGrupo":18,"utCodigo":"U06400033","utDesc":"DEPARTAMENTO DE ECONOMÍA FINANCIERA Y CONTABILIDAD","utEmail":"prax.sanchez@rec.upct.es"}]</div>
+				<input type="text" id="one" name="one" size="40" tabindex="4" value="8248" required="true"
+					array="true" msg-array="Element no seleccionado correctamente" />
+				<a name="one" class="btn btn-success fb-addac">+ Add</a>
+			</div>
+			<div class="navbar">
+				<label for="multi">Autocomplete Multi-values</label>
+				<textarea id="multi" name="multi" tabindex="5" rows="7" cols="50" placeholder="xxxx, yyyy, zzzz">80,7022</textarea>
+				<p>N&deg; de caracteres = <span id="counter">0</span></p>
+			</div>
+			<div class="navbar">
+				<label for="wizards">Autocomplete:</label>
+				<input type="text" id="wizards" name="wizards" size="40">
+			</div>
+			<hr>
+			<div class="navbar">
+				<label for="list">List-values</label>
+				<select id="list" name="list" value="2016" tabindex="6">
+					<option value="@ej;">@ej;</option>
+				</select>
+			</div>
+
+			<br class="clear"/>
+			<a href="#prev-tab" class="btn btn-default">Previous Tab</a>
+			<a href="#next-tab" class="btn btn-default">Next Tab</a>
+		</div>
+		<div id="tab-2" class="tab-content">
+			<div class="grupo">
+				<label for="binval1">Binary checkboxes</label>
+				<input type="checkbox" id="a" value="1" tabindex="8" class="lbin1" />
+				<input type="checkbox" id="b" value="2" tabindex="9" class="lbin1" />
+				<input type="checkbox" id="binval1" value="2" tabindex="10" class="lbin1-all" />
+				<span class="tooltip"></span>
+			</div>
+			<div class="grupo">
+				<label for="binval">Binary checkboxes 2</label>
+				<input type="checkbox" id="a" value="1" tabindex="8" class="lbin2" />
+				<input type="checkbox" id="b" value="2" tabindex="9" class="lbin2" />
+				<input type="checkbox" id="binval" value="1" tabindex="10" class="lbin2-all" />
+				<span class="tooltip"></span>
+			</div>
+			<div class="grupo">
+				<label for="listbox1">Checkboxes List</label>
+				<input type="checkbox" id="i" value="23" tabindex="11" class="lb1" />
+				<input type="checkbox" id="j" value="87" tabindex="12" class="lb1" />
+				<input type="checkbox" id="listbox1" value="23" tabindex="13" class="lb1-all" />
+			</div>
+			<div class="grupo">
+				<label for="listbox2">Checkboxes List 2</label>
+				<input type="checkbox" value="3" tabindex="13" class="lb2-all" /> [
+				<input type="checkbox" id="i" value="3" tabindex="11" class="lb2" />
+				<input type="checkbox" id="j" value="7" tabindex="12" class="lb2" /> ]
+				<input type="checkbox" id="listbox2" value="7" tabindex="13" class="lb2-all" />
+			</div>
+
+			<div class="grupo">
+				<label for="male">Radio buttons</label>
+				<input type="radio" id="male" name="gender" value="male" checked> <label for="male" class="inline">Male</label><br>
+				<input type="radio" id="female" name="gender" value="female"> <label for="female" class="inline">Female</label><br>
+				<input type="radio" id="other" name="gender" value="other"> <label for="other" class="inline">Other</label>
+			</div>
+
+			<br class="clear"/><br />
+			<p><label for="p1">tab1</label><input type="text" id="p1" name="prueba1" tabindex="1" /></p>
+			<p><label for="p2">tab2</label><input type="text" id="p2" name="prueba2" tabindex="2" /></p>
+
+			<br class="clear"/>
+			<a href="#prev-tab" class="btn btn-default">Previous Tab</a>
+			<a href="#next-tab" class="btn btn-default disabled">Next Tab</a>
+		</div>
+		<div id="tab-3" class="tab-content">
+			<p>IConify:</p>
+			<span class="iconify" data-icon="ant-design:audio-twotone" data-width="32" data-height="32"></span>
+			<span class="iconify" data-icon="ant-design:audio-fill" style="color: tomato;"></span>
+			<i class="iconify" data-icon="uil:envelope" data-width="48" style="color: tomato;"></i>
+
+			<hr/>
+			<div class="navbar">
+				<button type="submit" ajax="false" class="btn btn-primary">Send &raquo;</button>
+				<button type="reset" class="btn btn-default">&olarr; Reset</button>
+				<br/><br/>
+
+				<a id="loading" href="#" class="btn btn-default"><i class="fas fa-sync"></i> Loading</a>
+				<a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i> Delete</a>
+				<a id="errores" href="#" class="btn btn-danger">&#10008; Errors</a>
+				<br/><br/>
+
+				<a id="mask" href="#" class="btn btn-default">&#8801; Mask</a>
+				<a id="swap" href="#" class="btn btn-default">&#8644; Swap</a>
+			</div>
+
+			<hr/><br class="clear"/>
+			<a href="#prev-tab" class="btn btn-default">Previous Tab</a>
+			<a href="#next-tab" class="btn btn-default disabled">Next Tab</a>
+		</div>
+	</form>
+
+	<br class="clear"/><br />
+	<a id="slide-up" href="#">slide up</a>
+	<a id="slide-down" href="#">slide down</a>
+	<a id="slide-toggle" href="#">slide toggle</a>
+	<div id="slide-content" style="padding: 1em; background-color: yellow;">
+		<p>Lorem ipsum dolor sit amet consectetur adipiscing elit lacus torquent hac nibh, diam eleifend porttitor nascetur dignissim luctus tempus iaculis duis turpis condimentum enim, egestas metus vivamus nisi eu arcu commodo nostra conubia dictumst. Suspendisse facilisis molestie tincidunt turpis senectus venenatis elementum phasellus facilisi mi, at commodo ornare rutrum neque fames nascetur duis class risus, eget augue parturient nisi ligula eros purus ullamcorper mus. Platea accumsan bibendum suscipit feugiat sed aenean condimentum, tellus duis massa donec mi quis cubilia nunc, euismod egestas tortor nisi aptent ornare.</p>
+		<p>Primis hac dignissim duis tortor non venenatis eu libero sollicitudin, vitae placerat magna sodales auctor imperdiet vehicula curae ad ornare, est dui erat fusce nunc mauris sociosqu penatibus. Cum dictumst parturient semper integer vitae quisque ante, gravida id platea ullamcorper accumsan aliquam. Sociosqu montes tristique tellus nec dis ullamcorper dignissim nisl, euismod sollicitudin rhoncus laoreet purus suscipit senectus, aliquam bibendum varius dictumst feugiat morbi venenatis.</p>
+		<p>Lorem ipsum dolor sit amet consectetur adipiscing elit lacus torquent hac nibh, diam eleifend porttitor nascetur dignissim luctus tempus iaculis duis turpis condimentum enim, egestas metus vivamus nisi eu arcu commodo nostra conubia dictumst. Suspendisse facilisis molestie tincidunt turpis senectus venenatis elementum phasellus facilisi mi, at commodo ornare rutrum neque fames nascetur duis class risus, eget augue parturient nisi ligula eros purus ullamcorper mus. Platea accumsan bibendum suscipit feugiat sed aenean condimentum, tellus duis massa donec mi quis cubilia nunc, euismod egestas tortor nisi aptent ornare.</p><p>Primis hac dignissim duis tortor non venenatis eu libero sollicitudin, vitae placerat magna sodales auctor imperdiet vehicula curae ad ornare, est dui erat fusce nunc mauris sociosqu penatibus. Cum dictumst parturient semper integer vitae quisque ante, gravida id platea ullamcorper accumsan aliquam. Sociosqu montes tristique tellus nec dis ullamcorper dignissim nisl, euismod sollicitudin rhoncus laoreet purus suscipit senectus, aliquam bibendum varius dictumst feugiat morbi venenatis.</p>
+	</div>
+	</section>
+
+	<footer>
+	</footer>
+</body>
+</html>

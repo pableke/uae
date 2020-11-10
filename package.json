@@ -9,7 +9,7 @@
     "start": "node ./src/index.js",
     "dev": "nodemon --watch src ./src/index.js",
     "pc": "electron ./src/main.js",
-    "zip": "rm uae.zip & npm-pack-zip",
+    "zip": "rm uae.zip & npm-pack-zip & npm pack",
     "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron App\"",
     "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds"
   },
@@ -32,8 +32,8 @@
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.11",
-    "tree-ss": "0.0.3",
-    "validate-box": "0.0.7",
+    "tree-ss": "0.0.7",
+    "validate-box": "^0.1.2",
     "web-push": "^3.4.4"
   },
   "devDependencies": {
@@ -44,7 +44,10 @@
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^5.0.1",
     "gulp-minify": "^3.1.0",
+    "gulp-strip-comments": "^2.5.2",
+    "merge-stream": "^2.0.0",
     "nodemon": "^2.0.4",
     "npm-pack-zip": "^1.2.7"
   },

@@ -8,11 +8,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<title>UPCT / UAE</title>
-	<link rel="icon" type="image/x-icon" href="static/img/upct.png" />
+	<link rel="icon" type="image/x-icon" href="public/img/upct-azul-logo.png" />
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="static/css/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="public/dist/style.css" />
 
 	<!-- jQuery -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -25,7 +25,7 @@
 	<!-- SCROOLL REVEAL JS LIBRARY CDN -->
 	<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 	<!-- local JS -->
-	<script type="text/javascript" src="static/js/multi-box.js"></script>
+	<script type="text/javascript" src="public/dist/multi-box.min.js"></script>
 </head>
 <body>
 	<header>
@@ -36,24 +36,29 @@
 	<aside></aside>
 	<section>
 		<div class="container">
-		<a href="tpl/tests/visor.html" class="thumb"><img src="static/img/png/scroll_view.png" />Visor FACe</a>
-		<a href="tpl/tests/bancos.html" class="thumb"><img src="static/img/png/address_book4.png" />Normas Bancarias</a>
+		<a href="tpl/tests/visor.html" class="thumb"><img src="public/img/png/scroll_view.png" />Visor FACe</a>
+		<a href="tpl/tests/bancos.html" class="thumb"><img src="public/img/png/address_book4.png" />Normas Bancarias</a>
 		</div>
 		<br/><hr><br/>
 
-		<a href="tpl/tests/fbox.html" class="thumb"><img src="static/img/png/form_green_edit.png" />fbox</a>
-		<a href="tpl/tests/ibox.html" class="thumb"><img src="static/img/png/box_full.png" />ibox</a>
-		<a href="tpl/tests/pivot.html" class="thumb"><img src="static/img/png/data_table.png" />pivot</a>
-		<a href="tpl/tests/tbox.html" class="thumb"><img src="static/img/png/view-tree-icon.png" />tbox</a>
+		<a href="tpl/tests/fbox.html" class="thumb"><img src="public/img/png/form_green_edit.png" />fbox</a>
+		<a href="tpl/tests/ibox.html" class="thumb"><img src="public/img/png/box_full.png" />ibox</a>
+		<a href="tpl/tests/pivot.html" class="thumb"><img src="public/img/png/data_table.png" />pivot</a>
+		<a href="tpl/tests/tbox.html" class="thumb"><img src="public/img/png/view-tree-icon.png" />tbox</a>
 		<br/><hr><br/>
 
-		<a href="tpl/tests/maps.html" class="thumb"><img src="static/img/png/maps.png" />maps</a>
+		<a href="tpl/tests/maps.html" class="thumb"><img src="public/img/png/maps.png" />maps</a>
 	</section>
 	<aside></aside>
-	<footer>
-		<img src="static/img/png/top.png" class="back-to-top" />
-	</footer>
-<br class="clear" />
 
+	<footer>
+		<div class="text-center loading">
+			<div class="spinner-border text-info loading-content" role="status"><span class="sr-only">Loading...</span></div>
+		</div>
+		<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button">
+			<i class="fas fa-chevron-up"></i>
+		</a>
+	</footer>
+	<br class="clear" />
 </body>
 </html>

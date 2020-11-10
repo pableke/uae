@@ -15,7 +15,7 @@ $(document).ready(function() {
 	}
 
 	function subscription() {
-		const SW = "/src/public/dist/worker.min.js";
+		const SW = "/src/public/js/worker.min.js";
 		console.log("Registering a Service worker...");
 		navigator.serviceWorker.register(SW).then(register => {
 			// Listen Push Notifications

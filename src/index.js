@@ -119,7 +119,7 @@ function fnRequest(req, res) {
 		/*dao.mysql.menus.findPublic().then(menus => {
 			fn(req, res.ifFalse("menus", menus)); //load menus and call handler
 		});*/
-		fn(req, res.ifFalse("menus", dao.myjson.menus.findPublic())); //load menus and call handler
+		fn(req, res.nvl("menus", dao.myjson.menus.findPublic())); //load menus and call handler
 	}
 }
 const server = http.createServer(fnRequest);

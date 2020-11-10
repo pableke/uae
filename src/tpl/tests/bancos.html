@@ -1,73 +1,4 @@
-<!doctype html>
-<html>
-<head>
-	<base href="../../">
-	<meta charset="utf-8" />
-
-	<title>Normas Bancarias</title>
-	<link rel="icon" type="image/x-icon" href="img/upct.png" />
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
-	<script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-
-	<!-- jQuery -->
-	<script type="text/javascript" src="js/jq/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jq/jquery-ui.min.js"></script>
-	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
-
-	<!-- vanilla JS -->
-	<script type="text/javascript" src="js/data-box.js"></script>
-	<script type="text/javascript" src="js/date-box.js"></script>
-	<script type="text/javascript" src="js/number-box.js"></script>
-	<script type="text/javascript" src="js/string-box.js"></script>
-	<script type="text/javascript" src="js/message-box.js"></script>
-	<script type="text/javascript" src="js/validate-box.js"></script>
-	<script type="text/javascript" src="js/dom-box.js"></script>
-
-	<script type="text/javascript" src="js/iSuite/core-box.js"></script>
-	<script type="text/javascript" src="js/iSuite/date-bd.js"></script>
-	<script type="text/javascript" src="js/iSuite/date-box.js"></script>
-	<script type="text/javascript" src="js/iSuite/message-box.js"></script>
-	<script type="text/javascript" src="js/iSuite/rules-factory.js"></script>
-	<script type="text/javascript" src="js/iSuite/util.js"></script>
-</head>
-
-<body>
-	<header>
-		<h1><img src="img/png/address_book4.png" class="icon" /> Normas Bancarias</h1>
-		<a id="back" href="index.html" class="btn btn-default" title="Volver al inicio">&#8678;</a>
-		<input type="file" id="norma" name="files[]" multiple title="Seleccionar fichero bancario" />
-		<a id="add" href="#" class="btn btn-success" title="Visualizar fichero .xsig">&#10133;</a>
-		<hr>
-	</header>
-
-	<div id="main navbar">
-		<table>
-			<thead>
-				<tr>
-					<th>Tipo</th>
-					<th>F. Operación</th>
-					<th>Descripción</th>
-					<th>Importe</th>
-				</tr>
-			</thead>
-			<tbody id="n43-data" class="hide">
-				<tr class="tb-data">
-					<td>@documento;</td><td>@fOperacion;</td><td>@concepto;</td><td class="textr">@importe;</td>
-				</tr>
-			</tbody>
-			<tbody class="no-data">
-				<tr><td colspan="4"><p class="textc">No se han encontrado datos</p></td></tr>
-			</tbody>
-			<tfoot>
-				<tr><td colspan="4">Filas: <span id="numrows">0</span></td></tr>
-			</tfoot>
-		</table>
-	</div>
-	<br class="clear"/><br/>
-
-	<script type="text/javascript">
-		var dom = new DOMBox();
+<!doctype html><html><head><base href="../../"><meta charset="utf-8"><title>Normas Bancarias</title><link rel="icon" type="image/x-icon" href="img/upct.png"><link rel="stylesheet" type="text/css" href="css/style.css"><link rel="stylesheet" type="text/css" href="css/jquery-ui.css"><script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/jq/jquery.min.js"></script><script type="text/javascript" src="js/jq/jquery-ui.min.js"></script><script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script><script type="text/javascript" src="js/data-box.js"></script><script type="text/javascript" src="js/date-box.js"></script><script type="text/javascript" src="js/number-box.js"></script><script type="text/javascript" src="js/string-box.js"></script><script type="text/javascript" src="js/message-box.js"></script><script type="text/javascript" src="js/validate-box.js"></script><script type="text/javascript" src="js/dom-box.js"></script><script type="text/javascript" src="js/iSuite/core-box.js"></script><script type="text/javascript" src="js/iSuite/date-bd.js"></script><script type="text/javascript" src="js/iSuite/date-box.js"></script><script type="text/javascript" src="js/iSuite/message-box.js"></script><script type="text/javascript" src="js/iSuite/rules-factory.js"></script><script type="text/javascript" src="js/iSuite/util.js"></script></head><body><header><h1><img src="img/png/address_book4.png" class="icon"> Normas Bancarias</h1><a id="back" href="index.html" class="btn btn-default" title="Volver al inicio">&#8678;</a> <input type="file" id="norma" name="files[]" multiple="multiple" title="Seleccionar fichero bancario"> <a id="add" href="#" class="btn btn-success" title="Visualizar fichero .xsig">&#10133;</a><hr></header><div id="main navbar"><table><thead><tr><th>Tipo</th><th>F. Operación</th><th>Descripción</th><th>Importe</th></tr></thead><tbody id="n43-data" class="hide"><tr class="tb-data"><td>@documento;</td><td>@fOperacion;</td><td>@concepto;</td><td class="textr">@importe;</td></tr></tbody><tbody class="no-data"><tr><td colspan="4"><p class="textc">No se han encontrado datos</p></td></tr></tbody><tfoot><tr><td colspan="4">Filas: <span id="numrows">0</span></td></tr></tfoot></table></div><br class="clear"><br><script type="text/javascript">var dom = new DOMBox();
 		var dtb = new DateBox();
 		var nb = new NumberBox();
 		var rf = new RulesFactory();
@@ -85,7 +16,4 @@
 					console.log(contents, file, ev);
 				}
 			});
-		});
-	</script>
-</body>
-</html>
+		});</script></body></html>

@@ -241,6 +241,13 @@ function DateBox(lang) {
 
 	const langs = {
 		en: { //english
+			closeText: "close", prevText: "prev", nextText: "next", currentText: "current",
+			ancientText: "ancient", lastYear: "last year", currentYear: "this year", nextYear: "next year", 
+			lastMonth: "last month", currentMonth: "this month", nextMonth: "next month", 
+			lastWeek: "last week", currentWeek: "this week", nextWeek: "next week", 
+			yesterdayText: "yesterday", todayText: "today", tomorrowText: "tomorrow", 
+			lastHour: "last hour", currentHour: "less than an hour", nextHour: "next hour", 
+			last30Min: "less than half an hour", justNow: "just now", next30Min: "next half hour", futureText: "in a future", 
 			monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 			monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 			dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -261,6 +268,13 @@ function DateBox(lang) {
 		},
 
 		es: { //spain
+			closeText: "cerrar", prevText: "prev.", nextText: "sig.", currentText: "actual", 
+			ancientText: "antiguo", lastYear: "el año pasado", currentYear: "este año", nextYear: "el año que viene", 
+			lastMonth: "el mes pasado", currentMonth: "este mes", nextMonth: "el mes que viene", 
+			lastWeek: "la semana pasada", currentWeek: "esta semana", nextWeek: "la semana que viene", 
+			yesterdayText: "ayer", todayText: "hoy", tomorrowText: "mañana", 
+			lastHour: "hace una hora", currentHour: "en menos de una hora", nextHour: "en la siguiente hora",
+			last30Min: "hace menos de media hora", justNow: "justo ahora", next30Min: "en la siguiente media hora", futureText: "en un futuro",
 			monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
 			monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
 			dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
@@ -346,8 +360,8 @@ function DateBox(lang) {
 	this.daysInMonth = function(date) { date = date || sysdate; return daysInMonth(date.getFullYear(), date.getMonth()); }
 	this.dayOfYear = function(date) { date = date || sysdate; return dayOfYear(date.getFullYear(), date.getMonth(), date.getDate()); }
 	this.daysInYear = function(date) { return isLeapYear((date || sysdate).getFullYear()) ? 366 : 365; }
-	this.weekOfYear = function(date) { return Math.ceil((fnDay1(date.getFullYear(), 0) + self.dayOfYear(date)) / 7); }
-	this.weekOfMonth = function(date) { return Math.ceil((fnDay1(date.getFullYear(), date.getMonth()) + date.getDate()) / 7); }
+	this.weekOfYear = function(date) { date = date || sysdate; return Math.ceil((fnDay1(date.getFullYear(), 0) + self.dayOfYear(date)) / 7); }
+	this.weekOfMonth = function(date) { date = date || sysdate; return Math.ceil((fnDay1(date.getFullYear(), date.getMonth()) + date.getDate()) / 7); }
 	this.endDay = function(date) { date && date.setHours(23, 59, 59, 999); return self; } //last moment of day
 
 	//format output functions
@@ -378,42 +392,101 @@ function DateBox(lang) {
 	this.tHelper = function(val) { return val && val.replace(/(\d\d)(\d+)$/g, "$1:$2").replace(/[^\d\:]/g, ""); } //time helper
 
 	this.addMilliseconds = function(date, val) { date && date.setMilliseconds(date.getMilliseconds() + val); return self; }
+	this.addMinutes = function(date, val) { date && date.setMinutes(date.getMinutes() + val); return self; }
 	this.addHours = function(date, val) { date && date.setHours(date.getHours() + val); return self; }
 	this.addDays = function(date, val) { date && date.setDate(date.getDate() + val); return self; }
 	this.addDate = self.addDays; //sinonym
+	this.addMonths = function(date, val) { date && date.setMonth(date.getMonth() + val); return self; }
 	this.toArray = function(date) {
 		return [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
 	}
 
-	const ajustes = [0, 12, 0, 24, 60, 60, 1000]; //years, months, days, hours...
-	function fnAjustar(result, i, val) {
-		result[i] -= val;
-		if (result[i] < 0) {
-			result[i] += ajustes[i];
-			fnAjustar(result, i-1, 1);
-		}
-	}
 	this.diff = function(d1, d2) {
 		d2 = d2 || sysdate;
-		if (d1 > d2) //swap
+		if (d1 > d2)
 			return self.diff(d2, d1);
-		var result = self.toArray(d2); //date parts
-		ajustes[2] = self.daysInMonth(d1) - d1.getDate() + d2.getDate();
-		self.toArray(d1).forEach((p, i) => { fnAjustar(result, i, p); });
-		return result;
+		let ms = Math.abs(d1.getMilliseconds() - d2.getMilliseconds());
+		let ss = Math.abs(d1.getSeconds() - d2.getSeconds());
+		let MM = Math.abs(d1.getMinutes() - d2.getMinutes());
+		let hh = Math.abs(d1.getHours() - d2.getHours());
+		let mm = d2.getMonth() - d1.getMonth();
+		let yyyy = d2.getFullYear() - d1.getFullYear();
+		if (yyyy > 0) { //adjust mm and yyyy
+			var _aux = (yyyy > 1) ? (12 - d1.getMonth()) : ((12 - d1.getMonth()) + d2.getMonth());
+			if (12 > _aux) {
+				mm = _aux
+				yyyy--;
+			}
+			else
+				mm = (_aux % 12);
+		}
+		if (mm == 0) //same month => nothing to adjust
+			return [yyyy, mm, Math.abs(d2.getDate() - d1.getDate()), hh, MM, ss, ms];
+		if (mm > 1) //adjust month and days
+			return [yyyy, --mm, d2.getDate(), hh, MM, ss, ms];
+		let _max = self.daysInMonth(d1); //get the number of days in d1
+		_aux = ((_max - d1.getDate()) + d2.getDate()); //days between d1 and d2
+		return (_max > _aux) ? [yyyy, --mm, _aux, hh, MM, ss, ms] : [yyyy, mm, (_aux % _max), hh, MM, ss, ms];
 	}
 	this.diffDays = function(d1, d2) { return d2 ? (Math.abs(d2.getTime() - d1.getTime()) / 864e5) : 0; } //(1000 * 3600 * 24)
 	this.diffHours = function(d1, d2) { return d2 ? (Math.abs(d2.getTime() - d1.getTime()) / 36e5) : 0; } //(1000 * 3600)
 	this.inYear = function(d1, d2) { return d1 && d2 && (d1.getFullYear() == d2.getFullYear()); }
 	this.inMonth = function(d1, d2) { return self.inYear(d1, d2) && (d1.getMonth() == d2.getMonth()); }
-	this.inWeek = function(d1, d2) { return self.inMonth(d1, d2) && (self.weekOfYear(d1) == self.weekOfYear(d2)); }
+	this.inWeek = function(d1, d2) { return self.inYear(d1, d2) && (self.weekOfYear(d1) == self.weekOfYear(d2)); }
 	this.inDay = function(d1, d2) { return self.inMonth(d1, d2) && (d1.getDate() == d2.getDate()); }
 	this.inHour = function(d1, d2) { return self.inDay(d1, d2) && (d1.getHours() == d2.getHours()); }
+	this.inMinute = function(d1, d2) { return self.inHour(d1, d2) && (d1.getMinutes() == d2.getMinutes()); }
 	this.between = function(date, dMin, dMax) { dMin = dMin || date; dMax = dMax || date; return (dMin <= date) && (date <= dMax); }
 	this.range = function(date, dMin, dMax) { return (dMin && (date < dMin)) ? dMin : ((dMax && (dMax < date)) ? dMax : date); }
 	this.rand = function(d1, d2) { let t1 = d1.getTime(); return new Date(intval(Math.random() * (d2.getTime() - t1) + t1)); }
 	this.min = function(d1, d2) { return (d1 && d2) ? ((d1 < d2) ? d1 : d2) : nvl(d1, d2); }
 	this.max = function(d1, d2) { return (d1 && d2) ? ((d1 < d2) ? d2 : d1) : nvl(d1, d2); }
+
+	let _tempdate = new Date();
+	this.timeAgo = function(date) {
+		if (date > sysdate) return self.timeTo(date);
+		if (self.inMinute(date, sysdate)) return _lang.justNow;
+		self.init(_tempdate, date).addMinutes(_tempdate, 30);
+		if (_tempdate > sysdate) return _lang.last30Min;
+		self.init(_tempdate, date).addHours(_tempdate, 1);
+		if (_tempdate > sysdate) return _lang.currentHour;
+		if (self.inHour(_tempdate, sysdate)) return _lang.lastHour;
+		if (self.inDay(date, sysdate)) return _lang.todayText;
+		self.init(_tempdate, date).addDays(_tempdate, 1);
+		if (self.inDay(_tempdate, sysdate)) return _lang.yesterdayText;
+		if (self.inWeek(date, sysdate)) return _lang.currentWeek;
+		self.init(_tempdate, date).addDays(_tempdate, 7);
+		if (self.inWeek(_tempdate, sysdate)) return _lang.lastWeek;
+		if (self.inMonth(date, sysdate)) return _lang.currentMonth;
+		self.init(_tempdate, date).addMonths(_tempdate, 1);
+		if (self.inMonth(_tempdate, sysdate)) return _lang.lastMonth;
+		if (self.inYear(date, sysdate)) return _lang.currentYear;
+		self.init(_tempdate, date).addMonths(_tempdate, 12);
+		if (self.inYear(_tempdate, sysdate)) return _lang.lastYear;
+		return _lang.ancientText;
+	}
+	this.timeTo = function(date) {
+		if (date < sysdate) return self.timeAgo(date);
+		if (self.inMinute(date, sysdate)) return _lang.justNow;
+		self.init(_tempdate).addMinutes(_tempdate, 30);
+		if (_tempdate > date) return _lang.next30Min;
+		self.init(_tempdate).addHours(_tempdate, 1);
+		if (_tempdate > date) return _lang.currentHour;
+		if (self.inHour(_tempdate, date)) return _lang.nextHour;
+		if (self.inDay(date, sysdate)) return _lang.todayText;
+		self.init(_tempdate).addDays(_tempdate, 1);
+		if (self.inDay(_tempdate, date)) return _lang.tomorrowText;
+		if (self.inWeek(date, sysdate)) return _lang.currentWeek;
+		self.init(_tempdate).addDays(_tempdate, 7);
+		if (self.inWeek(_tempdate, date)) return _lang.nextWeek;
+		if (self.inMonth(date, sysdate)) return _lang.currentMonth;
+		self.init(_tempdate).addMonths(_tempdate, 1);
+		if (self.inMonth(_tempdate, date)) return _lang.nextMonth;
+		if (self.inYear(date, sysdate)) return _lang.currentYear;
+		self.init(_tempdate).addMonths(_tempdate, 12);
+		if (self.inYear(_tempdate, date)) return _lang.nextYear;
+		return _lang.futureText;
+	}
 
 	//update prototype
 	var dp = Date.prototype;
@@ -691,9 +764,6 @@ function StringBox() {
 function ValidateBox(opts) {
 	const self = this; //self instance
 	const SETTINGS = { //default configuration
-		//class selectors
-		errInputClass: "is-invalid",
-
 		//RegEx to validators
 		RE_DIGITS: /^\d+$/,
 		RE_IDLIST: /^\d+(,\d+)*$/,
@@ -784,8 +854,9 @@ function ValidateBox(opts) {
 	}
 
 	this.iban = function(IBAN) {
+		if (fnSize(IBAN) < 24) return false;
 		//Se pasa a Mayusculas y se quita los espacios en blanco
-		IBAN = IBAN.toUpperCase().trim().replace(/\s+/g, "");
+		IBAN = IBAN.trim().replace(/\s+/g, "").toUpperCase();
 		if (fnSize(IBAN) != 24) return false;
 
 		// Se coge las primeras dos letras y se pasan a números
@@ -864,22 +935,34 @@ function ValidateBox(opts) {
 		return self.each(list, el => { el.value = ""; });
 	}
 
+	const errors = { errno: 0 }; //container
+	this.isOk = function() { return errors.errno == 0; }
+	this.isError = function() { return errors.errno > 0; }
+	this.hasError = function(name) { return !!errors[name]; }
+	this.getError = function() { return errors; }
+	this.getErrors = function() { return errors; }
+	this.addErrno = function() { errors.errno++; return self; }
+	this.setErrno = function(errno) { errors.errno = errno; return self; }
+	this.setError = function(name, msg) { errors[name] = msg; return self.addErrno(); }
+	this.setMessage = function(msg) { errors.message = msg; return self.addErrno(); }
+	this.init = function() {
+		for (let k in errors)
+			delete errors[k];
+		return self.setErrno(0);
+	}
+
 	this.validate = function(inputs, validators) {
-		validators = validators || opts.validators;
-		let ok = true; //valid indicator
+		self.init().add(validators); //init errors and validators
 		let size = fnSize(inputs); //length
 		for (let i = 0; i < size; i++) {
 			let el = inputs[i]; //element
-			let fn = validators[el.id];
+			let fn = opts.validators[el.id];
 			if (fn && !fn(el.value, el)) {
-				el.classList.add(opts.errInputClass);
-				ok && el.focus(); //focus on first error
-				ok = false; //change indicator
+				self.isOk() && el.focus(); //focus on first error
+				errors.errno++; //change indicator
 			}
-			else
-				el.classList.remove(opts.errInputClass);
 		}
-		return ok;
+		return self.isOk();
 	}
 
 	this.fetch = function(elem, inputs, data) {
@@ -889,9 +972,11 @@ function ValidateBox(opts) {
 		let size = fnSize(inputs); //length
 		for (let i = 0; i < size; i++) {
 			let el = inputs[i]; //element
-			fd.append(el.name, el.value);
+			if (el.name && el.value)
+				fd.append(el.name, el.value);
 		}
-		for (let k in data) fd.append(k, data[k]); //add extra data to send
+		for (let k in data) //has extra data to send
+			fd.append(k, data[k]); //add extra data
 		let form = elem.closest("form"); //parent form tag
 		if (form) {
 			opts.method = form.getAttribute("method") || "get"; //ajax options
@@ -904,9 +989,208 @@ function ValidateBox(opts) {
 			opts.url = elem.href;
 		}
 		return fetch(opts.url, opts).then(res => {
-			res.ok && self.reset(inputs);
-			self.focus(inputs);
-			return res;
+			const contentType = res.headers.get("content-type");
+			const isJson = (contentType && contentType.indexOf("application/json") !== -1);
+			return new Promise(function(resolve, reject) {
+				self.focus(inputs); //set focus on first element
+				if (res.ok) {
+					self.reset(inputs); //clear inputs
+					(isJson ? res.json() : res.text()).then(resolve);
+				}
+				else
+					(isJson ? res.json() : res.text()).then(reject);
+			});
 		});
 	}
 }
+
+
+//DOM is fully loaded
+$(document).ready(function() {
+	let lang = navigator.language || navigator.userLanguage; //default browser language //$("html").attr("lang");
+	let dt = new DateBox(lang);
+	let nb = new NumberBox(lang);
+	let mb = new MessageBox(lang);
+	let vb = new ValidateBox();
+	let sb = new StringBox();
+
+	$("ul#menu").each(function(i, menu) { //build tree for the menu
+		$(menu.children).filter("[parent][parent!='']").each((i, child) => {
+			let node = $("#" + $(child).attr("parent"), menu); //get parent node
+			node.children().last().is(menu.tagName) || node.append('<ul class="sub-menu"></ul>');
+			node.children().last().append(child);
+		});
+		//add triangles in the second tree level deep
+		let triangles = $("li>ul", menu).find("ul.sub-menu").prev().append(' <b class="nav-tri">&rtrif;</b>').find("b.nav-tri");
+		$(menu.children, menu).remove("[parent][parent!='']"); //remove sub-levels
+		$("a.nav-link", menu).hover(function() {
+			triangles.html("&rtrif;");
+			$("b.nav-tri", this).html("&dtrif;");
+			$(this).parents("ul.sub-menu").each(function() {
+				$(this).prev().find("b.nav-tri").html("&dtrif;");
+			});
+		}).filter("[disabled]").each(function() {
+			let mask = parseInt(this.getAttribute("disabled")) || 0;
+			$(this).toggleClass("disabled", (mask & 3) !== 3);
+		}).removeAttr("disabled");
+	}).children().fadeIn(200);
+
+	//Helpers and reformat numbers and dates by i18n
+	let booleans = document.querySelectorAll(".boolean");
+	$(document.querySelectorAll("input.float")).change(function() { this.value = nb.helper(this.value); });
+	$(booleans).filter("input").each(function() { this.value = nb.boolval(this.value); });
+	$(booleans).not("input").each(function() { this.innerText = nb.boolval(this.innerText); });
+	$(document.querySelectorAll("input.date")).keyup(function() { this.value = dt.helper(this.value); })
+											.change(function() { this.value = dt.acDate(this.value); });
+	$(document.querySelectorAll("input.time")).keyup(function() { $(this).val(dt.tHelper(this.value)); })
+											.change(function() { this.value = dt.acTime(this.value); });
+	//Datepicker inputs configure calendar
+	$.datepicker.regional["es"] = dt.getI18n("es");
+	$.datepicker.setDefaults(dt.getLang());
+	$(".datepicker").datepicker();
+
+	// Global show / hide messages in view
+	let alerts = $("div.alert").each(function(i, el) {
+		$(".alert-text:not(:empty)", el).length && $(el).removeClass("d-none");
+		$("button", el).click(function() { return !$(el).addClass("d-none"); });
+	});
+	function setDanger(msg) { return !alerts.addClass("d-none").filter(".alert-danger").removeClass("d-none").find(".alert-text").html(""+msg); }
+	function setSuccess(msg) { return !alerts.addClass("d-none").filter(".alert-success").removeClass("d-none").find(".alert-text").html(""+msg); }
+	//set messages functions as global for others .js
+	window.setDanger = setDanger; //global error
+	window.setSuccess = setSuccess; //global success
+	//inputs messages handlers
+	function fnResetForm(inputs) { $(inputs).removeClass("is-invalid").siblings(".invalid-feedback").text(""); return inputs; }
+	function setMsgErr(el, msg) { msg && $(el).focus().addClass("is-invalid").siblings(".invalid-feedback").html(""+msg); return false; }
+	function setError(el, name) { return setMsgErr(el, mb.get(name)); }
+	function fnRequired(val, el) { return val || setError(el, "required"); }
+
+	//Clear the input asociated to X button and give it focus
+	function toggleClear() { $(this).siblings(".clear-input").toggleClass("d-none", !this.value); } //toggle X button
+	$(".clear-input").click(function() { $(this).addClass("d-none").siblings("input").val("").focus(); })
+					.siblings("input").each(toggleClear).keyup(toggleClear);
+
+	//Initialize all textarea counter
+	function fnCounter() { $("#counter-" + this.id).text(Math.abs(this.getAttribute("maxlength") - sb.size(this.value))); }
+	$("textarea[maxlength]").keyup(fnCounter).each(fnCounter);
+
+	//Autocomplete inputs
+	function fnRender(item) { return item.nif + " - " + item.nombre; } //build text to show
+	function fnSelect(el, item) { $(el).siblings("[type=hidden]").val(item && item.idUsuario); return this; }
+	const autocompletes = {
+		source: false, //call source event
+		ac1: { url: "/usuarios.html", select: fnSelect, render: fnRender },
+		ac2: { url: "/usuarios.html", select: fnSelect, render: fnRender }
+	};
+	let acOpts;
+	let acList = $(".autocomplete").autocomplete({
+		minLength: 3,
+		source: function(req, res) {
+			let loading = $(".loading").show();
+			fetch(acOpts.url + "?term=" + req.term, { method: "GET" }) //js ajax call
+				.then(res => res.json()) //default response allways json
+				.then(data => { res(data.slice(0, 10)); }) //maxResults = 10
+				.catch(setDanger) //error handler
+				.finally(() => loading.fadeOut()); //allways
+		},
+		focus: function() { return false; }, //no change focus on select
+		search: function(ev, ui) { return autocompletes.source; }, //lunch source
+		select: function(ev, ui) { return !$(this).val(acOpts.select(this, ui.item).render(ui.item)); }
+	}).keydown(function(ev) {
+		acOpts = autocompletes[this.id]; //get ajax config for each element (fetch)
+		autocompletes.source = ((ev.keyCode == 8) || (ev.keyCode == 46))
+											? !!acOpts.select(this) //BACKSPACE or DELETE => reset previous id
+											: ((47 < ev.keyCode) && (ev.keyCode < 171)); //is alphanumeric? 48='0'... 170='*'
+	});
+	if (acList.length) {
+		acList.autocomplete("instance")._renderItem = function(ul, item) {
+			return $("<li></li>").append("<div>" + acOpts.render(item) + "</div>").appendTo(ul);
+		};
+	}
+
+	vb.add({ //add extra validators
+		usuario: fnRequired, clave: fnRequired, 
+		newPass: fnRequired, oldPass: fnRequired, rePass: fnRequired,
+		nombre: fnRequired, asunto: fnRequired, info: fnRequired,
+		number: (val, el) => {
+			if (!val)
+				return setError(el, "required");
+			let imp = nb.toFloat(val); //parse float
+			if (isNaN(imp))
+				return setError(el, "number");
+			return nb.between(imp, 6.7, 18.3) ? true : setError(el, "range");
+		},
+		date: function(val, el) {
+			if (!val)
+				return setError(el, "required");
+			let f = dt.toDate(val); //parse date
+			if (!dt.valid(f)) return setError(el, "date");
+			return (dt.sysdate() > f) ? true : setError(el, "range");
+		},
+		nif: (val, el) => {
+			return fnRequired(val, el) && (vb.esId(val.toUpperCase()) || setError(el, "regex"));
+		}
+	}).set("email", (val, el) => {
+		return fnRequired(val, el) && (vb.email(val, el) || setError(el, "regex"));
+	}).focus(); //Set focus on first visible and editable input
+
+	$("form").submit(function(ev) {
+		return vb.validate(fnResetForm(this.elements)) ? $(".loading").show() : setDanger(mb.get("form"));
+	}).each(function() {
+		//show error messages from server
+		$(this.querySelectorAll(".invalid-feedback:not(:empty)")).siblings(":input").addClass("is-invalid");
+
+		//initialize ajax call
+		let loaders = {}; //response handler
+		let inputs = this.elements; //list
+		$(".ajax-submit", this).click(function(ev) {
+			function showErrors(errors) {
+				vb.each(inputs, el => { setMsgErr(el, errors[el.id]); });
+				setDanger(errors.message || mb.get("form"));
+			}
+
+			ev.preventDefault();
+			if (vb.validate(fnResetForm(inputs))) {
+				let loading = $(".loading").show();
+				let fn = loaders[this.id] || setSuccess;
+				if ((typeof grecaptcha !== "undefined") && this.classList.contains("captcha")) {
+					grecaptcha.ready(function() {
+						grecaptcha.execute("6LeDFNMZAAAAAKssrm7yGbifVaQiy1jwfN8zECZZ", { action: "submit" })
+							.then(token => vb.fetch(ev.target, inputs, { token }).finally(() => loading.fadeOut()))
+							.then(fn)
+							.catch(showErrors);
+					});
+				}
+				else {
+					vb.fetch(this, inputs)
+						.then(fn)
+						.catch(showErrors)
+						.finally(() => loading.fadeOut()); //allways
+				}
+			}
+			else
+				setDanger(mb.get("form"));
+		});
+	});
+
+	//Scroll body to top on click and toggle back-to-top arrow
+	let top = $("#back-to-top").click(function() { return !$("body,html").animate({ scrollTop: 0 }, 400); });
+	$(window).scroll(function() { ($(this).scrollTop() > 50) ? top.fadeIn() : top.fadeOut(); });
+
+	//Scroll anchors to its destination with a slow effect
+	document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+		anchor.addEventListener("click", function(ev) {
+			ev.preventDefault();
+			try {
+				document.querySelector(this.href).scrollIntoView({ behavior: "smooth" });
+			} catch (ex) {}
+		});
+	});
+
+	// SCROLL REVEAL SCRIPT
+	let sr = ScrollReveal();
+	sr.reveal(".header-content-left", { duration: 2000, origin: "top", distance: "300px" });
+	sr.reveal(".header-content-right", { duration: 2000, origin: "right", distance: "300px" });
+	sr.reveal(".header-btn", { duration: 2000, delay: 1000, origin: "bottom" });
+	sr.reveal("#testimonial div", { duration: 2000, origin: "left", distance: "300px", viewFactor: 0.2 });
+});

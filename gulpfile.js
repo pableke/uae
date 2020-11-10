@@ -1,40 +1,50 @@
 
-//npm install --global gulp-cli
-//npm install -D gulp gulp-concat gulp-minify gulp-clean-css
+//npm remove merge-stream gulp gulp-concat gulp-minify gulp-clean-css gulp-htmlmin gulp-strip-comments
+//npm install -D merge-stream gulp gulp-concat gulp-minify gulp-clean-css gulp-htmlmin gulp-strip-comments
+const fs = require("fs"); //file system
+const path = require("path"); //file and directory paths
+const merge = require("merge-stream");
 const gulp = require("gulp");
-const minify = require("gulp-minify");
+const htmlmin = require("gulp-htmlmin");
+const jsmin = require("gulp-minify");
 const concat = require("gulp-concat");
-const css = require("gulp-clean-css");
+const cleanCSS = require("gulp-clean-css");
+const strip = require("gulp-strip-comments");
 
 // Settings
-const DIST_DIR = "src/public/dist";
-const CSS_FILES = [ "src/public/css/style.css" ];
-const CSS_SINGLES = [ "src/public/css/print.css" ];
-const JS_FILES = [ "src/public/js/multi-box.js", "src/public/js/util.js" ];
-const JS_SINGLES = [ "src/public/js/service-worker.js", "src/public/js/worker.js" ];
-const JS_MINIFY_CONFIG = { ext: { min: ".min.js" }, ignoreFiles: [".min.js"]};
+const HTML_PATH = "src/views/**/*.html";
+const CSS_FILES = [ "src/scripts/css/style.css", "src/scripts/css/print.css" ];
+const JS_FILES = [ "src/scripts/js/multi-box.js", "src/scripts/js/util.js" ];
+const JS_SINGLES = [ "src/scripts/js/service-worker.js", "src/scripts/js/worker.js" ];
 
-// Tasks
-gulp.task("pack-css", () => {    
-	return gulp.src(CSS_FILES).pipe(css()).pipe(gulp.dest(DIST_DIR));
-});
-gulp.task("single-css", () => {    
-	return gulp.src(CSS_SINGLES).pipe(css()).pipe(gulp.dest(DIST_DIR));
+// Task to minify HTML's
+gulp.task("minify-html", () => {
+	const config = { collapseWhitespace: true, removeComments: true };
+	return gulp.src(HTML_PATH).pipe(htmlmin(config)).pipe(gulp.dest("src/tpl"));
 });
 
-gulp.task("pack-js", () => {
-	return gulp.src(JS_FILES).pipe(concat("multi-box.js")).pipe(minify(JS_MINIFY_CONFIG)).pipe(gulp.dest(DIST_DIR));
+// Tasks to minify CSS's
+gulp.task("minify-css", () => {
+	const config = {level: {1: {specialComments: 0}}};
+	return gulp.src(CSS_FILES).pipe(cleanCSS(config)).pipe(gulp.dest("src/public/css"));
 });
-gulp.task("single-js", () => {
-	return gulp.src(JS_SINGLES).pipe(minify(JS_MINIFY_CONFIG)).pipe(gulp.dest(DIST_DIR));
+
+// Tasks to minify JS's
+gulp.task("minify-js", () => {
+	const dest = "src/public/js";
+	const config = { ext: { min: ".min.js" }, ignoreFiles: [".min.js"]};
+
+	let pack = gulp.src(JS_FILES).pipe(concat("multi-box.js")).pipe(jsmin(config)).pipe(gulp.dest(dest));
+	let oneByOne = gulp.src(JS_SINGLES).pipe(jsmin(config)).pipe(gulp.dest(dest));
+	return merge(pack, oneByOne);
 });
 
 gulp.task("watch", () => {
-	gulp.watch(CSS_FILES, gulp.series("pack-css")); 
-	gulp.watch(CSS_SINGLES, gulp.series("single-css")); 
-	gulp.watch(JS_FILES, gulp.series("pack-js")); 
-	gulp.watch(JS_SINGLES, gulp.series("single-js")); 
+	gulp.watch(HTML_PATH, gulp.series("minify-html")); 
+	gulp.watch(CSS_FILES, gulp.series("minify-css")); 
+	gulp.watch(JS_FILES, gulp.series("minify-js")); 
+	gulp.watch(JS_SINGLES, gulp.series("minify-js")); 
 	// Other watchers ...
 });
 
-gulp.task("default", gulp.parallel("pack-css", "single-css", "pack-js", "single-js", "watch"));
+gulp.task("default", gulp.parallel("minify-html", "minify-css", "minify-js", "watch"));

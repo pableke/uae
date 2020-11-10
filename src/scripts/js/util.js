@@ -54,7 +54,9 @@ $(document).ready(function() {
 	window.setDanger = setDanger; //global error
 	window.setSuccess = setSuccess; //global success
 	//inputs messages handlers
-	function setError(el, name) { return !$(el).siblings(".invalid-feedback").html(mb.get(name)); }
+	function fnResetForm(inputs) { $(inputs).removeClass("is-invalid").siblings(".invalid-feedback").text(""); return inputs; }
+	function setMsgErr(el, msg) { msg && $(el).focus().addClass("is-invalid").siblings(".invalid-feedback").html(""+msg); return false; }
+	function setError(el, name) { return setMsgErr(el, mb.get(name)); }
 	function fnRequired(val, el) { return val || setError(el, "required"); }
 
 	//Clear the input asociated to X button and give it focus
@@ -127,37 +129,37 @@ $(document).ready(function() {
 	}).focus(); //Set focus on first visible and editable input
 
 	$("form").submit(function(ev) {
-		$(this.querySelectorAll(".invalid-feedback")).text(""); //clear previous messages
-		return vb.validate(this.elements) ? $(".loading").show() : setDanger(mb.get("form"));
+		return vb.validate(fnResetForm(this.elements)) ? $(".loading").show() : setDanger(mb.get("form"));
 	}).each(function() {
 		//show error messages from server
 		$(this.querySelectorAll(".invalid-feedback:not(:empty)")).siblings(":input").addClass("is-invalid");
 
 		//initialize ajax call
 		let loaders = {}; //response handler
-		let inputs = this.elements;
+		let inputs = this.elements; //list
 		$(".ajax-submit", this).click(function(ev) {
+			function showErrors(errors) {
+				vb.each(inputs, el => { setMsgErr(el, errors[el.id]); });
+				setDanger(errors.message || mb.get("form"));
+			}
+
 			ev.preventDefault();
-			if (vb.validate(inputs)) {
+			if (vb.validate(fnResetForm(inputs))) {
 				let loading = $(".loading").show();
 				let fn = loaders[this.id] || setSuccess;
 				if ((typeof grecaptcha !== "undefined") && this.classList.contains("captcha")) {
 					grecaptcha.ready(function() {
 						grecaptcha.execute("6LeDFNMZAAAAAKssrm7yGbifVaQiy1jwfN8zECZZ", { action: "submit" })
-						.then(token => vb.fetch(ev.target, inputs, { token }).finally(() => loading.fadeOut()))
-						.then(res => { //text spected and load message
-							return res.ok ? res.text().then(fn) : res.text().then(setDanger);
-						})
-						.catch(setDanger);
+							.then(token => vb.fetch(ev.target, inputs, { token }).finally(() => loading.fadeOut()))
+							.then(fn)
+							.catch(showErrors);
 					});
 				}
 				else {
 					vb.fetch(this, inputs)
-					.then(res => { //text spected and load message
-						return res.ok ? res.text().then(fn) : res.text().then(setDanger);
-					})
-					.catch(setDanger)
-					.finally(() => loading.fadeOut()); //allways
+						.then(fn)
+						.catch(showErrors)
+						.finally(() => loading.fadeOut()); //allways
 				}
 			}
 			else
@@ -174,34 +176,15 @@ $(document).ready(function() {
 		anchor.addEventListener("click", function(ev) {
 			ev.preventDefault();
 			try {
-				document.querySelector(this.getAttribute("href")).scrollIntoView({
-					behavior: "smooth"
-				});
-			} catch(ex) {}
+				document.querySelector(this.href).scrollIntoView({ behavior: "smooth" });
+			} catch (ex) {}
 		});
 	});
 
 	// SCROLL REVEAL SCRIPT
 	let sr = ScrollReveal();
-	sr.reveal(".header-content-left", {
-		duration: 2000,
-		origin: "top",
-		distance: "300px"
-	});
-	sr.reveal(".header-content-right", {
-		duration: 2000,
-		origin: "right",
-		distance: "300px"
-	});
-	sr.reveal(".header-btn", {
-		duration: 2000,
-		delay: 1000, 
-		origin: "bottom"
-	});
-	sr.reveal("#testimonial div", {
-		duration: 2000,
-		origin: "left",
-		distance: "300px",
-		viewFactor: 0.2
-	});
+	sr.reveal(".header-content-left", { duration: 2000, origin: "top", distance: "300px" });
+	sr.reveal(".header-content-right", { duration: 2000, origin: "right", distance: "300px" });
+	sr.reveal(".header-btn", { duration: 2000, delay: 1000, origin: "bottom" });
+	sr.reveal("#testimonial div", { duration: 2000, origin: "left", distance: "300px", viewFactor: 0.2 });
 });

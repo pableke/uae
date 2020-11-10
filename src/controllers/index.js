@@ -19,10 +19,6 @@ exports.lang = function(req, res) {
 }
 
 //Public forms (loggin, contact, reactive, new user)
-function fnError(msg, code, num) {
-	return { errno: num || -1, code: code, message: msg };
-}
-
 function fnAdmin(req, res) {
     if (!req.logged() || req.expired())
 		return fnLogout(req, res.i18nError("err401"));
@@ -73,15 +69,14 @@ exports.login = function(req, res) {
 		fn(req, res.set("menus", menus).i18nOk("msgLogin")); //update user menu
 	})
 	.catch(err => {
-		res.copy(err.code + "ErrText", err.message);
-		fnLogin(req, res.i18nError("errLogin"));
+		fnLogError(req, res.copy(err.code + "ErrText", err.message));
 	});*/
 }
 
 function fnLogout(req, res) {
 	//let menus = dao.mysql.menus.findPublic().then(...);
 	let menus = dao.myjson.menus.findPublic();
-	fnLogView(req.closeSession(), res.set("menus", menus).delete("startSession"));
+	fnLogView(req.closeSession(), res.set("menus", menus).flush("startSession"));
 }
 exports.logout = function(req, res) { fnLogout(req, res.i18nOk("msgLogout")); };
 
@@ -97,12 +92,12 @@ exports.contactView = function(req, res) {
 }
 exports.contact = function(req, res) {
 	let fields = req.body; //request fields
-	let error = valid.size(fields.nombre, 1, 200) ? null : res.get("errNombre"); //init valid form indicator
-	error = (valid.size(fields.email, 1, 200) && valid.email(fields.email)) ? error : res.get("errCorreo");
-	error = valid.size(fields.asunto, 1, 200) ? error : res.get("errAsunto");
-	error = valid.size(fields.info, 1, 600) ? error : res.get("errAsunto");
-	if (error) //fields error?
-		return res.error(error);
+	valid.init().size(fields.nombre, 1, 200) || valid.setError("nombre", res.get("errNombre")); //init valid form indicator
+	(valid.size(fields.email, 1, 200) && valid.email(fields.email)) || valid.setError("email", res.get("errCorreo"));
+	valid.size(fields.asunto, 1, 200) || valid.setError("asunto", es.get("errAsunto"));
+	valid.size(fields.info, 1, 600)  || valid.setError("info", res.get("errAsunto"));
+	if (valid.isError()) //fields error?
+		return res.jerr(valid.getErrors());
 
 	res.set("tplSection", "src/tpl/mails/contact.html");
 	let html = res.build("src/tpl/mails/index.html").getValue();
@@ -119,10 +114,10 @@ exports.reactiveView = function(req, res) {
 }
 exports.reactive = function(req, res) {
 	let fields = req.body; //request fields
-	let error = fields.token ? null : res.get("errCaptcha"); //init valid form indicator
-	error = (valid.size(fields.email, 1, 200) && valid.email(fields.email)) ? error : res.get("errCorreo");
-	if (error) //fields error?
-		return res.error(error);
+	valid.init().size(fields.token, 10, 200) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
+	(valid.size(fields.email, 1, 200) && valid.email(fields.email)) || valid.setError("email", res.get("errCorreo"));
+	if (valid.isError()) //fields error?
+		return res.jerr(valid.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
 	let pass = valid.generatePassword(); //build a new secure password
@@ -134,7 +129,7 @@ exports.reactive = function(req, res) {
 				//return dao.mysql.usuarios.updatePassByMail(fields.email, pass);
 				return dao.myjson.usuarios.updatePassByMail(fields.email, pass);
 			else
-				throw valid.setError("captcha", res.get("errCaptcha")).setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
+				throw valid.setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
 		})
 		.then(result => {
 			//if (result.changedRows == 1) {
@@ -143,7 +138,7 @@ exports.reactive = function(req, res) {
 				return mailer.send(fields.email, "Email de reactivación", html);
 			//}
 			//else
-				//throw fnError(res.get("errUpdate"), "password", 1); //stop resolves and call catch
+				//throw valid.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgReactive")); })
 		.catch(err => { res.error(err.message); });
@@ -157,13 +152,14 @@ exports.usuarioView = function(req, res) {
 }
 exports.usuario = function(req, res) {
 	let fields = req.body; //request fields
-	let error = fields.token ? null : res.get("errCaptcha"); //init valid form indicator
-	error = (valid.size(fields.nombre, 1, 200) && valid.size(fields.apellido1, 1, 200)) ? error : res.get("errNombre"); //same error for name and surname
-	error = valid.size(fields.apellido2, 0, 200) ? error : res.get("errNombre"); //same error for name and surname
-	error = (valid.size(fields.nif, 1, 50) && valid.esId(fields.nif)) ? error : res.get("errNif");
-	error = (valid.size(fields.email, 1, 200) && valid.email(fields.email)) ? error : res.get("errCorreo");
-	if (error) //fields error?
-		return res.error(error);
+	valid.init().size(fields.token, 10, 200) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
+	valid.size(fields.nombre, 1, 200) || valid.setError("nombre", res.get("errNombre")); //same error for name and surname
+	valid.size(fields.apellido1, 1, 200) || valid.setError("apellido1", res.get("errNombre")); //same error for name and surname
+	valid.size(fields.apellido2, 0, 200) || valid.setError("apellido2", res.get("errNombre")); //same error for name and surname
+	(valid.size(fields.nif, 1, 50) && valid.esId(fields.nif)) || valid.setError("nif", res.get("errNif"));
+	(valid.size(fields.email, 1, 200) && valid.email(fields.email)) || valid.setError("email", res.get("errCorreo"));
+	if (valid.isError()) //fields error?
+		return res.jerr(valid.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
 	let pass = valid.generatePassword(); //build a new secure password
@@ -174,7 +170,7 @@ exports.usuario = function(req, res) {
 			if (gresponse.success && (gresponse.score > 0.5))
 				return dao.mysql.usuarios.insert(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 			else
-				throw fnError(res.get("errCaptcha"), "captcha"); //stop resolves and call catch
+				throw valid.setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
 		})
 		.then(result => {
 			if ((result.affectedRows == 1) && (result.insertId > 0)) {
@@ -183,7 +179,7 @@ exports.usuario = function(req, res) {
 				return mailer.send(fields.email, "Email de alta", html);
 			}
 			else
-				throw fnError(res.get("errAlta"), "user", 1); //stop resolves and call catch
+				throw valid.setMessage(res.get("errAlta")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgUsuario")); })
 		.catch(err => {

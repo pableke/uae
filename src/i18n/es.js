@@ -24,7 +24,7 @@ module.exports = {
 	titNombre: "Introduzca su nombre", titUsuario: "Nombre del usuario en el sistema, debe tener una longitud mínima de 8 caracteres",
 	lblFormRegistro: "Registro como nuevo usuario", errUserNotFound: "Usuario no encontrado en el sistema", errUserInactive: "Usuario no validado en el sistema",
 	lblPerfil: "Perfil", lblPerfil2: "Datos del Perfil", lblFormPerfil: "Modifique los datos de su perfil",
-	errUsuario: "Usuario incorrecto", errCaptcha: "Error al validar el captcha", 
+	errUsuario: "Usuario incorrecto", errCaptcha: "Error al validar el captcha (validación de boot)", 
 	errNombre: "Nombre o apellidos incorrectos", errUsuarioUk: "El usuario ya esta dado de alta en el sistema", errAlta: "Error al dar de alta los datos del usuario", 
 	msgUsuario: "Usuario dado de alta correctamente", msgReactive: "Datos registrados correctamente, se ha enviado un E-Mail de verificación a su dirección de correo",
 

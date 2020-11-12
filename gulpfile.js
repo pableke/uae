@@ -19,8 +19,8 @@ const JS_SINGLES = [ "src/scripts/js/service-worker.js", "src/scripts/js/worker.
 
 // Task to minify HTML's
 gulp.task("minify-html", () => {
-	const config = { collapseWhitespace: true, removeComments: true };
-	return gulp.src(HTML_PATH).pipe(htmlmin(config)).pipe(gulp.dest("src/tpl"));
+	const config = { collapseWhitespace: true, removeComments: false }; //removeComments => remove CDATA
+	return gulp.src(HTML_PATH).pipe(strip()).pipe(htmlmin(config)).pipe(gulp.dest("src/tpl"));
 });
 
 // Tasks to minify CSS's

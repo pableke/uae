@@ -7,8 +7,8 @@ module.exports = function(db, usuarios) {
 	usuarios.findByMail = function(email) { return usuarios.find(user => (user.correo == email)); }
 	usuarios.findByNif = function(nif) { return usuarios.find(user => (user.nif == nif)); }
 	usuarios.findLogin = function(nif, email) {
-		let nif = nif.toUpperCase();
-		let email = email.toLowerCase();
+		nif = nif.toUpperCase();
+		email = email.toLowerCase();
 		return usuarios.find(user => ((user.nif == nif) || (user.correo == email)));
 	}
 
@@ -25,7 +25,7 @@ module.exports = function(db, usuarios) {
 	usuarios.updatePassByMail = function(email, pass) {
 		let user = usuarios.findByMail(email.toLowerCase());
 		return user ? updatePass(user, pass).commit()
-					: Promise.reject(valid.setMessage("errUpdate").getError());
+					: Promise.reject(valid.setMessage("errUserNotFound").getError());
 	}
 	usuarios.updateNewPass = function(id, oldPass, newPass) {
 		let user = usuarios.findById(id);

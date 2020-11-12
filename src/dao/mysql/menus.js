@@ -12,7 +12,7 @@ module.exports = function(query) {
 		return new Promise(function(resolve, reject) {
 			return publicMenu ? resolve(publicMenu) : fnReloadPublicMenu();
 		});
-	};
+	}
 
 	this.findAll = function() { return query("select * from menus order by orden"); };
 	this.findById = function(id) { return query("select * from menus where id_menu = ?", [id]); };

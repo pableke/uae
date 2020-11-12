@@ -38,7 +38,7 @@ function deleteProduct(id) {
 function setError(el, msg) {
 	el.focus();
 	el.classList.add("is-invalid");
-	document.querySelector("#invalid-" + el.id).innerHTML = msg;
+	el.parentNode.querySelector("#invalid-" + el.id).innerHTML = msg;
 }
 
 form.addEventListener("submit", ev => {

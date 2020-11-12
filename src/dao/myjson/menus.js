@@ -1,14 +1,13 @@
 
 //Menu DAO
 module.exports = function(db, menus) {
-	let tMu; //tabla menu-usuario
+	let tMu, publicMenu; //tabla menu-usuario + public menu-cache
 
-	db.get("menu-usuario").then(table => { tMu = table; });
+	function fnReloadPublicMenu() { //mask 33=100001
+		publicMenu = menus.filter(menu => ((menu.mask & 33) == 33));
+	}
 
-	menus.each(m => { m.mu_mask = m.mask; });
-	menus.findAll().sort((a, b) => (a.orden - b.orden)); //order menus
-
-	menus.findPublic = () => menus.filter(menu => ((menu.mask & 33) == 33));
+	menus.findPublic = () => publicMenu;
 	menus.findByUser = (id) => { //simulate join
 		let mu = tMu.filter(mu => (mu.id_usuario == id));
 		let result = menus.filter(menu => {
@@ -19,5 +18,14 @@ module.exports = function(db, menus) {
 		return [...result]; //clone menus
 	}
 
+	// Update table settings
+	const fnCommit = menus.commit; //intercept commit => force reload public menus
+	menus.commit = function() { return fnCommit().then(fnReloadPublicMenu) };
+
+	menus.each(m => { m.mu_mask = m.mask; });
+	menus.findAll().sort((a, b) => (a.orden - b.orden)); //order menus
+
+	fnReloadPublicMenu();
+	db.get("menu-usuario").then(table => { tMu = table; });
 	return menus;
 }

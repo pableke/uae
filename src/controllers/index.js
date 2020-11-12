@@ -103,7 +103,7 @@ exports.contact = function(req, res) {
 	let html = res.build("src/tpl/mails/index.html").getValue();
 	mailer.send("pablo.rosique@upct.es", "Email de contacto", html)
 		.then(info => { res.text(res.get("msgCorreo")); })
-		.catch(err => { res.error(err.message); });
+		.catch(err => { res.jerr(valid.getErrors()); });
 }
 
 function fnReactive(req, res) {
@@ -114,7 +114,7 @@ exports.reactiveView = function(req, res) {
 }
 exports.reactive = function(req, res) {
 	let fields = req.body; //request fields
-	valid.init().size(fields.token, 10, 200) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
+	valid.init().size(fields.token, 100, 600) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
 	(valid.size(fields.email, 1, 200) && valid.email(fields.email)) || valid.setError("email", res.get("errCorreo"));
 	if (valid.isError()) //fields error?
 		return res.jerr(valid.getErrors());
@@ -129,7 +129,7 @@ exports.reactive = function(req, res) {
 				//return dao.mysql.usuarios.updatePassByMail(fields.email, pass);
 				return dao.myjson.usuarios.updatePassByMail(fields.email, pass);
 			else
-				throw valid.setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
+				throw valid.setMessage("errCaptcha").getError(); //stop resolves and call catch
 		})
 		.then(result => {
 			//if (result.changedRows == 1) {
@@ -141,7 +141,7 @@ exports.reactive = function(req, res) {
 				//throw valid.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgReactive")); })
-		.catch(err => { res.error(res.get(err.message) || err.message); });
+		.catch(err => { res.jerr(valid.endErrors(res.get(err.message))); });
 }
 
 function fnUsuario(req, res) {
@@ -152,7 +152,7 @@ exports.usuarioView = function(req, res) {
 }
 exports.usuario = function(req, res) {
 	let fields = req.body; //request fields
-	valid.init().size(fields.token, 10, 200) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
+	valid.init().size(fields.token, 100, 600) || valid.setMessage(res.get("errCaptcha")); //init valid form indicator
 	valid.size(fields.nombre, 1, 200) || valid.setError("nombre", res.get("errNombre")); //same error for name and surname
 	valid.size(fields.apellido1, 1, 200) || valid.setError("apellido1", res.get("errNombre")); //same error for name and surname
 	valid.size(fields.apellido2, 0, 200) || valid.setError("apellido2", res.get("errNombre")); //same error for name and surname
@@ -171,7 +171,7 @@ exports.usuario = function(req, res) {
 				//return dao.mysql.usuarios.insert(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 				return dao.myjson.usuarios.insertData(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 			else
-				throw valid.setMessage(res.get("errCaptcha")).getError(); //stop resolves and call catch
+				throw valid.setMessage("errCaptcha").getError(); //stop resolves and call catch
 		})
 		.then(result => {
 			//if ((result.affectedRows == 1) && (result.insertId > 0)) {
@@ -180,11 +180,9 @@ exports.usuario = function(req, res) {
 				return mailer.send(fields.email, "Email de alta", html);
 			//}
 			//else
-				throw valid.setMessage(res.get("errAlta")).getError(); //stop resolves and call catch
+				//throw valid.setMessage(res.get("errAlta")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgUsuario")); })
-		.catch(err => {
-			//res.error((err.errno == 1062) ? res.get("errUsuarioUk") : err.message);
-			res.error(res.get(err.message) || err.message);
-		});
+		//res.error((err.errno == 1062) ? res.get("errUsuarioUk") : err.message);
+		.catch(err => { res.jerr(valid.endErrors(res.get(err.message))); });
 }

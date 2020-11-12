@@ -8,9 +8,10 @@
     "static": "gulp",
     "start": "node ./src/index.js",
     "dev": "nodemon --watch src ./src/index.js",
-    "dev-all": "npm-run-all --parallel static dev",
+    "build-dev": "gulp & nodemon --watch src ./src/index.js",
+    "dev-parallel": "npm-run-all --parallel static dev",
     "pc": "electron ./src/main.js",
-    "zip": "rm uae.zip & npm-pack-zip & npm pack",
+    "zip": "rm *.zip & rm *.tgz & npm-pack-zip & npm pack",
     "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron App\"",
     "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds"
   },
@@ -35,7 +36,7 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.11",
     "tree-ss": "0.0.7",
-    "validate-box": "^0.1.2",
+    "validate-box": "^0.1.4",
     "web-push": "^3.4.4"
   },
   "devDependencies": {
@@ -57,10 +58,13 @@
     "doc": "docs"
   },
   "nodemonConfig": {
-    "verbose": true,
+    "verbose": false,
     "ignore": [
-      "dbs/*",
-      "src/public/*"
+      "dbs/**/*",
+      "src/scripts/**/*",
+      "src/public/**/*",
+      "src/views/**/*",
+      "src/tpl/**/*"
     ]
   }
 }

@@ -945,6 +945,7 @@ function ValidateBox(opts) {
 	this.setErrno = function(errno) { errors.errno = errno; return self; }
 	this.setError = function(name, msg) { errors[name] = msg; return self.addErrno(); }
 	this.setMessage = function(msg) { errors.message = msg; return self.addErrno(); }
+	this.endErrors = function(msg) { return self.setMessage(msg || errors.message).getErrors(); }
 	this.init = function() {
 		for (let k in errors)
 			delete errors[k];
@@ -972,7 +973,7 @@ function ValidateBox(opts) {
 		let size = fnSize(inputs); //length
 		for (let i = 0; i < size; i++) {
 			let el = inputs[i]; //element
-			if (el.name && el.value)
+			if (el.name && el.value) //has value?
 				fd.append(el.name, el.value);
 		}
 		for (let k in data) //has extra data to send
@@ -995,10 +996,22 @@ function ValidateBox(opts) {
 				self.focus(inputs); //set focus on first element
 				if (res.ok) {
 					self.reset(inputs); //clear inputs
-					(isJson ? res.json() : res.text()).then(resolve);
+					return (isJson ? res.json() : res.text()).then(resolve);
 				}
+				if (isJson)
+					res.json().then(errors => {
+						let size = fnSize(inputs); //length
+						for (let i = 0; i < size; i++) {
+							let el = inputs[i]; //element
+							if (errors[el.id]) { //set focus and stop
+								el.focus();
+								i = size;
+							}
+						}
+						reject(errors);
+					});
 				else
-					(isJson ? res.json() : res.text()).then(reject);
+					res.text().then(reject);
 			});
 		});
 	}
@@ -1146,7 +1159,6 @@ $(document).ready(function() {
 		$(".ajax-submit", this).click(function(ev) {
 			function showErrors(errors) {
 				vb.each(inputs, el => { setMsgErr(el, errors[el.id]); });
-				$(inputs).filter(".is-invalid").first().focus();
 				setDanger(errors.message || mb.get("form"));
 			}
 

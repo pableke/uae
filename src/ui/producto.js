@@ -9,7 +9,6 @@ const name = document.querySelector("input#name");
 const price = document.querySelector("input#price");
 const info = document.querySelector("textarea#info");
 const reset = document.querySelector("button[type=reset]");
-
 const products = document.querySelector("div#products");
 
 const tplProduct ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;</h4><p>@info;</p><h3>@price; &euro;</h3><p><button class="btn btn-danger btn-sm" onclick="deleteProduct(@_id;)">Delete</button><button class="btn btn-secondary btn-sm ml-1" onclick="editProduct(@_id;)">Edit</button></p></div>';

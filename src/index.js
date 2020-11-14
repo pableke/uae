@@ -25,7 +25,7 @@ const certificate = fs.readFileSync(__dirname + "/certs/cert.pem").toString();
 const options = { key: privateKey, cert: certificate };
 
 const optsForm = {
-	uploadDir: "src/public/upload",
+	uploadDir: __dirname + "/../dist/public/upload",
 	keepExtensions: true,
 	maxFieldsSize: 20 * 1024 * 1024, //20mb
 	maxFileSize: 200 * 1024 * 1024, //200mb
@@ -35,7 +35,7 @@ const optsForm = {
 
 dao.open(); //init dao factory
 session.open(); //default options
-trees.start({ templateIndex: __dirname + "/tpl/index.html" }); //template index
+trees.start({ templateIndex: __dirname + "/../dist/index.html" }); //template index
 
 // Routes
 const error = require("./routes/error"); //error routes

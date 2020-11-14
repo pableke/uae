@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="@lang;">
-<head append="src/tpl/head.html"></head>
+<head append="dist/head.html"></head>
 <body>
 	<header></header>
-	<nav import="src/tpl/navbar.html" class="navbar navbar-expand-lg navbar-light bg-light sticky-top"></nav>
+	<nav import="dist/navbar.html" class="navbar navbar-expand-lg navbar-light bg-light sticky-top"></nav>
 	<div id="steps" class="clearfix mb-2">
 		<div render="@startSession;" class="float-right">
 			<a href="/perfil.html"><i class="fas fa-user-graduate" title="@fullUserName;"></i></a>
@@ -26,25 +26,25 @@
 
 	<div id="alerts" class="container">
 		<div class="alert alert-success alert-dismissible fade show d-none" role="alert">
-			<img src="src/public/img/png/check.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgOk;</span>
+			<img src="dist/public/img/png/check.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgOk;</span>
 			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="alert alert-primary alert-dismissible fade show d-none" role="alert">
-			<img src="src/public/img/png/info.png" width="48px" class="d-none-phone-l" /><span class="alert-text ml-2">@msgInfo;</span>
+			<img src="dist/public/img/png/info.png" width="48px" class="d-none-phone-l" /><span class="alert-text ml-2">@msgInfo;</span>
 			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
-			<img src="src/public/img/png/warning.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgWarn;</span>
+			<img src="dist/public/img/png/warning.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgWarn;</span>
 			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="alert alert-danger alert-dismissible fade show d-none" role="alert">
-			<img src="src/public/img/png/error.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgError;</span>
+			<img src="dist/public/img/png/error.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgError;</span>
 			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
 				<span aria-hidden="true">&times;</span>
 			</button>
@@ -54,6 +54,6 @@
 	<aside import="@tplIzquierda;" class="@cssIzquierda;"></aside>
 	<section import="@tplSection;"></section>
 	<aside import="@tplDerecha;" class="@cssDerecha;"></aside>
-	<footer append="src/tpl/foot.html" class="footer mt-auto py-3"></footer>
+	<footer append="dist/foot.html" class="footer mt-auto py-3"></footer>
 </body>
 </html>

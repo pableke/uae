@@ -34,7 +34,7 @@ const MESSAGE = {
 	//to: "pablo.rosique@upct.es", // list of receivers
 	//subject: "Email de prueba", // Subject line
 	text: "Email submitted by XXXX"//, // plain text body
-	//html: res.build("src/tpl/mails/index.html").getValue(), // html
+	//html: res.build("dist/mails/index.html").getValue(), // html
 	/*attachments: [ // array of attachment objects
 		{ filename: "text1.txt", content: "hello world!" }, // utf-8 string as an attachment
 		{ filename: "test.zip", content: fs.createReadStream("src/public/temp/test.zip") }, //stream as an attachment

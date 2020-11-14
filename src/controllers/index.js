@@ -7,10 +7,10 @@ const dao = require("../dao/Factory"); //bd connection
 
 //Public acttions
 exports.inicio = function(req, res) {
-	res.set("tplSection", "src/tpl/list/index.html").set("idUsuario", 1).set("steps", []).render();
+	res.set("tplSection", "dist/list/index.html").set("idUsuario", 1).set("steps", []).render();
 }
 exports.trabajando = function(req, res) {
-	res.set("tplSection", "src/tpl/trabajando.html")
+	res.set("tplSection", "dist/trabajando.html")
 		.set("steps", [{ pref: "trabajando.html", text: res.data.msgTrabajando }])
 		.render();
 }
@@ -22,14 +22,14 @@ exports.lang = function(req, res) {
 function fnAdmin(req, res) {
     if (!req.logged() || req.expired())
 		return fnLogout(req, res.i18nError("err401"));
-	res.set("tplSection", "src/tpl/list/admin.html")
+	res.set("tplSection", "dist/list/admin.html")
 		.set("steps", [{ pref: "admin.html", text: res.data.lblAdmin }])
 		.render();
 }
 exports.admin = fnAdmin;
 
 function fnLogin(req, res) {
-	res.set("tplSection", "src/tpl/forms/public/login.html")
+	res.set("tplSection", "dist/forms/public/login.html")
 		.set("steps", [{ pref: "login.html", text: res.data.lblFormLogin }])
 		.render();
 }
@@ -82,7 +82,7 @@ exports.logout = function(req, res) { fnLogout(req, res.i18nOk("msgLogout")); };
 
 function fnContact(req, res) {
 	let sysdate = valid.dt.isoDate(res.get("sysdate"));
-	res.set("tplSection", "src/tpl/forms/public/contact.html").set("ejDate", sysdate)
+	res.set("tplSection", "dist/forms/public/contact.html").set("ejDate", sysdate)
 		.set("steps", [{ pref: "contact.html", text: res.data.lblFormContact }]).render();
 }
 exports.contactView = function(req, res) {
@@ -99,15 +99,15 @@ exports.contact = function(req, res) {
 	if (valid.isError()) //fields error?
 		return res.jerr(valid.getErrors());
 
-	res.set("tplSection", "src/tpl/mails/contact.html");
-	let html = res.build("src/tpl/mails/index.html").getValue();
+	res.set("tplSection", "dist/mails/contact.html");
+	let html = res.build("dist/mails/index.html").getValue();
 	mailer.send("pablo.rosique@upct.es", "Email de contacto", html)
 		.then(info => { res.text(res.get("msgCorreo")); })
 		.catch(err => { res.jerr(valid.getErrors()); });
 }
 
 function fnReactive(req, res) {
-	res.set("tplSection", "src/tpl/forms/public/reactive.html").set("steps", [{ pref: "reactive.html", text: res.data.lblReactivar }]).render();
+	res.set("tplSection", "dist/forms/public/reactive.html").set("steps", [{ pref: "reactive.html", text: res.data.lblReactivar }]).render();
 }
 exports.reactiveView = function(req, res) {
 	fnReactive(req, res.flush("emailErrText"));
@@ -133,8 +133,8 @@ exports.reactive = function(req, res) {
 		})
 		.then(result => {
 			//if (result.changedRows == 1) {
-				res.set("tplSection", "src/tpl/mails/reactive.html").set("pass", pass);
-				let html = res.build("src/tpl/mails/index.html").getValue();
+				res.set("tplSection", "dist/mails/reactive.html").set("pass", pass);
+				let html = res.build("dist/mails/index.html").getValue();
 				return mailer.send(fields.email, "Email de reactivación", html);
 			//}
 			//else
@@ -145,7 +145,7 @@ exports.reactive = function(req, res) {
 }
 
 function fnUsuario(req, res) {
-	res.set("tplSection", "src/tpl/forms/public/user.html").set("steps", [{ pref: "user.html", text: res.data.lblFormRegistro }]).render();
+	res.set("tplSection", "dist/forms/public/user.html").set("steps", [{ pref: "user.html", text: res.data.lblFormRegistro }]).render();
 }
 exports.usuarioView = function(req, res) {
 	fnUsuario(req, res.flush("nombreErrText").flush("apellido1ErrText").flush("apellido2ErrText").flush("nifErrText").flush("emailErrText"));
@@ -175,8 +175,8 @@ exports.usuario = function(req, res) {
 		})
 		.then(result => {
 			//if ((result.affectedRows == 1) && (result.insertId > 0)) {
-				res.set("tplSection", "src/tpl/mails/user.html").set("pass", pass);
-				let html = res.build("src/tpl/mails/index.html").getValue();
+				res.set("tplSection", "dist/mails/user.html").set("pass", pass);
+				let html = res.build("dist/mails/index.html").getValue();
 				return mailer.send(fields.email, "Email de alta", html);
 			//}
 			//else

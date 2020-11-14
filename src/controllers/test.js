@@ -57,7 +57,7 @@ const options = {
 
 exports.pdf = function(req, res) {
 	//prueba de traduccion de un html a pdf
-	var html = res.build("src/tpl/reports/test.html").getValue();
+	var html = res.build("dist/reports/test.html").getValue();
 	pdf.create(html).toStream(function(err, stream) {
 		if (err) { // handle error and return a error response code
 			console.log(err)

@@ -6,7 +6,7 @@ webpush.setVapidDetails("mailto:example@yourdomain.org", VAPID_PUBLIC, VAPID_PRI
 let wpSubscripton;
 
 function fnWebPushView(req, res) {
-	res.set("tplSection", "src/tpl/forms/web-push.html")
+	res.set("tplSection", "dist/forms/web-push.html")
 		.set("steps", [{ pref: "webpush.html", text: "Web-Push" }])
 		.render();
 }

@@ -13,30 +13,40 @@ const strip = require("gulp-strip-comments");
 
 // Settings
 const HTML_PATH = "src/views/**/*.html";
-const CSS_FILES = [ "src/scripts/css/style.css", "src/scripts/css/print.css" ];
-const JS_FILES = [ "src/scripts/js/multi-box.js", "src/scripts/js/util.js" ];
-const JS_SINGLES = [ "src/scripts/js/service-worker.js", "src/scripts/js/worker.js" ];
+const CSS_FILES = [ "src/public/css/style.css", "src/public/css/print.css" ];
+const JS_FILES = [ "src/public/js/multi-box.js", "src/public/js/util.js" ];
+const JS_SINGLES = [ "src/public/js/service-worker.js", "src/public/js/worker.js" ];
 
 // Task to minify HTML's
 gulp.task("minify-html", () => {
-	const config = { collapseWhitespace: true, removeComments: false }; //removeComments => remove CDATA
-	return gulp.src(HTML_PATH).pipe(strip()).pipe(htmlmin(config)).pipe(gulp.dest("src/tpl"));
+	const config = {
+		collapseWhitespace: true,
+		removeComments: false, //removeComments => remove CDATA
+		removeRedundantAttributes: true //remove attr with default value
+	};
+	return gulp.src(HTML_PATH).pipe(strip()).pipe(htmlmin(config)).pipe(gulp.dest("dist"));
 });
 
 // Tasks to minify CSS's
 gulp.task("minify-css", () => {
 	const config = {level: {1: {specialComments: 0}}};
-	return gulp.src(CSS_FILES).pipe(cleanCSS(config)).pipe(gulp.dest("src/public/css"));
+	return gulp.src(CSS_FILES).pipe(cleanCSS(config)).pipe(gulp.dest("dist/public/css"));
 });
 
 // Tasks to minify JS's
 gulp.task("minify-js", () => {
-	const dest = "src/public/js";
+	const dest = "dist/public/js";
 	const config = { ext: { min: ".min.js" }, ignoreFiles: [".min.js"]};
 
 	let pack = gulp.src(JS_FILES).pipe(concat("multi-box.js")).pipe(jsmin(config)).pipe(gulp.dest(dest));
 	let oneByOne = gulp.src(JS_SINGLES).pipe(jsmin(config)).pipe(gulp.dest(dest));
 	return merge(pack, oneByOne);
+});
+
+// Tasks to copy files once
+gulp.task("copy", () => {
+	gulp.src("src/public/*.json").pipe(gulp.dest("dist/public"));
+	return gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img"));
 });
 
 gulp.task("watch", () => {
@@ -47,4 +57,4 @@ gulp.task("watch", () => {
 	// Other watchers ...
 });
 
-gulp.task("default", gulp.parallel("minify-html", "minify-css", "minify-js", "watch"));
+gulp.task("default", gulp.parallel("minify-html", "minify-css", "minify-js", "watch", "copy"));

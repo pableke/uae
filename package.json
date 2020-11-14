@@ -61,10 +61,8 @@
     "verbose": false,
     "ignore": [
       "dbs/**/*",
-      "src/scripts/**/*",
       "src/public/**/*",
-      "src/views/**/*",
-      "src/tpl/**/*"
+      "src/views/**/*"
     ]
   }
 }

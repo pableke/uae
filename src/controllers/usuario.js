@@ -10,7 +10,7 @@ function fnError(msg, code, num) {
 }
 
 function fnPerfilView(req, res) {
-	res.set("tplSection", "src/tpl/forms/usuario/perfil.html")
+	res.set("tplSection", "dist/forms/usuario/perfil.html")
 		.set("steps", [{ pref: "perfil.html", text: res.data.lblFormLogin }])
 		.render();
 }
@@ -27,7 +27,7 @@ exports.perfil = function(req, res) {
 }
 
 function fnPassView(req, res) {
-	res.set("tplSection", "src/tpl/forms/usuario/pass.html")
+	res.set("tplSection", "dist/forms/usuario/pass.html")
 		.set("steps", [{ pref: "pass.html", text: res.data.lblFormLogin }])
 		.render();
 }

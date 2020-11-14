@@ -48,6 +48,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-minify": "^3.1.0",
+    "gulp-replace": "^1.0.0",
     "gulp-strip-comments": "^2.5.2",
     "merge-stream": "^2.0.0",
     "nodemon": "^2.0.4",

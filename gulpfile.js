@@ -10,6 +10,7 @@ const jsmin = require("gulp-minify");
 const concat = require("gulp-concat");
 const cleanCSS = require("gulp-clean-css");
 const strip = require("gulp-strip-comments");
+const replace = require("gulp-replace");
 
 // Settings
 const HTML_PATH = "src/views/**/*.html";
@@ -24,7 +25,10 @@ gulp.task("minify-html", () => {
 		removeComments: false, //removeComments => remove CDATA
 		removeRedundantAttributes: true //remove attr with default value
 	};
-	return gulp.src(HTML_PATH).pipe(strip()).pipe(htmlmin(config)).pipe(gulp.dest("dist"));
+	return gulp.src(HTML_PATH)
+				.pipe(strip()).pipe(htmlmin(config))
+				.pipe(replace('<base href="src/">', '<base href="dist/">'))
+				.pipe(gulp.dest("dist"));
 });
 
 // Tasks to minify CSS's

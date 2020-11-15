@@ -1,0 +1,5 @@
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+header { position: relative; display: flex; align-items: center; justify-content: center; padding: 1em; }
+
+.wave { position: absolute; bottom: 0; left: 0; width: 100%; }

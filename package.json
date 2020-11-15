@@ -8,7 +8,7 @@
     "static": "gulp",
     "start": "node ./src/index.js",
     "dev": "nodemon --watch src ./src/index.js",
-    "build-dev": "gulp & nodemon --watch src ./src/index.js",
+    "build-dev": "clear & gulp & nodemon --watch src ./src/index.js",
     "dev-parallel": "npm-run-all --parallel static dev",
     "pc": "electron ./src/main.js",
     "zip": "rm *.zip & rm *.tgz & npm-pack-zip & npm pack",
@@ -27,6 +27,7 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
+    "firebase-admin": "^9.4.1",
     "formidable": "^1.2.2",
     "html-pdf": "^2.2.0",
     "mongoose": "^5.10.9",

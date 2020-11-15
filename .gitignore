@@ -3,5 +3,6 @@ dist
 docs
 src/certs
 .env
+firebase.json
 *.zip
 *.tgz

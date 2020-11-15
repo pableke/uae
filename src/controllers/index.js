@@ -7,7 +7,11 @@ const dao = require("../dao/Factory"); //bd connection
 
 //Public acttions
 exports.inicio = function(req, res) {
-	res.set("tplSection", "dist/list/index.html").set("idUsuario", 1).set("steps", []).render();
+	res.set("tplSection", "dist/sections/index.html").set("idUsuario", 1).set("steps", []).render();
+}
+exports.section = function(req, res) {
+	let section = req.params.s || "wave";
+	res.render("dist/sections/" + section + ".html");
 }
 exports.trabajando = function(req, res) {
 	res.set("tplSection", "dist/trabajando.html")
@@ -22,7 +26,7 @@ exports.lang = function(req, res) {
 function fnAdmin(req, res) {
     if (!req.logged() || req.expired())
 		return fnLogout(req, res.i18nError("err401"));
-	res.set("tplSection", "dist/list/admin.html")
+	res.set("tplSection", "dist/sections/admin.html")
 		.set("steps", [{ pref: "admin.html", text: res.data.lblAdmin }])
 		.render();
 }

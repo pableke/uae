@@ -2,12 +2,12 @@
 const nodemailer = require("nodemailer");
 
 const AUTH = {
-	"client_id": process.env.GOOGLE_CLI_ID,
 	"project_id": "node-mailer-293717",
+	"client_id": process.env.GMAIL_ID,
 	"auth_uri": process.env.GOOGLE_AUTH_URI,
 	"token_uri": process.env.GOOGLE_TOKEN_URI,
 	"auth_provider_x509_cert_url": process.env.GOOGLE_CERT_URL,
-	"client_secret": process.env.GOOGLE_SECRET
+	"client_secret": process.env.GMAIL_SECRET
 };
 
 // create reusable transporter object using the default SMTP transport
@@ -15,8 +15,8 @@ const AUTH = {
 const transporter = nodemailer.createTransport({
 	service: "gmail",
 	auth: {
-		user: process.env.GOOGLE_MAIL_USER,
-		pass: process.env.GOOGLE_MAIL_PASS
+		user: process.env.GMAIL_USER,
+		pass: process.env.GMAIL_PASS
 	}
 	/*auth: AUTH*/
 });

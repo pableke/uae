@@ -7,7 +7,7 @@ const usuarios = require("./usuarios");
 
 const self = this; //self instance
 
-exports.open = async function() {
+exports.open = function() {
 	myjson.open().then(dbs => {
 		self.format = dbs.company.format;
 		dbs.company.get("usuarios").then(table => {

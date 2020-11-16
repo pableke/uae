@@ -6,14 +6,6 @@ const dao = require("./dao/Factory"); //bd factory
 
 const { app, BrowserWindow, Notification, Menu, ipcMain } = require("electron");
 
-// Reload in Development environment
-if (process.env.NODE_ENV !== "production") {
-	//autoreload changes after saving
-	require("electron-reload")(__dirname, {
-		electron: path.join(__dirname, "../node_modules", ".bin", "electron")
-	});
-}
-
 let mainWindow;
 const ICON_PATH = path.join(__dirname, "public/img/upct-azul-logo.png");
 const i18n = { //aviable languages list
@@ -32,9 +24,15 @@ function createWindow() {
 	});
 
 	//carga el index.html de la aplicación
-	mainWindow.loadFile(path.join(__dirname, "ui/producto.html"));
-	//abre las herramientas de desarrollo (DevTools)
-	//mainWindow.webContents.openDevTools();
+	mainWindow.loadFile(url.format({
+		pathname: path.join(__dirname, "ui/producto.html"),
+		protocol: "file:",
+		slashes: true
+	}));
+
+	// Build and Insert menu from template
+	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+	Menu.setApplicationMenu(mainMenu);
 }
 
 // Settings
@@ -59,10 +57,44 @@ app.on("activate", () => {
 	}
 });
 
+// Create menu template
+const mainMenuTemplate = [
+	// Each object is a dropdown
+	{
+		label: "File",
+		submenu: [
+			label: "Quit",
+			accelerator: (process.platform == "darwin") ? "Command+Q" : "Ctrl+Q",
+			click() { app.quit(); }
+		]
+	}
+];
+
+// Reload in Development environment
+if (process.env.NODE_ENV !== "production") {
+	//autoreload changes after saving
+	require("electron-reload")(__dirname, {
+		electron: path.join(__dirname, "../node_modules", ".bin", "electron")
+	});
+
+	// Add developer tools option if in dev
+	mainMenuTemplate.push({
+		label: "Developer Tools",
+		submenu: [
+			{ role: "reload" },
+			{
+				label: "Toggle DevTools",
+				accelerator: (process.platform == "darwin") ? "Command+I" : "Ctrl+I",
+				click(item, focusedWindow) { focusedWindow.toggleDevTools(); }
+			}
+		]
+	});
+}
+
 module.exports = {
 	producto: require("./controllers/producto"),
-	showNotification: function(title, text) {
-		let notification = new Notification({ title: title, body: text, icon: ICON_PATH });
+	showNotification: function(title, body) {
+		let notification = new Notification({ title, body, icon: ICON_PATH });
 		notification.show(); //show current notification
 		return notification;
 	}

@@ -30,6 +30,23 @@ ul#menu li:hover li a:hover { background: #2c3e50; }
 /* Displays second level dropdowns to the right of the first level dropdown */
 ul#menu ul ul { left: 99%; top: 0; }
 
+#wrapper {
+	overflow-x: hidden;
+}
+#sidebar-wrapper {
+	min-height: 100vh;
+	margin-left: -15rem;
+	-webkit-transition: margin .25s ease-out;
+	-moz-transition: margin .25s ease-out;
+	-o-transition: margin .25s ease-out;
+	transition: margin .25s ease-out;
+}
+#sidebar-wrapper .sidebar-heading { padding: 0.875rem 1.25rem; font-size: 1.2rem; }
+#sidebar-wrapper .list-group { width: 15rem; }
+#page-content-wrapper { min-width: 100vw; }
+#wrapper.toggled #sidebar-wrapper { margin-left: 0; }
+.menu-toggle:hover { color: #000; text-decoration: none; }
+
 /* Autocompletes */
 /*.ac-list { position: absolute; display: block; padding: 0; margin: 0; background: #1bc2a2; list-style: none; }
 .ac-list > li.active { background: #f8f9fa; cursor: pointer; }
@@ -70,33 +87,18 @@ ul#menu ul ul { left: 99%; top: 0; }
 @media screen and (max-width: 575.98px) {
 	.d-none-phone-p, .d-none-phone-l, .d-none-tablet { display: none; }
 }
-
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {
 	.d-none-phone-l, .d-none-tablet { display: none; }
 }
-
 /* Medium devices (tablets, 768px and up) */
 @media screen and (min-width: 768px) and (max-width: 991.98px) {
 	.d-none-tablet { display: none; }
-
-	/*ul#menu li ul { display: none; padding: 0; margin-left: 2px; border-left: 2px solid #2c3e50; }
-	ul#menu li a { display: block; text-decoration: none; white-space: nowrap; }
-	ul#menu li ul li { padding: 0; border-right: none; }
-	/* Display the dropdown */
-	ul#menu li:hover > ul { display: none; }
-	/*ul#menu li:hover li { float: none; display: block; }
-	ul#menu li:hover a { background: #f8f9fa; }
-	ul#menu li:hover a:hover { background: #2c3e50; color: #fff; }
-	ul#menu li:hover li a:hover { background: #2c3e50; }
-	/* Displays second level dropdowns to the right of the first level dropdown */
-	/*ul#menu ul ul { display: block; }*/
 }
-
 /* Large devices (desktops, 992px and up) */
-/* @media screen and (min-width: 992px) and (max-width: 1199.98px) {} */
+/*@media screen and (min-width: 992px) and (max-width: 1199.98px) {}*/
 /* Extra large devices (large desktops, 1200px and up) */
-/* @media screen and (min-width: 1200px) {} */
+/*@media screen and (min-width: 1200px) {}*/
 
 @media print {
 	@page { size: landscape; }

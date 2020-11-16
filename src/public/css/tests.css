@@ -3,17 +3,27 @@
 	margin: 0; padding: 0;
 	box-sizing: border-box;
 }
+body { background-color: #fff; }
 header {
 	position: relative;
 	display: flex;
 	height: 100vh;
 	align-items: center;
 	justify-content: center;
-	background-image: linear-gradient(to right, rgba(238, 242, 243, 0.35), rgba(142,158,171,0.47)), url("../img/jpg/office-laptop.jpg");
+	background-image: linear-gradient(to right, rgba(238, 242, 243, 0.35), rgba(142,158,171,0.47)), url("../img/jpg/economy.jpg");
 	background-position: center;
 	background-attachment: fixed;
 	background-size: cover;
-	padding-bottom: 60px;
+	padding-bottom: 80px;
+}
+section {
+	margin: 1em;
+	border-bottom: dotted 1px gray;
+}
+
+#header-title {
+	width: 50%;
+	color: #fff;
 }
 
 .wave {

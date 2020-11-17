@@ -1,7 +1,6 @@
 
-const { remote } = require("electron");
-const main = remote.require("./main");
 const valid = require("validate-box"); //validators
+const { ipcRenderer } = require("electron");
 
 const form = document.querySelector("form#product");
 const pid = document.querySelector("input#pid");
@@ -11,48 +10,17 @@ const info = document.querySelector("textarea#info");
 const reset = document.querySelector("button[type=reset]");
 const products = document.querySelector("div#products");
 
-const tplProduct ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;</h4><p>@info;</p><h3>@price; &euro;</h3><p><button class="btn btn-danger btn-sm" onclick="deleteProduct(@_id;)">Delete</button><button class="btn btn-secondary btn-sm ml-1" onclick="editProduct(@_id;)">Edit</button></p></div>';
-function getProducts() { //init function
-	products.innerHTML = main.producto.formatAll(tplProduct);
-}
-
-function editProduct(id) {
-	let product = main.producto.getById(id);
-	reset.click(); //clear inputs
+ipcRenderer.on("product:get", function(ev, product) {
+	reset.click(); //first => clear inputs
 	pid.value = product._id;
 	name.value = product.name;
 	price.value = valid.nb.float(product.price);
 	info.value = product.info;
-}
-
-function deleteProduct(id) {
-	if (confirm("¿Confirma que desea eliminar este producto?")) {
-		main.producto.deleteById(id).then(table => {
-			main.showNotification("Electron App", name.value + " eliminado correctamente");
-			getProducts();
-		});
-	}
-}
-
-function setError(el, msg) {
-	el.focus();
-	el.classList.add("is-invalid");
-	el.parentNode.querySelector("#invalid-" + el.id).innerHTML = msg;
-}
+});
 
 form.addEventListener("submit", ev => {
+	ipcRenderer.send("product:save", { _id: pid.value, name: name.value, price: price.value, info: info.value });
 	ev.preventDefault();
-	let data = main.producto.save(pid.value, name.value, price.value, info.value);
-	if (data.errno) {
-		data.info && setError(info, data.info);
-		data.price && setError(price, data.price);
-		data.name && setError(name, data.name);
-		return main.showNotification("Electron App", "Error al guardar los datos introducidos");
-	}
-
-	main.showNotification("Electron App", name.value + " guardado correctamente");
-	reset.click();
-	getProducts();
 });
 reset.addEventListener("click", ev => {
 	pid.value = name.value = price.value = info.value = null;
@@ -61,6 +29,37 @@ reset.addEventListener("click", ev => {
 	info.classList.remove("is-invalid");
 	name.focus();
 });
+ipcRenderer.on("product:save-ok", function(ev) {
+	ipcRenderer.send("show", name.value + " guardado correctamente");
+	reset.click();
+	getProducts();
+});
 
-// Init
+function setError(el, msg) {
+	el.focus();
+	el.classList.add("is-invalid");
+	el.parentNode.querySelector("#invalid-" + el.id).innerHTML = msg;
+}
+ipcRenderer.on("product:save-error", function(ev, errors) {
+	errors.info && setError(info, errors.info);
+	errors.price && setError(price, errors.price);
+	errors.name && setError(name, errors.name);
+	ipcRenderer.send("show", "Error al guardar los datos introducidos");
+});
+
+// Init. view
+const tplProduct ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;</h4><p>@info;</p><h3>@price; &euro;</h3><p><button class="btn btn-danger btn-sm" data-id="@_id;">Delete</button><button class="btn btn-secondary btn-sm ml-1" data-id="@_id;">Edit</button></p></div>';
+function getProducts() { ipcRenderer.send("product:get-all", tplProduct); }
+ipcRenderer.on("product:get-all", function(ev, list) {
+	products.innerHTML = list;
+	products.querySelectorAll(".btn-secondary").forEach(btn => {
+		btn.addEventListener("click", ev => { ipcRenderer.send("product:get", ev.target.dataset.id); });
+	})
+	products.querySelectorAll(".btn-danger").forEach(btn => {
+		btn.addEventListener("click", ev => {
+			if (confirm("¿Confirma que desea eliminar este producto?"))
+				ipcRenderer.send("product:delete", ev.target.dataset.id);
+		});
+	})
+});
 getProducts();

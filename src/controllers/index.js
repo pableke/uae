@@ -10,7 +10,7 @@ exports.inicio = function(req, res) {
 	res.set("tplSection", "dist/sections/index.html").set("idUsuario", 1).set("steps", []).render();
 }
 exports.section = function(req, res) {
-	let section = req.params.s || "wave";
+	let section = req.params.s || "sidebar";
 	res.render("dist/sections/" + section + ".html");
 }
 exports.trabajando = function(req, res) {

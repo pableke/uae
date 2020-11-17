@@ -97,11 +97,11 @@ ul#menu ul ul { left: 99%; top: 0; }
 }
 /* Large devices (desktops, 992px and up) */
 @media screen and (min-width: 992px) and (max-width: 1199.98px) {
-	.menu-toggle { display: none; }
+	.d-none-pc { display: none; }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media screen and (min-width: 1200px) {
-	.menu-toggle { display: none; }
+	.d-none-pc, .d-none-lpc { display: none; }
 }
 
 @media print {

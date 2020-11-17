@@ -9,7 +9,7 @@ fb.initializeApp({
 	credential: fb.credential.cert(serviceAccount),
 	databaseURL: "https://uae-web.firebaseio.com/"
 });
-const db = fb.database();
+const db = fb.firestore();
 
 //tables
 exports.menus = new Menus(db);

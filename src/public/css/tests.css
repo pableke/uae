@@ -3,7 +3,7 @@
 	margin: 0; padding: 0;
 	box-sizing: border-box;
 }
-body { background-color: #fff; }
+body { background: #fff; }
 header {
 	position: relative;
 	display: flex;
@@ -18,10 +18,11 @@ header {
 }
 section {
 	margin: 1em;
-	border-bottom: dotted 1px gray;
+	padding: 1em;
 }
 
 #header-title {
+	padding: 1em;
 	width: 50%;
 	color: #fff;
 }

@@ -1,12 +1,13 @@
 
 //Menu DAO
 module.exports = function(db) {
-	let publicMenu; //cache for application level
+	let publicMenu = []; //cache for application level
 
 	function fnReloadPublicMenu() { //mask 33=100001
 		//return query("select m.*, null id_usuario, mask mu_mask from menus m where ((mask & 33) = 33) order by orden").then(results => {
-		publicMenu = db.collection("menus").orderBy("orden").get().then(snapshot => {
-			snapshot.forEach(doc => console.log("publicMenu", doc.data()));
+		publicMenu.splice(0); //clear previous cache
+		db.collection("menus").orderBy("orden").get().then(snapshot => {
+			snapshot.forEach(doc => publicMenu.push(doc.data()));
 		});
 	}
 	function fnFindPublicMenu() {

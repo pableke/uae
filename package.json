@@ -13,7 +13,8 @@
     "pc": "clear & electron ./src/main.js",
     "zip": "rm *.zip & rm *.tgz & npm-pack-zip & npm pack",
     "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron App\"",
-    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds"
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=src/public/img/upct-azul-logo.png --prune=true --out=release-builds",
+    "test": "jest --watch"
   },
   "keywords": [
     "uae",
@@ -51,6 +52,7 @@
     "gulp-minify": "^3.1.0",
     "gulp-replace": "^1.0.0",
     "gulp-strip-comments": "^2.5.2",
+    "jest": "^26.6.3",
     "merge-stream": "^2.0.0",
     "nodemon": "^2.0.4",
     "npm-pack-zip": "^1.2.7",

@@ -150,7 +150,7 @@ process.on("SIGTERM", function() { fnExit("SIGTERM"); }); //kill the server usin
 process.stdin.on("data", function(data) { (data == "exit\n") && fnExit("exit"); }); //console exit
 
 //start http and https server
-let port = process.env.port || 4000;
+let port = process.env.port || 3000;
 server.listen(port, "localhost");
 secsrv.listen(443, "localhost");
 

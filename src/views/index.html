@@ -55,34 +55,5 @@
 	<section import="@tplSection;"></section>
 	<aside import="@tplDerecha;" class="@cssDerecha;"></aside>
 	<footer append="dist/foot.html" class="footer mt-auto py-3"></footer>
-
-	<!-- FIREBASE SCRIPTS -->
-	<!-- The core Firebase JS SDK is always required and must be listed first -->
-	<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
-
-	<!-- TODO: Add SDKs for Firebase products that you want to use
-	     https://firebase.google.com/docs/web/setup#available-libraries -->
-	<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-firestore.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
-
-	<script>
-		// Your web app's Firebase configuration
-		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-		var firebaseConfig = {
-			apiKey: "AIzaSyAx3-yxg7smwyAoQu4tqXO8VHnChG7Ai_o",
-			authDomain: "uae-web.firebaseapp.com",
-			databaseURL: "https://uae-web.firebaseio.com",
-			projectId: "uae-web",
-			storageBucket: "uae-web.appspot.com",
-			messagingSenderId: "53869945226",
-			appId: "1:53869945226:web:bbdfd9920765b7bbe1e873",
-			measurementId: "G-1PMMTFNMLJ"
-		};
-		// Initialize Firebase
-		firebase.initializeApp(firebaseConfig);
-		const auth = firebase.auth();
-		firebase.analytics();
-	</script>
 </body>
 </html>

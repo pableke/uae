@@ -1,22 +1,22 @@
 
 const firebase = require("./firebase/Factory");
-const mongo = require("./mongo/Factory");
+//const mongo = require("./mongo/Factory");
 const myjson = require("./myjson/Factory");
-const mysql = require("./mysql/Factory");
+//const mysql = require("./mysql/Factory");
 const oracle = require("./oracle/Factory");
 const postgre = require("./postgre/Factory");
 
-exports.mongo = mongo;
+//exports.mongo = mongo;
 exports.myjson = myjson;
-exports.mysql = mysql;
+//exports.mysql = mysql;
 exports.oracle = oracle;
 exports.postgre = postgre;
 
 exports.open = function() {
 	firebase.open();
-	mongo.open();
+	//mongo.open();
 	myjson.open();
-	mysql.open();
+	//mysql.open();
 	oracle.open();
 	postgre.open();
 	console.log("> DAO Factory open.");
@@ -25,9 +25,9 @@ exports.open = function() {
 
 exports.close = function() {
 	firebase.close();
-	mongo.close();
+	//mongo.close();
 	myjson.close();
-	mysql.close();
+	//mysql.close();
 	oracle.close();
 	postgre.close();
 	console.log("> DAO Factory closed.");

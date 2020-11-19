@@ -8,7 +8,8 @@ module.exports = function(db) {
 		publicMenu.splice(0); //clear previous cache
 		db.collection("menus").orderBy("orden").get().then(snapshot => {
 			snapshot.forEach(doc => publicMenu.push(doc.data()));
-		});
+		})
+		.catch(err => console.log(err));
 	}
 	function fnFindPublicMenu() {
 		return new Promise(function(resolve, reject) {

@@ -4,7 +4,7 @@ const { ipcRenderer } = require("electron");
 
 const forms = document.querySelectorAll("form");
 const products = document.querySelector("div#products");
-const inputs = forms[0].elements; //inputs node-list
+const inputs = forms[0].elements; //inputs node-list by ID
 
 function fnSubmit(form) {
 	ipcRenderer.send(form.action, valid.values(form.elements));

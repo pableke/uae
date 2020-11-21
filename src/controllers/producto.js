@@ -20,6 +20,7 @@ const TEMPLATE ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;
 exports.search = function(args) {
 	//prepare filter extended
 	let name = valid.sb.tr(args.name);
+	args.price = valid.sb.trim(args.price);
 	let price = args.price && valid.nb.toFloat(args.price);
 	let info = valid.sb.tr(args.info);
 

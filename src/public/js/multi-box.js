@@ -588,7 +588,9 @@ function NumberBox(lang) {
 	const DOT = ".";
 
 	//helpers
-	function dNaN(n, d) { return isNaN(n) ? d : n; }
+	function isNumber(val) { return (val !== null) && (val !== "") && !isNaN(val); } //important: isNaN(null) == false and isNaN("") == false
+	function dNaN(n, d) { return isNumber(n) ? n : d; } //default not a number
+	function dNaN(n, d) { return isNumber(n) ? n : d; }
 	function intval(val) { return parseInt(val) || 0; }
 	function floatval(val) { return parseFloat(val) || 0; }
 	function fnSize(str) { return str ? intval(str.length) : 0; }
@@ -655,6 +657,7 @@ function NumberBox(lang) {
 
 	this.intval = intval;
 	this.floatval = floatval;
+	this.isNumber = isNumber;
 	this.toFloat = function(str) { return _lang.toFloat(str); }
 	this.float = function(num, d) { return _lang.float(num, d); }
 	this.integer = function(num) { return _lang.integer(num); }
@@ -691,7 +694,6 @@ function StringBox() {
 	function isstr(val) { return (typeof val === "string") || (val instanceof String); }
 	function fnTrim(str) { return isstr(str) ? str.trim() : str; } //string only
 	function fnSize(str) { return str ? str.length : 0; } //string o array
-	function itr(str) { return tr(fnTrim(str)).toLowerCase(); }
 	function tr(str) {
 		var output = "";
 		var size = fnSize(str);
@@ -703,13 +705,13 @@ function StringBox() {
 		return output;
 	}
 
-	this.tr = tr;
 	this.isstr = isstr;
 	this.trim = fnTrim;
 	this.size = fnSize;
-	this.eq = function(str1, str2) { return (itr(str1) == itr(str2)); }
+	this.tr = function(str) { return tr(fnTrim(str)).toLowerCase(); };
+	this.eq = function(str1, str2) { return self.tr(str1) == self.tr(str2); }
 	this.indexOf = function(str1, str2) { return str1 ? str1.indexOf(str2) : -1; }
-	this.iIndexOf = function(str1, str2) { return itr(str1).indexOf(itr(str2)); }
+	this.iIndexOf = function(str1, str2) { return self.tr(str1).indexOf(self.tr(str2)); }
 	this.prevIndexOf = function(str1, str2, i) { return str1 ? str1.substr(0, i).lastIndexOf(str2) : -1; }
 	this.prefix = function(str1, str2) { return str1.startsWith(str2) ? str1 : (str2 + str1); }
 	this.suffix = function(str1, str2) { return str1.endsWith(str2) ? str1 : (str1 + str2); }
@@ -914,15 +916,6 @@ function ValidateBox(opts) {
 		return self;
 	}
 
-	this.values = function(list, obj) {
-		obj = obj || {};
-		let size = fnSize(list); //length
-		for (let i = 0; i < size; i++) {
-			let el = list[i]; //element
-			obj[el.name] = el.value;
-		}
-		return obj;
-	}
 	this.each = function(list, fn) {
 		Array.prototype.forEach.call(list, fn);
 		return self;
@@ -934,13 +927,34 @@ function ValidateBox(opts) {
 		return Array.prototype.filter.call(list, el => el.matches(selector));
 	}
 	this.focus = function(inputs) { //focus on first visible and editable input
-		inputs = inputs || document.body.querySelectorAll("input,select,textarea");
+		inputs = inputs || document.querySelectorAll("input,select,textarea");
 		let el = self.find(inputs, ":not([type=hidden])[tabindex]:not([readonly])");
 		el && el.focus();
 		return self;
 	}
-	this.reset = function(list) {
-		return self.each(list, el => { el.value = ""; });
+	this.reset = function(list, cb) {
+		cb = cb || function fnVoid() {}; //void function
+		return self.each(list, (el, i) => { el.value = ""; cb(el, i); });
+	}
+
+	this.load = function(list, obj, opts) {
+		opts = opts || {}; //default settings
+		let size = fnSize(list); //length
+		for (let i = 0; i < size; i++) {
+			let el = list[i]; //element
+			let fn = opts[el.name]; //formatter
+			el.value = fn ? fn(obj[el.name]) : obj[el.name];
+		}
+		return self;
+	}
+	this.values = function(list, obj) {
+		obj = obj || {};
+		let size = fnSize(list); //length
+		for (let i = 0; i < size; i++) {
+			let el = list[i]; //element
+			obj[el.name] = el.value;
+		}
+		return obj;
 	}
 
 	const errors = { errno: 0 }; //container
@@ -981,7 +995,7 @@ function ValidateBox(opts) {
 		let size = fnSize(inputs); //length
 		for (let i = 0; i < size; i++) {
 			let el = inputs[i]; //element
-			if (el.name && el.value) //has value?
+			if (el.name && el.value)
 				fd.append(el.name, el.value);
 		}
 		for (let k in data) //has extra data to send

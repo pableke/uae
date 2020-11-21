@@ -97,8 +97,8 @@ ipcMain.on("show", function(ev, body) { showNotification(body); });
 
 // Catch products events
 const products = require("./controllers/producto");
-ipcMain.on("product:get-all", function(ev, tplProduct) {
-	ev.reply("product:get-all", products.formatAll(tplProduct));
+ipcMain.on("product:search", function(ev, args) {
+	ev.reply("product:search", products.search(args));
 });
 ipcMain.on("product:get", function(ev, id) {
 	ev.reply("product:get", products.getById(id));

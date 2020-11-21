@@ -2,64 +2,71 @@
 const valid = require("validate-box"); //validators
 const { ipcRenderer } = require("electron");
 
-const form = document.querySelector("form#product");
-const pid = document.querySelector("input#pid");
-const name = document.querySelector("input#name");
-const price = document.querySelector("input#price");
-const info = document.querySelector("textarea#info");
-const reset = document.querySelector("button[type=reset]");
+const forms = document.querySelectorAll("form");
 const products = document.querySelector("div#products");
+const inputs = forms[0].elements; //inputs node-list
 
+function fnSubmit(form) {
+	ipcRenderer.send(form.action, valid.values(form.elements));
+}
+function fnResetForm(form) {
+	form.classList.remove("d-none"); //force show form
+	valid.focus(form.elements).reset(form.elements, el => { el.classList.remove("is-invalid"); });
+}
 ipcRenderer.on("product:get", function(ev, product) {
-	reset.click(); //first => clear inputs
-	pid.value = product._id;
-	name.value = product.name;
-	price.value = valid.nb.float(product.price);
-	info.value = product.info;
+	fnResetForm(forms[0]); //show form, clear inputs and set focus
+	forms[1].classList.add("d-none"); //hide search form
+	valid.load(inputs, product, { price: valid.nb.float });
 });
 
-form.addEventListener("submit", ev => {
-	ipcRenderer.send("product:save", { _id: pid.value, name: name.value, price: price.value, info: info.value });
-	ev.preventDefault();
-});
-reset.addEventListener("click", ev => {
-	pid.value = name.value = price.value = info.value = null;
-	name.classList.remove("is-invalid");
-	price.classList.remove("is-invalid");
-	info.classList.remove("is-invalid");
-	name.focus();
-});
 ipcRenderer.on("product:save-ok", function(ev) {
-	ipcRenderer.send("show", name.value + " guardado correctamente");
-	reset.click();
-	getProducts();
+	ipcRenderer.send("show", "'" + inputs["name"].value + "' guardado correctamente");
+	fnResetForm(forms[0]); //show form, clear inputs and set focus
+	fnSubmit(forms[1]); //reload list
 });
 
-function setError(el, msg) {
-	el.focus();
+function setError(id, msg) {
+	let el = inputs[id];
 	el.classList.add("is-invalid");
-	el.parentNode.querySelector("#invalid-" + el.id).innerHTML = msg;
+	el.parentNode.querySelector("#invalid-" + id).innerHTML = msg;
+	el.focus();
 }
 ipcRenderer.on("product:save-error", function(ev, errors) {
-	errors.info && setError(info, errors.info);
-	errors.price && setError(price, errors.price);
-	errors.name && setError(name, errors.name);
-	ipcRenderer.send("show", "Error al guardar los datos introducidos");
+	errors.info && setError("info", errors.info);
+	errors.price && setError("price", errors.price);
+	errors.name && setError("name", errors.name);
+	//ipcRenderer.send("show", "Error al guardar los datos introducidos");
 });
 
 // Init. view
-const tplProduct ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;</h4><p>@info;</p><h3>@price; &euro;</h3><p><button class="btn btn-danger btn-sm" data-id="@_id;">Delete</button><button class="btn btn-secondary btn-sm ml-1" data-id="@_id;">Edit</button></p></div>';
-function getProducts() { ipcRenderer.send("product:get-all", tplProduct); }
-ipcRenderer.on("product:get-all", function(ev, list) {
-	products.innerHTML = list;
+ipcRenderer.on("product:search", function(ev, list) {
+	products.innerHTML = list || '<div class="card card-body m-2 animated fadeInRight text-center"><h3>No data found</h3></div>';
 	products.querySelectorAll(".btn-secondary").forEach(btn => {
 		btn.addEventListener("click", ev => { ipcRenderer.send("product:get", ev.target.dataset.id); });
-	})
+	});
 	products.querySelectorAll(".btn-danger").forEach(btn => {
 		btn.addEventListener("click", ev => {
 			if (confirm("¿Confirma que desea eliminar este producto?"))
 				ipcRenderer.send("product:delete", ev.target.dataset.id);
 		});
-	})
+	});
 });
-getProducts();
+
+//Init. DOM elements
+forms.forEach((form, i) => {
+	form.addEventListener("submit", ev => {
+		ev.preventDefault(); //prevent default submit
+		valid.focus(form.elements); //focus on first
+		fnSubmit(form); //send form
+	});
+	form.querySelectorAll("button[type=reset]").forEach(el => {
+		el.addEventListener("click", ev => { fnResetForm(form); });
+	});
+	form.querySelectorAll(".btn-toggle").forEach(el => {
+		el.addEventListener("click", ev => { //toggle forms
+			forms.forEach(form => { form.classList.toggle("d-none"); });
+			valid.focus(forms[(i+1)%2].elements);
+		});
+	});
+});
+fnSubmit(forms[1]);

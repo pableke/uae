@@ -1,4 +1,10 @@
 
+/**
+ * @file index.js start http server
+ * @author Pablo Rosique Vidal
+ * @see <a href="https://github.com/pableke/uae">UAE</a>
+ */
+
 //required node modeules
 const fs = require("fs"); //file system
 const url = require("url"); //url parser
@@ -104,7 +110,7 @@ function fnRequest(req, res) {
 			req.on("data", function(chunk) {
 				rawData += chunk;
 				if (rawData.length > optsForm.maxFieldsSize) { //20mb
-					delete rawData; //free body memory
+					//delete rawData; //free body memory
 					req.connection.destroy(); //FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
 					error.error413(req, res); //error request too large
 				}

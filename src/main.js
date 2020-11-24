@@ -1,4 +1,10 @@
 
+/**
+ * @file main.js start descktop application with Electron
+ * @author Pablo Rosique Vidal
+ * @see <a href="https://github.com/pableke/uae">UAE</a>
+ */
+
 const url = require("url"); //url parser
 const path = require("path"); //file and directory paths
 const env = require("dotenv").config(); //load env const

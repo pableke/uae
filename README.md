@@ -11,20 +11,20 @@ Complete unified web and desktop electron application, using myjson-box, mysessi
 
 ### JS Applications
 
-Suitable for applications combine web + desctop.
+Suitable for applications that combine web + desktop.
 
 <details><summary><b>Show instructions</b></summary>
 
 1. Install by npm:
 
-    ```
+    <pre>
     $ npm install uae
-    ```
+    </pre>
 
 </details>
 
 ### test
 
-```
-npm test
-```
+<pre>
+	$ npm test
+</pre>

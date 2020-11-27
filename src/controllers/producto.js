@@ -4,8 +4,8 @@ const dao = require("../dao/Factory"); //bd factory
 
 exports.save = function(_id, name, price, info) {
 	valid.init(); //initialize validation
-	price = price ? valid.nb.toFloat(price) : 0; //validate price format as string
-	(price > 0) || valid.setError("price", "El importe debe ser mayor de " + valid.nb.float(0) + " &euro;", 2); //validate float value
+	price = valid.nb.toFloat(price); //get float value
+	valid.nb.gt0(price) || valid.setError("price", "El importe debe ser mayor de " + valid.nb.float(0) + " &euro;", 2); //validate float value
 	valid.size(name, 1, 200) || valid.setError("name", "Nonmbre del producto no válido", 1);
 	valid.size(info, 1, 400) || valid.setError("info", "La descripción asociada no es válida", 3);
 	if (valid.isError()) //exists?
@@ -20,8 +20,7 @@ const TEMPLATE ='<div class="card card-body m-2 animated fadeInRight"><h4>@name;
 exports.search = function(args) {
 	//prepare filter extended
 	let name = valid.sb.tr(args.name);
-	args.price = valid.sb.trim(args.price);
-	let price = args.price && valid.nb.toFloat(args.price);
+	let price = valid.nb.toFloat(args.price);
 	let info = valid.sb.tr(args.info);
 
 	let fnPrice = valid.nb.isNumber(price)

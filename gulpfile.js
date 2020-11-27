@@ -15,8 +15,8 @@ const replace = require("gulp-replace");
 // Settings
 const HTML_PATH = "src/views/**/*.html";
 const CSS_FILES = [ "src/public/css/style.css", "src/public/css/print.css" ];
-const JS_FILES = [ "src/public/js/multi-box.js", "src/public/js/util.js" ];
-const JS_SINGLES = [ "src/public/js/service-worker.js", "src/public/js/worker.js" ];
+//const JS_FILES = [ "src/public/js/multi-box.js", "src/public/js/util.js" ];
+const JS_SINGLES = [ "src/public/js/multi-box.js", "src/public/js/service-worker.js", "src/public/js/worker.js" ];
 
 // Task to minify HTML's
 gulp.task("minify-html", () => {
@@ -42,9 +42,10 @@ gulp.task("minify-js", () => {
 	const dest = "dist/public/js";
 	const config = { ext: { min: ".min.js" }, ignoreFiles: [".min.js"]};
 
-	let pack = gulp.src(JS_FILES).pipe(concat("multi-box.js")).pipe(jsmin(config)).pipe(gulp.dest(dest));
+	//let pack = gulp.src(JS_FILES).pipe(concat("multi-box.js")).pipe(jsmin(config)).pipe(gulp.dest(dest));
 	let oneByOne = gulp.src(JS_SINGLES).pipe(jsmin(config)).pipe(gulp.dest(dest));
-	return merge(pack, oneByOne);
+	//return merge(pack, oneByOne);
+	return oneByOne;
 });
 
 // Tasks to copy files once
@@ -56,7 +57,7 @@ gulp.task("copy", () => {
 gulp.task("watch", () => {
 	gulp.watch(HTML_PATH, gulp.series("minify-html")); 
 	gulp.watch(CSS_FILES, gulp.series("minify-css")); 
-	gulp.watch(JS_FILES, gulp.series("minify-js")); 
+	//gulp.watch(JS_FILES, gulp.series("minify-js")); 
 	gulp.watch(JS_SINGLES, gulp.series("minify-js")); 
 	// Other watchers ...
 });

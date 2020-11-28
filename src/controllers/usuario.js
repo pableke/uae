@@ -46,8 +46,9 @@ function fnPassView(req, res) {
 		.render();
 }
 exports.passView = function(req, res) {
-	return (!req.logged() || req.expired()) ? index.error(req, res) 
-											: fnPassView(req, res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText"));
+	if (!req.logged() || req.expired())
+		return index.error(req, res);
+	fnPassView(req, res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText"));
 }
 exports.password = function(req, res) {
 	if (!req.logged() || req.expired())

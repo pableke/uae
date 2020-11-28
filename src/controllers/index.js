@@ -39,6 +39,7 @@ function fnLogin(req, res) {
 }
 function fnLogError(req, res) { fnLogin(req, res.i18nError("errLogin")); } //go login form with error
 function fnLogView(req, res) { fnLogin(req, res.flush("usuarioValue").flush("usuarioErrText").flush("claveErrText")); }
+exports.error = function(req, res) { return req.isAjax ? res.jerr(valid.endErrors(res.get("err401"))) : fnLogView(req, res.i18nError("err401")); }
 exports.logView = fnLogView;
 
 exports.login = function(req, res) {
@@ -53,9 +54,8 @@ exports.login = function(req, res) {
 
 	res.set("usuarioValue", fields.usuario);
 	if (bcrypt.compareSync(fields.clave, user.clave)) {
-		res.set("idUserSession", user._id).set("userMail", user.correo)
-			.set("userName", user.nombre).set("userAp1", user.ap1).set("userAp2", user.ap2)
-			.set("fullUserName", (user.nombre + " " + user.ap1 + " " + user.ap2).trim());
+		let name = (user.nombre + " " + user.ap1 + " " + user.ap2).trim();
+		res.addBySuffix(user, "UserSession").set("fullNameUserSession", name);
 		let fn = req.startSession().getSessionHelper() || fnAdmin; //exists helper?
 		fn(req, res.set("menus", dao.myjson.menus.findByUser(user._id)).i18nOk("msgLogin")); //update user menu
 	}

@@ -5,7 +5,7 @@ const valid = require("validate-box"); //validators
 const mailer = require("../lib/mailer"); //validators
 const dao = require("../dao/Factory"); //bd connection
 
-//Public acttions
+//Public forms (loggin, contact, reactive, new user)
 exports.inicio = function(req, res) {
 	res.set("tplSection", "dist/sections/index.html").set("idUsuario", 1).set("steps", []).render();
 }
@@ -22,10 +22,27 @@ exports.lang = function(req, res) {
 	res.lang(req, res).render(); //re-render same site
 }
 
-//Public forms (loggin, contact, reactive, new user)
+function fnLogged(req, res) {
+    if (!req.logged()) return !res.i18nError("err401");
+    if (req.expired()) return !res.i18nError("errEndSession");
+	return true;
+}
+
+exports.isLogged = fnLogged;
+exports.error = function(req, res) {
+	return req.isAjax ? res.jerr(valid.endErrors(res.get("msgError"))) : fnLogView(req, res);
+}
+
+function fnLogout(req, res) {
+	//let menus = dao.mysql.menus.findPublic().then(...);
+	let menus = dao.myjson.menus.findPublic();
+	fnLogView(req.closeSession(), res.set("menus", menus).flush("startSession"));
+}
+exports.logout = function(req, res) { fnLogout(req, res.i18nOk("msgLogout")); };
+
 function fnAdmin(req, res) {
-    if (!req.logged() || req.expired())
-		return fnLogout(req, res.i18nError("err401"));
+    if (!fnLogged(req, res))
+		return fnLogout(req, res);
 	res.set("tplSection", "dist/sections/admin.html")
 		.set("steps", [{ pref: "admin.html", text: res.data.lblAdmin }])
 		.render();
@@ -39,7 +56,6 @@ function fnLogin(req, res) {
 }
 function fnLogError(req, res) { fnLogin(req, res.i18nError("errLogin")); } //go login form with error
 function fnLogView(req, res) { fnLogin(req, res.flush("usuarioValue").flush("usuarioErrText").flush("claveErrText")); }
-exports.error = function(req, res) { return req.isAjax ? res.jerr(valid.endErrors(res.get("err401"))) : fnLogView(req, res.i18nError("err401")); }
 exports.logView = fnLogView;
 
 exports.login = function(req, res) {
@@ -76,13 +92,6 @@ exports.login = function(req, res) {
 		fnLogError(req, res.copy(err.code + "ErrText", err.message));
 	});*/
 }
-
-function fnLogout(req, res) {
-	//let menus = dao.mysql.menus.findPublic().then(...);
-	let menus = dao.myjson.menus.findPublic();
-	fnLogView(req.closeSession(), res.set("menus", menus).flush("startSession"));
-}
-exports.logout = function(req, res) { fnLogout(req, res.i18nOk("msgLogout")); };
 
 function fnContact(req, res) {
 	let sysdate = valid.dt.isoDate(res.get("sysdate"));

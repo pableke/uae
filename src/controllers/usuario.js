@@ -11,13 +11,13 @@ function fnPerfilView(req, res) {
 		.render();
 }
 exports.perfilView = function(req, res) {
-	if (!req.logged() || req.expired())
+	if (!index.isLogged(req, res))
 		return index.error(req, res);
 	res.flush("nombreErrText").flush("ap1ErrText").flush("ap2ErrText").flush("nifErrText").flush("correoErrText");
 	fnPerfilView(req, res);
 }
 exports.perfil = function(req, res) {
-	if (!req.logged() || req.expired())
+	if (!index.isLogged(req, res))
 		return index.error(req, res);
 
 	let fields = req.body; //request fields
@@ -46,12 +46,12 @@ function fnPassView(req, res) {
 		.render();
 }
 exports.passView = function(req, res) {
-	if (!req.logged() || req.expired())
+	if (!index.isLogged(req, res))
 		return index.error(req, res);
 	fnPassView(req, res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText"));
 }
 exports.password = function(req, res) {
-	if (!req.logged() || req.expired())
+	if (!index.isLogged(req, res))
 		return index.error(req, res);
 
 	let fields = req.body; //request fields

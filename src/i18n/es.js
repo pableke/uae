@@ -42,7 +42,7 @@ module.exports = {
 
 	lblCorreo: "E-Mail", ejCorreo: "ejemplo@dominio.com", phCorreo: "Indique su correo",
 	titCorreo: "Dirección de E-Mail con la que se dió de alta en el sistema",
-	errCorreo: "Formato de E-Mail incorrecto", errUkCorreo: "El E-Mail ya existe en el sistema", 
+	errCorreo: "Formato de E-Mail incorrecto", errUkCorreo: "El E-Mail indicado ya existe en el sistema", 
 	msgCorreo: "E-Mail enviado correctamente",
 
 	lblAsunto: "Asunto", phAsunto: "Resumen", 
@@ -368,28 +368,7 @@ module.exports = {
 	errSendValidate: "No se ha podido enviar el E-Mail de validación",
 	errSendRemember: "No se ha podido enviar el E-Mail recordatorio de su clave",
 
-	/*usuario_nif_uk: "NIF ya dado de alta en el sistema",
-	usuario_correo_uk: "El E-Mail ya existe en el sistema",
-	usuario_usuario_uk: "El usuario ya esta dado de alta en el sistema",
-	usuarioOwner: "Propietario del elemento no encontrado",
-	permiso_uk: "Permiso ya definido para este objeto, usuario y grupo",
-	familia_padre_fk: "La familia seleccionada contiene a otras y no se puede borrar",
-	articulo_familia_fk: "La familia seleccionada tiene artículos asociados",
-	articulo_usuario_fk: "El usuario es propietario de artículos en el sistema",
-	articulo_imagen_fk: "El elemento seleccionado tiene imagenes asociadas",
-	ca_articulo_fk: "Artículo ya incluido en el carrito de la compra",
-	ca_carrito_fk: "La cesta seleccionada no esta vacía",
-	carrito_usuario_fk: "El usuario seleccionado tiene carritos de la compra asociados",
-	categoria_padre_fk: "La categoría seleccionada no se puede borrar ya que tiene subcategorías asociadas",
-	direccion_usuario_fk: "El usuario tiene direcciones asociadas",
-	articulo_grupo_fk: "El grupo seleccionado tiene artículos asociados",
-	gu_grupo_fk: "El grupo seleccionado tiene usuarios asociados",
-	grupo_usuario_uk: "Usuario ya asociado a este grupo",
-	grupo_usuario_principal: "El usuario ya tiene asociado un grupo principal",*/
-
-	errSession: "Acceso restringido",
 	errEndSession: "Tiempo máximo sesión excedido",
-	errNotSession: "Sesión no inicializada",
 	err400: "¡Solicitud errónea!",
 	err401: "¡Acceso no autorizado!",
 	err403: "¡Acceso denegado/prohibido!",

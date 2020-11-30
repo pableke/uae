@@ -12,13 +12,13 @@ function fnPerfilView(req, res) {
 }
 exports.perfilView = function(req, res) {
 	if (!index.isLogged(req, res))
-		return index.error(req, res);
+		return index.logError(req, res);
 	res.flush("nombreErrText").flush("ap1ErrText").flush("ap2ErrText").flush("nifErrText").flush("correoErrText");
 	fnPerfilView(req, res);
 }
 exports.perfil = function(req, res) {
 	if (!index.isLogged(req, res))
-		return index.error(req, res);
+		return index.logError(req, res);
 
 	let fields = req.body; //request fields
 	valid.init().size(fields.nombre, 1, 200) || valid.setError("nombre", res.get("errNombre")); //same error for name and surname
@@ -47,12 +47,12 @@ function fnPassView(req, res) {
 }
 exports.passView = function(req, res) {
 	if (!index.isLogged(req, res))
-		return index.error(req, res);
+		return index.logError(req, res);
 	fnPassView(req, res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText"));
 }
 exports.password = function(req, res) {
 	if (!index.isLogged(req, res))
-		return index.error(req, res);
+		return index.logError(req, res);
 
 	let fields = req.body; //request fields
 	(valid.size(fields.oldPass, 8, 200) && valid.login(fields.oldPass)) ? res.flush("oldPassErrText") : !res.copy("oldPassErrText", "errClave");

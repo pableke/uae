@@ -22,23 +22,69 @@ exports.lang = function(req, res) {
 	res.lang(req, res).render(); //re-render same site
 }
 
+function fnLogin(req, res) {
+	res.set("tplSection", "dist/forms/public/login.html")
+		.set("steps", [{ pref: "login.html", text: res.data.lblFormLogin }])
+		.render();
+}
+function fnLogError(req, res) { fnLogin(req, res.i18nError("errLogin")); } //go login form with error
+function fnLogView(req, res) { fnLogin(req, res.flush("usuarioValue").flush("usuarioErrText").flush("claveErrText")); }
+exports.logView = fnLogView;
+
+function fnLogClear(req, res) {
+	req.closeSession(); //clear session data
+	//dao.mysql.menus.findPublic().then(...);
+	res.set("menus", dao.myjson.menus.findPublic()).flush("startSession");
+}
+
+/**
+ * Determine if the request is logged in session or if it is logged but has expired.
+ * And set specific message error for each case.
+ *
+ * @function isLogged
+ * @param      {Request}  req     The request object
+ * @param      {Response} res     The resource object
+ * @return     {boolean}  True if session is alive, False otherwise
+ */
 function fnLogged(req, res) {
-    if (!req.logged()) return !res.i18nError("err401");
-    if (req.expired()) return !res.i18nError("errEndSession");
+    if (!req.logged())
+    	return !res.i18nError("err401");
+    if (req.expired())
+    	return !res.i18nError("errEndSession");
 	return true;
 }
-
 exports.isLogged = fnLogged;
-exports.error = function(req, res) {
-	return req.isAjax ? res.jerr(valid.endErrors(res.get("msgError"))) : fnLogView(req, res);
+
+/**
+ * Remove session and restore public menus, then check if request is ajax and response a JSON object with the message contained in "msgError" text, 
+ * but if the request is non ajax, it redirect response to login form with the specified "msgError" text.
+ *
+ * @function logError
+ * @param      {Request}  req     The request object
+ * @param      {Response} res     The resource object
+ */
+exports.logError = function(req, res) {
+	fnLogClear(req, res);
+	if (req.isAjax)
+		res.jerr(valid.endErrors(res.get("msgError")));
+	else
+		fnLogView(req, res);
 }
 
-function fnLogout(req, res) {
-	//let menus = dao.mysql.menus.findPublic().then(...);
-	let menus = dao.myjson.menus.findPublic();
-	fnLogView(req.closeSession(), res.set("menus", menus).flush("startSession"));
+/**
+ * Remove session, restore public menus and redirect response to login form with the specific message.
+ *
+ * @function logout
+ * @param      {Request}  req     The request object
+ * @param      {Response} res     The resource object
+ */
+ function fnLogout(req, res) {
+	fnLogClear(req, res);
+	fnLogView(req, res);
 }
-exports.logout = function(req, res) { fnLogout(req, res.i18nOk("msgLogout")); };
+exports.logout = function(req, res) {
+	fnLogout(req, res.i18nOk("msgLogout"));
+};
 
 function fnAdmin(req, res) {
     if (!fnLogged(req, res))
@@ -48,15 +94,6 @@ function fnAdmin(req, res) {
 		.render();
 }
 exports.admin = fnAdmin;
-
-function fnLogin(req, res) {
-	res.set("tplSection", "dist/forms/public/login.html")
-		.set("steps", [{ pref: "login.html", text: res.data.lblFormLogin }])
-		.render();
-}
-function fnLogError(req, res) { fnLogin(req, res.i18nError("errLogin")); } //go login form with error
-function fnLogView(req, res) { fnLogin(req, res.flush("usuarioValue").flush("usuarioErrText").flush("claveErrText")); }
-exports.logView = fnLogView;
 
 exports.login = function(req, res) {
 	let fields = req.body; //request fields

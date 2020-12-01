@@ -1,0 +1,39 @@
+
+const dao = require("../../dao/Factory"); //bd connection
+const valid = require("../../services/validator");
+const login = require("../public/login");
+
+function fnPassClear(req, res) {
+	return res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText");
+}
+function fnPassView(req, res) {
+	res.set("tplSection", "dist/forms/user/pass.html")
+		.set("steps", [{ pref: "pass.html", text: res.data.lblFormLogin }])
+		.render();
+}
+exports.passView = function(req, res) {
+	if (!login.isLogged(req, res))
+		return login.logError(req, res);
+	fnPassView(req, fnPassClear(req, res));
+}
+exports.password = function(req, res) {
+	if (!login.isLogged(req, res))
+		return login.logError(req, res);
+
+	fnPassClear(req, res);
+	let fields = req.body; //request fields
+	if (!valid.password(fields.oldPass, fields.newPass, fields.rePass)) { //fields error?
+		res.addSuffix(valid.getErrors(), "ErrText").i18nError("errUpdate");
+		return fnPassView(req, res);
+	}
+
+	//dao.mysql.usuarios.updateNewPass(res.get("idUserSession"), fields.oldPass, fields.newPass).then(result => {
+	dao.myjson.usuarios.updateNewPass(res.get("idUserSession"), fields.oldPass, fields.newPass).then(result => {
+		//if (result.changedRows == 1)
+			login.admin(req, res.i18nOk("msgChangePassOk"));
+		//else
+			//fnPassView(req, res.get("errUpdate")); //stop resolves and call catch
+	}).catch(err => {
+		fnPassView(req, res.i18nError("errUpdate"));
+	});
+}

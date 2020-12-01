@@ -85,8 +85,8 @@ function fnRequest(req, res) {
 		lang = (i18n[lang]) ? lang : ac.substr(0, 5); //search region language es-ES
 		lang = (i18n[lang]) ? lang : lang.substr(0, 2); //search type language es
 		lang = (i18n[lang]) ? lang : "es"; //default language = es
-		this.add(i18n[lang]).set("lang", lang).nvl("startSession", ""); //add lang values
-		valid.setI18n(lang); //init date and numbers format
+		this.set("lang", lang).add(i18n[lang]).nvl("startSession", ""); //add lang values
+		valid.setI18n(lang).setMessages(i18n[lang]); //init date and numbers format
 		return this;
 	}
 	//calc default lang

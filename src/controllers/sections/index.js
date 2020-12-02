@@ -25,16 +25,16 @@ exports.trabajando = function(req, res) {
 
 function fnLang(req, res) {
 	let lang = req.params.lang || res.data.lang;
-	if (lang && (lang == res.data.lang))
-		return res; //there is no language changes
-
-	//here user has changed current language
-	let ac = req.headers["accept-language"] || "es"; //default laguage = es
-	lang = (i18n[lang]) ? lang : ac.substr(0, 5); //search region language es-ES
-	lang = (i18n[lang]) ? lang : lang.substr(0, 2); //search type language es
-	lang = (i18n[lang]) ? lang : "es"; //default language = es
-	res.set("lang", lang).add(i18n[lang]).nvl("startSession", ""); //add lang values
-	valid.setI18n(lang).setMessages(i18n[lang]); //init date and numbers format
+	if (!lang || (lang !== res.data.lang)) {
+		//user has changed current language or first access
+		let ac = req.headers["accept-language"] || "es"; //default laguage = es
+		lang = (i18n[lang]) ? lang : ac.substr(0, 5); //search region language es-ES
+		lang = (i18n[lang]) ? lang : lang.substr(0, 2); //search type language es
+		lang = (i18n[lang]) ? lang : "es"; //default language = es
+		res.set("lang", lang).add(i18n[lang]).nvl("startSession", ""); //add lang values
+	}
+	valid.setI18n(lang) //init date, messages and numbers format
+	valid.mb.setMessages(res.data); //set messages
 	return res;
 }
 

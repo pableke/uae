@@ -1,6 +1,6 @@
 
 const mailer = require("../../lib/mailer");
-const sv = require("../../services/validator");
+const sv = require("../../lib/validator");
 const { dt } = require("validate-box"); //validators
 
 function fnContact(req, res) {

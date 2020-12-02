@@ -1,6 +1,6 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../services/validator");
+const sv = require("../../lib/validator");
 const login = require("../public/login");
 
 function fnPassClear(req, res) {
@@ -8,7 +8,7 @@ function fnPassClear(req, res) {
 }
 function fnPassView(req, res) {
 	res.set("tplSection", "dist/forms/user/pass.html")
-		.set("steps", [{ pref: "/pass.html", text: res.data.lblFormLogin }])
+		.set("steps", [{ pref: "/pass.html", text: res.data.lblFormClave }])
 		.render();
 }
 

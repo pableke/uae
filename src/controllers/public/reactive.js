@@ -1,8 +1,7 @@
 
 const dao = require("../../dao/Factory"); //bd connection
 const mailer = require("../../lib/mailer");
-const sv = require("../../services/validator");
-const vb = require("validate-box");
+const sv = require("../../lib/validator");
 
 function fnReactive(req, res) {
 	res.set("tplSection", "dist/forms/public/reactive.html").set("steps", [{ pref: "/reactive.html", text: res.data.lblReactivar }]).render();
@@ -16,7 +15,7 @@ exports.reactive = function(req, res) {
 		return res.jerr(sv.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
-	let pass = vb.generatePassword(); //build a new secure password
+	let pass = sv.generatePassword(); //build a new secure password
 	const url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_PRIVATE}&response=` + fields.token;
 	fetch(url, { method: "post" })
 		.then(res => res.json())

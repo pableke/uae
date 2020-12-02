@@ -1,11 +1,11 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../services/validator");
+const sv = require("../../lib/validator");
 const login = require("../public/login");
 
 function fnPerfilView(req, res) {
 	res.set("tplSection", "dist/forms/user/perfil.html")
-		.set("steps", [{ pref: "/perfil.html", text: res.data.lblFormLogin }])
+		.set("steps", [{ pref: "/perfil.html", text: res.data.lblFormPerfil }])
 		.render();
 }
 

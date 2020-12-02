@@ -6,7 +6,7 @@
 
 const bcrypt = require("bcrypt"); //encrypt
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../services/validator");
+const sv = require("../../lib/validator");
 
 function fnLogin(req, res) {
 	res.set("tplSection", "dist/forms/public/login.html")

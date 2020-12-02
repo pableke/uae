@@ -1,12 +1,12 @@
 
 const dao = require("../dao/Factory"); //bd factory
-const sv = require("../../services/validator");
+const sv = require("../lib/validator");
 const { nb, sb } = require("validate-box"); //validators
 
 exports.save = function(_id, name, price, info) {
 	price = nb.toFloat(price); //get float value
-	if (sv.product(name, price, info)) //exists?
-		return sv.getError(); //return error description
+	if (!sv.product(name, price, info)) //exists?
+		return sv.getErrors(); //return error description
 
 	let product = { _id, name, price, info };
 	dao.myjson.productos.save(product);

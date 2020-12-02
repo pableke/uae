@@ -1,21 +1,24 @@
 
 const dao = require("../../dao/Factory"); //bd connection
 const mailer = require("../../lib/mailer");
-const valid = require("../../services/validator");
+const sv = require("../../services/validator");
+const vb = require("validate-box");
 
 function fnUsuario(req, res) {
-	res.set("tplSection", "dist/forms/public/user.html").set("steps", [{ pref: "user.html", text: res.data.lblFormRegistro }]).render();
+	res.set("tplSection", "dist/forms/public/user.html").set("steps", [{ pref: "/user.html", text: res.data.lblFormRegistro }]).render();
 }
+
 exports.usuarioView = function(req, res) {
 	fnUsuario(req, res.flush("nombreErrText").flush("apellido1ErrText").flush("apellido2ErrText").flush("nifErrText").flush("emailErrText"));
 }
+
 exports.usuario = function(req, res) {
 	let fields = req.body; //request fields
-	if (!valid.user(fields) || !valid.captcha(fields.token)) //fields error?
-		return res.jerr(valid.getErrors());
+	if (!sv.user(fields) || !sv.captcha(fields.token)) //fields error?
+		return res.jerr(sv.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
-	let pass = valid.generatePassword(); //build a new secure password
+	let pass = vb.generatePassword(); //build a new secure password
 	const url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_PRIVATE}&response=` + fields.token;
 	fetch(url, { method: "post" })
 		.then(res => res.json())
@@ -24,7 +27,7 @@ exports.usuario = function(req, res) {
 				//return dao.mysql.usuarios.insert(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 				return dao.myjson.usuarios.insertData(fields.nif, fields.nombre, fields.apellido1, fields.apellido2, fields.email, pass, 0, res.get("sysdate"));
 			else
-				throw valid.close("errCaptcha"); //stop resolves and call catch
+				throw sv.close("errCaptcha"); //stop resolves and call catch
 		})
 		.then(result => {
 			//if ((result.affectedRows == 1) && (result.insertId > 0)) {
@@ -33,9 +36,9 @@ exports.usuario = function(req, res) {
 				return mailer.send(fields.email, "Email de alta", html);
 			//}
 			//else
-				//throw valid.close("errAlta"); //stop resolves and call catch
+				//throw sv.close("errAlta"); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgUsuario")); })
 		//res.error((err.errno == 1062) ? res.get("errUsuarioUk") : err.message);
-		.catch(err => { res.jerr(valid.close(err.message)); });
+		.catch(err => { res.jerr(sv.close(err.message)); });
 }

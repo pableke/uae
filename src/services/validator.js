@@ -1,10 +1,12 @@
 
 const valid = require("validate-box"); //validators
 
-function fnEmail(correo) {
-	if (valid.size(correo, 1, 200) && valid.email(correo))
-		return true;
-	return !valid.i18nError("correo", "errCorreo");
+function fnEmail(value) {
+	if (!valid.size(value, 1, 200))
+		return !valid.i18nError("correo", "errRequired");
+	if (!valid.email(value))
+		return !valid.i18nError("correo", "errCorreo");
+	return true;
 }
 
 exports.email = function(correo) {
@@ -24,22 +26,26 @@ exports.user = function(fields) {
 exports.captcha = function(token) {
 	if (valid.size(token, 100, 600))
 		return true;
-	return !valid.setMsgI18n("errCaptcha")
+	return !valid.setMsgI18n("errCaptcha");
+}
+
+function fnLogin(name, value, msg) {
+	if (!valid.size(value, 8, 200))
+		return !valid.i18nError(name, "errRequired");
+	if (!valid.login(value))
+		return !valid.i18nError(name, msg);
+	return true;
 }
 
 exports.password = function(oldPass, newPass, rePass) {
 	valid.init(); //starts validation
-	(valid.size(oldPass, 8, 200) && valid.login(oldPass)) || valid.i18nError("oldPass", "errClave");
-	(valid.size(newPass, 8, 200) && valid.login(newPass)) || valid.i18nError("newPass", "errClave");
 	(fields.newPass == fields.rePass) || valid.i18nError("rePass", "errReClave");
-	return valid.isOk();
+	return fnLogin("oldPass", oldPass, "errClave") && fnLogin("newPass", newPass, "errClave") && valid.isOk();
 }
 
 exports.login = function(log, pass) {
 	valid.init(); //starts validation
-	(valid.size(log, 8, 200) && valid.login(log)) || valid.i18nError("usuario", "errUsuario");
-	(valid.size(pass, 8, 200) && valid.login(pass)) || valid.i18nError("clave", "errClave");
-	return valid.isOk();
+	return fnLogin("usuario", log, "errUsuario") && fnLogin("clave", pass, "errClave");
 }
 
 exports.contact = function(fields) {
@@ -50,6 +56,13 @@ exports.contact = function(fields) {
 	return fnEmail(fields.correo) && valid.isOk();
 }
 
-exports.generatePassword = valid.generatePassword;
+exports.product = function(name, price, info) {
+	valid.init(); //starts validation
+	valid.nb.gt0(price) || valid.setError("price", "El importe debe ser mayor de " + valid.nb.float(0) + " &euro;"); //validate float value
+	valid.size(name, 1, 200) || valid.setError("name", "Nonmbre del producto no válido");
+	valid.size(info, 1, 400) || valid.setError("info", "La descripción asociada no es válida");
+	return valid.isOk();
+}
+
 exports.getErrors = valid.getErrors;
 exports.close = valid.close;

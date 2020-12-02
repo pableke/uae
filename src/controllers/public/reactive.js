@@ -1,21 +1,22 @@
 
 const dao = require("../../dao/Factory"); //bd connection
 const mailer = require("../../lib/mailer");
-const valid = require("../../services/validator");
+const sv = require("../../services/validator");
+const vb = require("validate-box");
 
 function fnReactive(req, res) {
-	res.set("tplSection", "dist/forms/public/reactive.html").set("steps", [{ pref: "reactive.html", text: res.data.lblReactivar }]).render();
+	res.set("tplSection", "dist/forms/public/reactive.html").set("steps", [{ pref: "/reactive.html", text: res.data.lblReactivar }]).render();
 }
 exports.reactiveView = function(req, res) {
 	fnReactive(req, res.flush("correoErrText"));
 }
 exports.reactive = function(req, res) {
 	let fields = req.body; //request fields
-	if (!valid.email(fields.email) || !valid.captcha(fields.token)) //fields error?
-		return res.jerr(valid.getErrors());
+	if (!sv.email(fields.email) || !sv.captcha(fields.token)) //fields error?
+		return res.jerr(sv.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
-	let pass = valid.generatePassword(); //build a new secure password
+	let pass = vb.generatePassword(); //build a new secure password
 	const url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_PRIVATE}&response=` + fields.token;
 	fetch(url, { method: "post" })
 		.then(res => res.json())
@@ -24,7 +25,7 @@ exports.reactive = function(req, res) {
 				//return dao.mysql.usuarios.updatePassByMail(fields.email, pass);
 				return dao.myjson.usuarios.updatePassByMail(fields.email, pass);
 			else
-				throw valid.close("errCaptcha"); //stop resolves and call catch
+				throw sv.close("errCaptcha"); //stop resolves and call catch
 		})
 		.then(result => {
 			//if (result.changedRows == 1) {
@@ -33,8 +34,8 @@ exports.reactive = function(req, res) {
 				return mailer.send(fields.email, "Email de reactivación", html);
 			//}
 			//else
-				//throw valid.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch
+				//throw sv.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch
 		})
 		.then(info => { res.text(res.get("msgReactive")); })
-		.catch(err => { res.jerr(valid.close(err.message)); });
+		.catch(err => { res.jerr(sv.close(err.message)); });
 }

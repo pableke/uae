@@ -1,8 +1,12 @@
-spec
-node_modules
+
+# Directories
+certs
 dist
 docs
-src/certs
+spec
+node_modules
+
+# Files
 .env
 firebase.json
 *.zip

@@ -1,13 +1,14 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const valid = require("../../services/validator");
+const sv = require("../../services/validator");
 const login = require("../public/login");
 
 function fnPerfilView(req, res) {
 	res.set("tplSection", "dist/forms/user/perfil.html")
-		.set("steps", [{ pref: "perfil.html", text: res.data.lblFormLogin }])
+		.set("steps", [{ pref: "/perfil.html", text: res.data.lblFormLogin }])
 		.render();
 }
+
 exports.perfilView = function(req, res) {
 	if (!login.isLogged(req, res))
 		return login.logError(req, res);
@@ -15,13 +16,14 @@ exports.perfilView = function(req, res) {
 	res.flush("nombreErrText").flush("ap1ErrText").flush("ap2ErrText").flush("nifErrText").flush("correoErrText");
 	fnPerfilView(req, res);
 }
+
 exports.perfil = function(req, res) {
 	if (!login.isLogged(req, res))
 		return login.logError(req, res);
 
 	let fields = req.body; //request fields
-	if (!valid.user(fields)) //fields error?
-		return res.jerr(valid.getErrors());
+	if (!sv.user(fields)) //fields error?
+		return res.jerr(sv.getErrors());
 
 	fields._id = res.get("_idUserSession");
 	dao.myjson.usuarios.updateById(fields).then(users => {
@@ -29,6 +31,6 @@ exports.perfil = function(req, res) {
 		res.addSuffix(fields, "UserSession").set("fullNameUserSession", name);
 		res.text(res.get("msgUpdateOk"));
 	}).catch(err => {
-		res.jerr(valid.close("errUpdate"));
+		res.jerr(sv.close("errUpdate"));
 	});
 }

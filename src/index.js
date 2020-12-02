@@ -13,23 +13,16 @@ const https = require("https"); //secure server
 const qs = require("querystring"); //parse post data
 const env = require("dotenv").config(); //load env const
 const formidable = require("formidable"); //multipart forms
-const valid = require("validate-box"); //validators
-const session = require("mysession"); //validators
+const session = require("mysession"); //sessions
 const trees = require("tree-ss"); //js server tree
-const router = require("./lib/router"); //router
 const dao = require("./dao/Factory"); //bd factory
 
-// Settings
-const i18n = { //aviable languages list
-	"es": require("./i18n/es.js"), 
-	"en": require("./i18n/en.js")
-};
-
 // Openssl Certificates
-const privateKey = fs.readFileSync(__dirname + "/certs/key.pem").toString();
-const certificate = fs.readFileSync(__dirname + "/certs/cert.pem").toString();
+const privateKey = fs.readFileSync(__dirname + "/../certs/key.pem").toString();
+const certificate = fs.readFileSync(__dirname + "/../certs/cert.pem").toString();
 const options = { key: privateKey, cert: certificate };
 
+// Settings
 const optsForm = {
 	uploadDir: __dirname + "/../dist/public/upload",
 	keepExtensions: true,
@@ -40,16 +33,13 @@ const optsForm = {
 };
 
 dao.open(); //init dao factory
-session.open(); //default options
+session.open(); //default session options
 trees.start({ templateIndex: __dirname + "/../dist/index.html" }); //template index
 
 // Routes
-const error = require("./routes/error"); //error routes
-const index = require("./routes/index"); //index routes
-const producto = require("./routes/producto"); //usuario producto
-const test = require("./routes/test"); //test routes
-const usuario = require("./routes/usuario"); //usuario routes
-const wp = require("./routes/webpush"); //web-push routes
+const error = require("./routes/errors/error"); //error routes
+const index = require("./routes/sections/index"); //index routes
+const routes = require("./routes/routes"); //add all routes
 
 //create server instance
 function fnRequest(req, res) {
@@ -77,23 +67,9 @@ function fnRequest(req, res) {
 
 	//configure response
 	trees.init(req, res).flushMsgs(); //init request, response
-	res.lang = function(req, res) {
-		let lang = req.params.lang || this.data.lang;
-		if (lang && (lang == this.data.lang)) return this;
-		//here user has changed current language
-		let ac = req.headers["accept-language"] || "es"; //default laguage = es
-		lang = (i18n[lang]) ? lang : ac.substr(0, 5); //search region language es-ES
-		lang = (i18n[lang]) ? lang : lang.substr(0, 2); //search type language es
-		lang = (i18n[lang]) ? lang : "es"; //default language = es
-		this.set("lang", lang).add(i18n[lang]).nvl("startSession", ""); //add lang values
-		valid.setI18n(lang).setMessages(i18n[lang]); //init date and numbers format
-		return this;
-	}
-	//calc default lang
-	res.lang(req, res);
+	index.setLang(req, res); //calc default lang
+	let fn = routes.search(req, pathname);
 
-	let i = pathname.lastIndexOf("."); //last dot in url pathname
-	let fn = router.route(req, (i > 0) ? pathname.substr(0, i) : pathname); //remove extension
 	if (!fn)
 		error.error404(req, res); //manage 404 error
 	else if (req.method == "POST") { //post request

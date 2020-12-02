@@ -1,11 +1,11 @@
 
 const bcrypt = require("bcrypt"); //encrypt
 const dao = require("../../dao/Factory"); //bd connection
-const valid = require("../../services/validator");
+const sv = require("../../services/validator");
 
 function fnLogin(req, res) {
 	res.set("tplSection", "dist/forms/public/login.html")
-		.set("steps", [{ pref: "login.html", text: res.data.lblFormLogin }])
+		.set("steps", [{ pref: "/login.html", text: res.data.lblFormLogin }])
 		.render();
 }
 
@@ -54,7 +54,7 @@ exports.isLogged = fnLogged;
 exports.logError = function(req, res) {
 	fnLogClear(req, res);
 	if (req.isAjax)
-		res.jerr(valid.close("msgError"));
+		res.jerr(sv.close("msgError"));
 	else
 		fnLogView(req, res);
 }
@@ -78,15 +78,15 @@ function fnAdmin(req, res) {
     if (!fnLogged(req, res))
 		return fnLogout(req, res);
 	res.set("tplSection", "dist/sections/admin.html")
-		.set("steps", [{ pref: "admin.html", text: res.data.lblAdmin }])
+		.set("steps", [{ pref: "/admin.html", text: res.data.lblAdmin }])
 		.render();
 }
 exports.admin = fnAdmin;
 
 exports.login = function(req, res) {
 	let fields = req.body; //request fields
-	if (!valid.login(fields.usuario, fields.clave)) //fields error?
-		return fnLogError(req, res.addSuffix(valid.getErrors(), "ErrText"));
+	if (!sv.login(fields.usuario, fields.clave)) //fields error?
+		return fnLogError(req, res.addSuffix(sv.getErrors(), "ErrText"));
 
 	let user = dao.myjson.usuarios.findByLogin(fields.usuario);
 	if (!user)

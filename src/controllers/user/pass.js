@@ -1,6 +1,6 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const valid = require("../../services/validator");
+const sv = require("../../services/validator");
 const login = require("../public/login");
 
 function fnPassClear(req, res) {
@@ -8,9 +8,10 @@ function fnPassClear(req, res) {
 }
 function fnPassView(req, res) {
 	res.set("tplSection", "dist/forms/user/pass.html")
-		.set("steps", [{ pref: "pass.html", text: res.data.lblFormLogin }])
+		.set("steps", [{ pref: "/pass.html", text: res.data.lblFormLogin }])
 		.render();
 }
+
 exports.passView = function(req, res) {
 	if (!login.isLogged(req, res))
 		return login.logError(req, res);
@@ -22,8 +23,8 @@ exports.password = function(req, res) {
 
 	fnPassClear(req, res);
 	let fields = req.body; //request fields
-	if (!valid.password(fields.oldPass, fields.newPass, fields.rePass)) { //fields error?
-		res.addSuffix(valid.getErrors(), "ErrText").i18nError("errUpdate");
+	if (!sv.password(fields.oldPass, fields.newPass, fields.rePass)) { //fields error?
+		res.addSuffix(sv.getErrors(), "ErrText").i18nError("errUpdate");
 		return fnPassView(req, res);
 	}
 

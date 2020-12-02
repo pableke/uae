@@ -27,14 +27,14 @@
     "better-docs": {
       "css" : "docs.css",
       "logo": "upct-azul-logo.png",
-      "name": "Validate-Box",
-      "title": "Validate-Box Documentation",
+      "name": "UPCT / UAE",
+      "title": "UAE Documentation",
       //"trackingCode": "tracking-code-which-will-go-to-the-HEAD",
       "hideGenerator": false,
        "navLinks": [
           {
               "label": "GitHub",
-              "href": "https://github.com/pableke/validate-box"
+              "href": "https://github.com/pableke/uae"
           }
       ]
    }
@@ -43,7 +43,7 @@
     "recurse": true,
     "verbose": true,
     "encoding": "utf8",
-    "readme": "README.md",
+    //"readme": "README.md",
     "destination": "./docs/",
     "template": "node_modules/better-docs"
   }

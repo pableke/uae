@@ -1,4 +1,9 @@
 
+/**
+ * Login controller
+ * @module Login
+ */
+
 const bcrypt = require("bcrypt"); //encrypt
 const dao = require("../../dao/Factory"); //bd connection
 const sv = require("../../services/validator");

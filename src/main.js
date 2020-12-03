@@ -5,12 +5,14 @@
  * @see <a href="https://github.com/pableke/uae">UAE</a>
  */
 
+const fs = require("fs"); //file system
 const url = require("url"); //url parser
 const path = require("path"); //file and directory paths
 const env = require("dotenv").config(); //load env const
 const dao = require("./dao/Factory"); //bd factory
+const valid = require("validate-box"); //validators
 
-const { app, BrowserWindow, Menu, ipcMain, Notification } = require("electron");
+const { app, /*protocol,*/ BrowserWindow, Menu, ipcMain, Notification } = require("electron");
 
 let mainWindow;
 const ICON_PATH = path.join(__dirname, "public/img/upct-azul-logo.png");
@@ -20,21 +22,29 @@ const i18n = { //aviable languages list
 };
 
 function createWindow() {
+	// Set language
+	valid.setI18n("es");
+	valid.mb.setMessages(i18n.es);
+
+	/*protocol.registerFileProtocol("file", (request, callback) => {
+		const pathname = decodeURI(request.url.replace("file:///", ""));
+		callback(pathname.split("?")[0]); //remove parameters
+	});*/
+
 	mainWindow = new BrowserWindow({
 		width: 1000, height: 600, icon: ICON_PATH,
 		webPreferences: {
+			webSecurity: true, //required for file protocol (default true)
 			nodeIntegration: true,
 			enableRemoteModule: false
 		}
 	});
 
-	//carga el index.html de la aplicación
-	//mainWindow.loadFile(path.join(__dirname, "ui/producto.html"));
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, "ui/producto.html"),
-		protocol: "file",
-		slashes: true
-	}));
+	// Load application index.html
+	let file = path.join(__dirname, "ui/producto.html");
+	mainWindow.loadURL(url.format({ pathname: file, protocol: "file", slashes: true }));
+	//mainWindow.loadURL("data:text/html;charset=utf-8," + fs.readFileSync(file).toString());
+	//mainWindow.loadFile(file);
 
 	// Build and Insert menu from template
 	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);

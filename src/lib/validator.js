@@ -59,9 +59,9 @@ exports.contact = function(fields) {
 
 exports.product = function(name, price, info) {
 	mb.init(); //starts validation
-	nb.gt0(price) || mb.setError("price", "El importe debe ser mayor de " + nb.float(0) + " &euro;"); //validate float value
-	valid.size(name, 1, 200) || mb.setError("name", "Nonmbre del producto no válido");
-	valid.size(info, 1, 400) || mb.setError("info", "La descripción asociada no es válida");
+	nb.gt0(price) || mb.i18nError("price", "errImporte0"); //validate float value
+	valid.size(name, 1, 200) || mb.i18nError("name", "errRequired");
+	valid.size(info, 1, 400) || mb.i18nError("info", "errRequired");
 	return mb.isOk();
 }
 

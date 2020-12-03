@@ -22,7 +22,7 @@ const i18n = { //aviable languages list
 };
 
 function createWindow() {
-	// Set language
+	// Set language config
 	valid.setI18n("es");
 	valid.mb.setMessages(i18n.es);
 

@@ -40,7 +40,7 @@ function fnLogin(name, value, msg) {
 
 exports.password = function(oldPass, newPass, rePass) {
 	mb.init(); //starts validation
-	(fields.newPass == fields.rePass) || mb.i18nError("rePass", "errReClave");
+	(newPass == rePass) || mb.i18nError("rePass", "errReClave");
 	return fnLogin("oldPass", oldPass, "errClave") && fnLogin("newPass", newPass, "errClave") && mb.isOk();
 }
 

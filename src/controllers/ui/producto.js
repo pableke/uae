@@ -1,6 +1,6 @@
 
-const dao = require("../dao/Factory"); //bd factory
-const sv = require("../lib/validator");
+const dao = require("../../dao/Factory"); //bd factory
+const sv = require("../../lib/validator");
 const { nb, sb } = require("validate-box"); //validators
 
 exports.save = function(_id, name, price, info) {

@@ -25,7 +25,7 @@ exports.user = function(fields) {
 }
 
 exports.captcha = function(token) {
-	if (valid.size(token, 100, 600))
+	if (valid.size(token, 100, 800))
 		return true;
 	return !mb.i18nMessage("errCaptcha");
 }

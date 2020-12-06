@@ -117,6 +117,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // Notification messages
 function showNotification(body) { (new Notification({ title: "Electron App", body, icon: ICON_PATH })).show(); }
+ipcMain.on("i18nShow", function(ev, key) { showNotification(valid.mb.get(key) || key); });
 ipcMain.on("show", function(ev, body) { showNotification(body); });
 
 // Routes

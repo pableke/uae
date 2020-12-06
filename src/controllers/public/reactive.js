@@ -1,4 +1,5 @@
 
+const fetch = require("node-fetch"); //ajax calls
 const dao = require("../../dao/Factory"); //bd connection
 const mailer = require("../../lib/mailer");
 const sv = require("../../lib/validator");
@@ -11,7 +12,7 @@ exports.reactiveView = function(req, res) {
 }
 exports.reactive = function(req, res) {
 	let fields = req.body; //request fields
-	if (!sv.email(fields.email) || !sv.captcha(fields.token)) //fields error?
+	if (!sv.email(fields.correo) || !sv.captcha(fields.token)) //fields error?
 		return res.jerr(sv.getErrors());
 
 	//https://www.google.com/recaptcha/intro/v3.html
@@ -22,7 +23,7 @@ exports.reactive = function(req, res) {
 		.then(gresponse => {
 			if (gresponse.success && (gresponse.score > 0.5))
 				//return dao.mysql.usuarios.updatePassByMail(fields.email, pass);
-				return dao.myjson.usuarios.updatePassByMail(fields.email, pass);
+				return dao.myjson.usuarios.updatePassByMail(fields.correo, pass);
 			else
 				throw sv.close("errCaptcha"); //stop resolves and call catch
 		})
@@ -30,7 +31,7 @@ exports.reactive = function(req, res) {
 			//if (result.changedRows == 1) {
 				res.set("tplSection", "dist/mails/reactive.html").set("pass", pass);
 				let html = res.build("dist/mails/index.html").getValue();
-				return mailer.send(fields.email, "Email de reactivación", html);
+				return mailer.send(fields.correo, "Email de reactivación", html);
 			//}
 			//else
 				//throw sv.setMessage(res.get("errUpdate")).getError(); //stop resolves and call catch

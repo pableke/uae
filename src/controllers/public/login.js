@@ -107,17 +107,16 @@ exports.login = function(req, res) {
 	else
 		fnLogError(req, res.copy("claveErrText", "errClave"));
 
-	/*dao.mysql.usuarios.findByLogin(fields.usuario, fields.clave).then(usuario => {
-		res.set("idUserSession", usuario.id_usuario).set("userMail", usuario.correo)
-			.set("userName", usuario.nombre).set("userAp1", usuario.apellido1).set("userAp2", usuario.apellido2)
-			.set("fullUserName", (usuario.nombre + " " + usuario.apellido1 + " " + usuario.apellido2).trim());
-		return dao.mysql.menus.findByUser(usuario.id_usuario);
+	/*dao.mysql.usuarios.findByLogin(fields.usuario, fields.clave).then(user => {
+		let name = (user.nombre + " " + user.ap1 + " " + user.ap2).trim();
+		res.addSuffix(user, "UserSession").set("fullNameUserSession", name);
+		return dao.mysql.menus.findByUser(user.id_usuario);
 	})
 	.then(menus => {
-		let fn = res.startSession().getSessionHelper() || fnAdmin; //exists helper?
+		let fn = req.startSession().getSessionHelper() || fnAdmin; //exists helper?
 		fn(req, res.set("menus", menus).i18nOk("msgLogin")); //update user menu
 	})
 	.catch(err => {
-		fnLogError(req, res.copy(err.code + "ErrText", err.message));
+		fnLogError(req, res.addSuffix(sv.getErrors(), "ErrText"));
 	});*/
 }

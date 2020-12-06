@@ -25,21 +25,21 @@ module.exports = function(db, usuarios) {
 	usuarios.updatePassByMail = function(email, pass) {
 		let user = usuarios.findByMail(email.toLowerCase());
 		return user ? updatePass(user, pass).commit()
-					: Promise.reject(valid.setMessage("errUserNotFound").getError());
+					: Promise.reject(valid.mb.close("errCorreoNotFound"));
 	}
 	usuarios.updateNewPass = function(id, oldPass, newPass) {
 		let user = usuarios.findById(id);
 		if (user) {
 			return bcrypt.compareSync(oldPass, user.clave) 
 						? updatePass(user, newPass).commit() 
-						: Promise.reject(valid.setMessage("errClave").getError());
+						: Promise.reject(valid.mb.close("errClave"));
 		}
-		return Promise.reject(valid.setMessage("errUserNotFound").getError());
+		return Promise.reject(valid.mb.close("errUserNotFound"));
 	}
 
 	usuarios.insertData = function(nif, nombre, ap1, ap2, correo, pass, mask, fecha) {
 		if (usuarios.findLogin(nif, correo))
-			return Promise.reject(valid.setMessage("errUsuarioUk").getError());
+			return Promise.reject(valid.mb.close("errUsuarioUk"));
 		const user = { nif, nombre, ap1, ap2, correo, mask, fecha };
 		return usuarios.insert(updatePass(user, pass));
 	}

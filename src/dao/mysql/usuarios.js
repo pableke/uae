@@ -1,11 +1,7 @@
 
 const { hash } = require("bcrypt");
+const valid = require("validate-box"); //validators
 const bcrypt = require("../../lib/bcrypt");
-
-//Error handlers
-function fnErrorUser(msg, code, num) {
-	return { errno: num || -1, code: code, message: msg };
-}
 
 //User DAO
 module.exports = function(query) {
@@ -18,10 +14,11 @@ module.exports = function(query) {
 		let params = [log.toUpperCase(), log.toLowerCase()];
 		return query("select * from usuarios where (nif = ?) or (correo = ?)", params).then(results => {
 			if (!results || (results.length != 1)) 
-				throw fnErrorUser("errUsuario", "usuario", 1) 
+				throw valid.setI18n("usuario", "errUsuario"); 
 			return bcrypt.compare(pass, results[0].clave).then(ok => {
-				if (ok) return results[0];
-				throw fnErrorUser("errClave", "clave", 2);
+				if (ok)
+					return results[0];
+				throw valid.setI18n("clave", "errClave"); 
 			});
 		});
 	}
@@ -47,11 +44,11 @@ module.exports = function(query) {
 	this.updateNewPass = function(id, oldPass, newPass) {
 		return query("select * from usuarios where (id_usuario = ?)", [id]).then(results => {
 			if (!results || (results.length != 1))
-				throw fnErrorUser("errUserNotFound", "usuario", 1);
+				throw valid.setI18n("usuario", "errUserNotFound"); 
 			return bcrypt.compare(oldPass, results[0].clave).then(isPasswordMatch => {
 				if (isPasswordMatch)
 					return self.updatePassByMail(results[0].correo, newPass)
-				throw fnErrorUser("errClave", "oldPass", 2);
+				throw valid.setI18n("oldPass", "errClave"); 
 			});
 		});
 	}

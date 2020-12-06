@@ -19,23 +19,24 @@ ipcRenderer.on("product:get", function(ev, product) {
 	valid.load(inputs, product, { price: valid.nb.float });
 });
 
-ipcRenderer.on("product:save-ok", function(ev) {
-	ipcRenderer.send("show", "'" + inputs["name"].value + "' guardado correctamente");
-	fnResetForm(forms[0]); //show form, clear inputs and set focus
-	fnSubmit(forms[1]); //reload list
-});
-
 function setError(id, msg) {
 	let el = inputs[id];
 	el.classList.add("is-invalid");
 	el.parentNode.querySelector("#invalid-" + id).innerHTML = msg;
 	el.focus();
 }
-ipcRenderer.on("product:save-error", function(ev, errors) {
-	errors.info && setError("info", errors.info);
-	errors.price && setError("price", errors.price);
-	errors.name && setError("name", errors.name);
-	//ipcRenderer.send("show", "Error al guardar los datos introducidos");
+ipcRenderer.on("product:save", function(ev, data) {
+	if (data.errno > 0) {
+		data.info && setError("info", data.info);
+		data.price && setError("price", data.price);
+		data.name && setError("name", data.name);
+		//ipcRenderer.send("show", "Error al guardar los datos introducidos");
+	}
+	else {
+		ipcRenderer.send("show", "'" + data.name + "' guardado correctamente");
+		fnResetForm(forms[0]); //show form, clear inputs and set focus
+		fnSubmit(forms[1]); //reload list
+	}
 });
 
 // Init. view

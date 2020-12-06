@@ -33,6 +33,9 @@ describe("Service Validator", () => {
 		expect(valid.email("akñljf fsasdkjl") && valid.captcha("")).toBe(false);
 		expect(valid.email("akñljf#fsasdkjl") && valid.captcha("kdasjfha")).toBe(false);
 		expect(valid.email("lñkjsadf@dfskj.dc") && valid.captcha("ksalñdjfi444kljrqñlfkji4wrjio4jkjrq4kljrq348rjqk4ljflñqkwjcqkljr34ijc4kl3jfklqerrqk34ñj81u98cjcrefcjtqk43j58cujrqirjwklwejrq")).toBe(true);
+		expect(valid.email("lñkjs.adf@dfskj.com")).toBe(true);
+		expect(valid.email("lñkjs.adf@dfskj")).toBe(false);
+		expect(valid.email("ejemplo@dominio.com")).toBe(true);
 	});
 
 	test("Product", () => {
@@ -42,5 +45,7 @@ describe("Service Validator", () => {
 		expect(valid.product("jkds sdd", ".76", "ll234 32kk")).toBe(false);
 		expect(valid.product("fdslajf dfsaf", .34, "asdf asdf kkk adfa")).toBe(true);
 		expect(valid.product("fdslajf dfsaf", 24135.87634, "asdf asdf kkk adfa")).toBe(true);
+		expect(valid.product("fdslajf dfsaf", "", "asdf asdf kkk adfa")).toBe(false);
+		expect(valid.product("fdslajf dfsaf", "   ", "asdf asdf kkk adfa")).toBe(false);
 	});
 });

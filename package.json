@@ -40,7 +40,6 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.11",
     "tree-ss": "0.0.8",
-    "trees": "0.0.4",
     "validate-box": "^0.3.5",
     "web-push": "^3.4.4"
   },
@@ -74,5 +73,8 @@
       "src/public/**/*",
       "src/views/**/*"
     ]
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["dbs"]
   }
 }

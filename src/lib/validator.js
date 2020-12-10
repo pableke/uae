@@ -1,6 +1,11 @@
 
+/**
+ * Validator Service
+ * @module Validator
+ */
+
 const valid = require("validate-box"); //validators
-const { mb, nb } = valid;
+const { mb, nb } = valid; //declare message-box and number-box modules
 
 function fnEmail(value) {
 	if (!valid.size(value, 1, 200))
@@ -10,11 +15,25 @@ function fnEmail(value) {
 	return true;
 }
 
+/**
+ * Initialize message-box and validate email only
+ *
+ * @function email
+ * @param      {string}  correo  The user email
+ * @return     {boolean}  True if all fields are valids or false otherwise
+ */
 exports.email = function(correo) {
 	mb.init(); //starts validation
 	return fnEmail(correo);
 }
 
+/**
+ * New / update user validator
+ *
+ * @function user
+ * @param      {Object}  fields  The object containing user data
+ * @return     {boolean}  True if all fields are valids or false otherwise
+ */
 exports.user = function(fields) {
 	mb.init(); //starts validation
 	valid.size(fields.nombre, 1, 200) || mb.i18nError("nombre", "errNombre");
@@ -24,6 +43,13 @@ exports.user = function(fields) {
 	return fnEmail(fields.correo) && mb.isOk();
 }
 
+/**
+ * Not to initialize message-box and validate captcha only
+ *
+ * @function captcha
+ * @param      {string}  correo  The captcha token
+ * @return     {boolean}  True if all fields are valids or false otherwise
+ */
 exports.captcha = function(token) {
 	if (valid.size(token, 100, 800))
 		return true;
@@ -38,17 +64,41 @@ function fnLogin(name, value, msg) {
 	return true;
 }
 
+/**
+ * User update password validator
+ *
+ * @function password
+ * @param      {string}  oldPass  Previous user password
+ * @param      {string}  newPass  The new user password
+ * @param      {string}  rePass   Verifi new user password
+ * @return     {boolean}  True if passwords fields are valid or false otherwise
+ */
 exports.password = function(oldPass, newPass, rePass) {
 	mb.init(); //starts validation
 	(newPass == rePass) || mb.i18nError("rePass", "errReClave");
 	return fnLogin("oldPass", oldPass, "errClave") && fnLogin("newPass", newPass, "errClave") && mb.isOk();
 }
 
+/**
+ * Login validator
+ *
+ * @function login
+ * @param      {string}  log     The user login
+ * @param      {string}  pass    The pass
+ * @return     {boolean}  True if login and password fields are valids or false otherwise
+ */
 exports.login = function(log, pass) {
 	mb.init(); //starts validation
 	return fnLogin("usuario", log, "errUsuario") && fnLogin("clave", pass, "errClave");
 }
 
+/**
+ * Contact fields validator
+ *
+ * @function contact
+ * @param      {Object}  fields  The object containing contact data
+ * @return     {boolean}  True if all fields are valids or false otherwise
+ */
 exports.contact = function(fields) {
 	mb.init(); //starts validation
 	valid.size(fields.nombre, 1, 200) || mb.i18nError("nombre", "errNombre");
@@ -57,6 +107,15 @@ exports.contact = function(fields) {
 	return fnEmail(fields.correo) && mb.isOk();
 }
 
+/**
+ * Product fields validator
+ *
+ * @function product
+ * @param      {string}  name    The name asociated
+ * @param      {number}  price   The price of the product
+ * @param      {string}  info    Long information / description asociated to product
+ * @return     {boolean}  True if all fields are valids or false otherwise
+ */
 exports.product = function(name, price, info) {
 	mb.init(); //starts validation
 	nb.gt0(price) || mb.i18nError("price", "errImporte0"); //validate float value

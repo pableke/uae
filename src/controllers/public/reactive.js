@@ -7,9 +7,11 @@ const sv = require("../../lib/validator");
 function fnReactive(req, res) {
 	res.set("tplSection", "dist/forms/public/reactive.html").set("steps", [{ pref: "/reactive.html", text: res.data.lblReactivar }]).render();
 }
+
 exports.reactiveView = function(req, res) {
 	fnReactive(req, res.flush("correoErrText"));
 }
+
 exports.reactive = function(req, res) {
 	let fields = req.body; //request fields
 	if (!sv.email(fields.correo) || !sv.captcha(fields.token)) //fields error?

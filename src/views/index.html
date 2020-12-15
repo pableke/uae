@@ -2,8 +2,8 @@
 <html lang="@lang;">
 <head append="dist/head.html"></head>
 <body>
-	<header></header>
-	<nav import="dist/navbar.html" class="navbar navbar-expand-lg navbar-light bg-light sticky-top"></nav>
+
+	<nav import="dist/navbar.html"></nav>
 	<div id="steps" class="clearfix mb-2">
 		<div render="@startSession;" class="float-right">
 			<a href="/perfil.html"><i class="fas fa-user-graduate" title="@fullNameUserSession;"></i></a>
@@ -55,5 +55,6 @@
 	<section import="@tplSection;"></section>
 	<aside import="@tplDerecha;" class="@cssDerecha;"></aside>
 	<footer append="dist/foot.html" class="footer mt-auto py-3"></footer>
+
 </body>
 </html>

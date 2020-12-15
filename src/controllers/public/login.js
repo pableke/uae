@@ -15,7 +15,7 @@ function fnLogin(req, res) {
 }
 
 function fnLogError(req, res) {
-	fnLogin(req, res.i18nError("errLogin"));
+	fnLogin(req, res.copy("msgError", "errLogin"));
 }
 
 function fnLogView(req, res) {
@@ -41,9 +41,9 @@ function fnLogClear(req, res) {
  */
 function fnLogged(req, res) {
     if (!req.logged())
-    	return !res.i18nError("err401");
+    	return !res.copy("msgError", "err401");
     if (req.expired())
-    	return !res.i18nError("errEndSession");
+    	return !res.copy("msgError", "errEndSession");
 	return true;
 }
 exports.isLogged = fnLogged;
@@ -76,7 +76,7 @@ exports.logError = function(req, res) {
 	fnLogView(req, res);
 }
 exports.logout = function(req, res) {
-	fnLogout(req, res.i18nOk("msgLogout"));
+	fnLogout(req, res.copy("msgOk", "msgLogout"));
 };
 
 function fnAdmin(req, res) {
@@ -102,7 +102,7 @@ exports.login = function(req, res) {
 		let name = (user.nombre + " " + user.ap1 + " " + user.ap2).trim();
 		res.addSuffix(user, "UserSession").set("fullNameUserSession", name);
 		let fn = req.startSession().getSessionHelper() || fnAdmin; //exists helper?
-		fn(req, res.set("menus", dao.myjson.menus.findByUser(user._id)).i18nOk("msgLogin")); //update user menu
+		fn(req, res.set("menus", dao.myjson.menus.findByUser(user._id)).set("msgOk", "msgLogin")); //update user menu
 	}
 	else
 		fnLogError(req, res.copy("claveErrText", "errClave"));
@@ -114,7 +114,7 @@ exports.login = function(req, res) {
 	})
 	.then(menus => {
 		let fn = req.startSession().getSessionHelper() || fnAdmin; //exists helper?
-		fn(req, res.set("menus", menus).i18nOk("msgLogin")); //update user menu
+		fn(req, res.set("menus", menus).set("msgOk", "msgLogin")); //update user menu
 	})
 	.catch(err => {
 		fnLogError(req, res.addSuffix(sv.getErrors(), "ErrText"));

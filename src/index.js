@@ -65,10 +65,10 @@ function fnRequest(req, res) {
 	req.isAjax = (req.headers["x-requested-with"] == "XMLHttpRequest"); //ajax?
 	req.params = parts.query;
 
-	//configure response
-	trees.init(req, res).flushMsgs(); //init request, response
-	index.setLang(req, res); //calc default lang
-	let fn = routes.search(req, pathname);
+	//configure response and remove previous messages
+	trees.init(req, res).flush("msgOk").flush("msgInfo").flush("msgWarn").flush("msgError");
+	let fn = routes.search(req, pathname); //get route from request
+	index.setLang(req, res); //calculate default language
 
 	if (!fn)
 		error.error404(req, res); //manage 404 error

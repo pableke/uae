@@ -26,17 +26,17 @@ exports.password = function(req, res) {
 	fnPassClear(req, res);
 	let fields = req.body; //request fields
 	if (!sv.password(fields.oldPass, fields.newPass, fields.rePass)) { //fields error?
-		res.addSuffix(sv.getErrors(), "ErrText").i18nError("errUpdate");
+		res.addSuffix(sv.getErrors(), "ErrText").set("msgError", "errUpdate");
 		return fnPassView(req, res);
 	}
 
 	//dao.mysql.usuarios.updateNewPass(res.get("_idUserSession"), fields.oldPass, fields.newPass).then(result => {
 	dao.myjson.usuarios.updateNewPass(res.get("_idUserSession"), fields.oldPass, fields.newPass).then(result => {
 		//if (result.changedRows == 1)
-			login.admin(req, res.i18nOk("msgChangePassOk"));
+			login.admin(req, res.set("msgOk", "msgChangePassOk"));
 		//else
 			//fnPassView(req, res.get("errUpdate")); //stop resolves and call catch
 	}).catch(err => {
-		fnPassView(req, res.i18nError("errUpdate"));
+		fnPassView(req, res.set("msgError", "errUpdate"));
 	});
 }

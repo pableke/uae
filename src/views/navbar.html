@@ -1,33 +1,32 @@
 
-<div class="navbar bg-light sticky-top d-phone">
-	<a href="#" class="nav-item nav-main sidebar-toggle">
-		<img src="public/img/svg/book.svg" class="sidebar-icon" width="32" height="32" />
-		<img src="public/img/svg/arrow-left.svg" class="sidebar-icon d-none" width="32" height="32" />
-		@lblEmpresaNombre;
-	</a>
+<a href="#" class="nav-item nav-main sidebar-toggle d-phone">
+	<img src="public/img/svg/book.svg" class="sidebar-icon" width="32" height="32" />
+	<img src="public/img/svg/arrow-left.svg" class="sidebar-icon d-none" width="32" height="32" />
+	@lblEmpresaNombre;
+</a>
 
-	<div id="sidebar" class="p-2 bg-light">
-		<ul class="menu menu-left">
-			<li repeat="menus" id="@_id;" parent="@id_padre;"><a href="@accion;" disabled="@mu_mask;">@nombre;</a></li>
-		</ul>
-	</div>
-</div>
-
-<div class="navbar bg-light sticky-top d-none-phone">
-	<a href="/" class="nav-item nav-main">
-		<img src="public/img/svg/book.svg" width="32" height="32" />
-		@lblEmpresaNombre;
-	</a>
-
-	<ul class="menu menu-top">
+<div id="sidebar" class="d-phone">
+	<ul class="menu menu-left">
 		<li repeat="menus" id="@_id;" parent="@id_padre;"><a href="@accion;" disabled="@mu_mask;">@nombre;</a></li>
 		<li>
-			<a class="disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+			<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 		</li>
 	</ul>
-
-	<form class="form-inline my-2 my-lg-0 d-pc">
-		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-	</form>
 </div>
+
+<a href="#" class="nav-item nav-main d-none-phone">
+	<img src="public/img/svg/book.svg" width="32" height="32" />
+	@lblEmpresaNombre;
+</a>
+
+<ul class="menu menu-top d-none-phone">
+	<li repeat="menus" id="@_id;" parent="@id_padre;"><a href="@accion;" disabled="@mu_mask;">@nombre;</a></li>
+	<li>
+		<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+	</li>
+</ul>
+
+<form class="form-inline my-2 my-lg-0 d-pc">
+	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+	<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>

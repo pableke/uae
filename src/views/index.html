@@ -3,7 +3,7 @@
 <head append="dist/head.html"></head>
 <body>
 
-	<nav import="dist/navbar.html"></nav>
+	<nav import="dist/navbar.html" class="navbar"></nav>
 	<div id="steps" class="clearfix mb-2">
 		<div render="@startSession;" class="float-right">
 			<a href="/perfil.html"><i class="fas fa-user-graduate" title="@fullNameUserSession;"></i></a>
@@ -24,30 +24,26 @@
 		</ol>
 	</div>
 
-	<div id="alerts" class="container">
-		<div class="alert alert-success alert-dismissible fade show d-none" role="alert">
-			<img src="public/img/png/check.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgOk;</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
-				<span aria-hidden="true">&times;</span>
-			</button>
+	<div id="alerts">
+		<div class="alert alert-success d-none">
+			<img src="img/png/check.png" class="alert-icon d-none-phone">
+			<p class="alert-text"></p>
+			<span class="alert-close">&times;</span>
 		</div>
-		<div class="alert alert-primary alert-dismissible fade show d-none" role="alert">
-			<img src="public/img/png/info.png" width="48px" class="d-none-phone-l" /><span class="alert-text ml-2">@msgInfo;</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
-				<span aria-hidden="true">&times;</span>
-			</button>
+		<div class="alert alert-info d-none">
+			<img src="img/png/info-about.png" class="alert-icon d-none-phone">
+			<p class="alert-text">dsañlkjf askdlñjf asdkljf kasdljf klsadjfakslj asd sakdj lakñsdj fklas jkfasldj fklasdj fklasdj kljasdjf aklsdfj kasdlj kasdj fjy</p>
+			<span class="alert-close">&times;</span>
 		</div>
-		<div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
-			<img src="public/img/png/warning.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgWarn;</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
-				<span aria-hidden="true">&times;</span>
-			</button>
+		<div class="alert alert-warn d-none">
+			<img src="img/png/warning2.png" class="alert-icon d-none-phone">
+			<p class="alert-text"><b>Prueba:</b> sdaf asdfasdfadf sadfasdf asfasd sdaf asd fasdf sdai fsdasd sdafa sdsaf asdf asdf asdf ffdsaf ñlkafñlkj assdñlkajlkf afdjk asdñlkafhk añfhñ asksdjñkafh ñassdñ akjñkafdjñkñl</p>
+			<span class="alert-close">&times;</span>
 		</div>
-		<div class="alert alert-danger alert-dismissible fade show d-none" role="alert">
-			<img src="public/img/png/error.png" class="d-none-phone-l" /><span class="alert-text ml-2">@msgError;</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="@lblCerrar;">
-				<span aria-hidden="true">&times;</span>
-			</button>
+		<div class="alert alert-danger d-none">
+			<img src="img/png/error.png" class="alert-icon d-none-phone">
+			<p class="alert-text"></p>
+			<span class="alert-close">&times;</span>
 		</div>
 	</div>
 

@@ -14,7 +14,7 @@ const replace = require("gulp-replace");
 
 // Settings
 const HTML_PATH = "src/views/**/*.html";
-const CSS_FILES = [ "src/public/css/style.css", "src/public/css/print.css" ];
+const CSS_FILES = [ "src/public/css/form.css", "src/public/css/menu.css", "src/public/css/style.css", "src/public/css/print.css" ];
 //const JS_FILES = [ "src/public/js/multi-box.js", "src/public/js/util.js" ];
 const JS_SINGLES = [ "src/public/js/multi-box.js", "src/public/js/service-worker.js", "src/public/js/worker.js" ];
 
@@ -34,7 +34,10 @@ gulp.task("minify-html", () => {
 // Tasks to minify CSS's
 gulp.task("minify-css", () => {
 	const config = {level: {1: {specialComments: 0}}};
-	return gulp.src(CSS_FILES).pipe(cleanCSS(config)).pipe(gulp.dest("dist/public/css"));
+	return gulp.src(CSS_FILES)
+				.pipe(concat("style.css"))
+				.pipe(cleanCSS(config))
+				.pipe(gulp.dest("dist/public/css"));
 });
 
 // Tasks to minify JS's

@@ -7,6 +7,17 @@
 const valid = require("validate-box"); //validators
 const { mb, nb } = valid; //declare message-box and number-box modules
 
+/** 
+ * A User
+ * @typedef {Object} User
+ * @property {number} _id User Id
+ * @property {string} nombre User Name
+ * @property {string} ap1 User Surname
+ * @property {string} [ap2] User Surname (optional)
+ * @property {string} nif NIF Id
+ * @property {string} correo User email
+ */
+
 function fnEmail(value) {
 	if (!valid.size(value, 1, 200))
 		return !mb.i18nError("correo", "errRequired");
@@ -28,10 +39,10 @@ exports.email = function(correo) {
 }
 
 /**
- * New / update user validator
+ * New / update user validator (know more in {@link User})
  *
  * @function user
- * @param      {Object}  fields  The object containing user data
+ * @param      {User}  fields  The object containing all user data
  * @return     {boolean}  True if all fields are valids or false otherwise
  */
 exports.user = function(fields) {

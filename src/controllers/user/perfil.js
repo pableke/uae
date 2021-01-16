@@ -1,7 +1,7 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../lib/validator");
 const login = require("../public/login");
+const sv = require("../validators");
 
 function fnPerfilView(req, res) {
 	res.set("tplSection", "dist/forms/user/perfil.html")
@@ -10,7 +10,7 @@ function fnPerfilView(req, res) {
 }
 
 exports.perfilView = function(req, res) {
-	if (!login.isLogged(req, res))
+	if (!sv.isLogged(req, res))
 		return login.logError(req, res);
 
 	res.flush("nombreErrText").flush("ap1ErrText").flush("ap2ErrText").flush("nifErrText").flush("correoErrText");
@@ -18,7 +18,7 @@ exports.perfilView = function(req, res) {
 }
 
 exports.perfil = function(req, res) {
-	if (!login.isLogged(req, res))
+	if (!sv.isLogged(req, res))
 		return login.logError(req, res);
 
 	let fields = req.body; //request fields

@@ -1,7 +1,7 @@
 
 const dao = require("../../dao/Factory"); //bd connection
 const mailer = require("../../lib/mailer");
-const sv = require("../../lib/validator");
+const sv = require("./validators");
 
 function fnUsuario(req, res) {
 	res.set("tplSection", "dist/forms/public/user.html").set("steps", [{ pref: "/user.html", text: res.data.lblFormRegistro }]).render();

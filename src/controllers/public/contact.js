@@ -1,10 +1,9 @@
 
 const mailer = require("../../lib/mailer");
-const sv = require("../../lib/validator");
-const { dt } = require("validate-box"); //validators
+const sv = require("./validators");
 
 function fnContact(req, res) {
-	let sysdate = dt.isoDate(res.get("sysdate"));
+	let sysdate = sv.isoDate(res.get("sysdate"));
 	res.set("tplSection", "dist/forms/public/contact.html").set("ejDate", sysdate)
 		.set("steps", [{ pref: "/contact.html", text: res.data.lblFormContact }]).render();
 }

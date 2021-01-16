@@ -6,7 +6,7 @@
 
 const bcrypt = require("bcrypt"); //encrypt
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../lib/validator");
+const sv = require("./validators");
 
 function fnLogin(req, res) {
 	res.set("tplSection", "dist/forms/public/login.html")
@@ -29,24 +29,6 @@ function fnLogClear(req, res) {
 	//dao.mysql.menus.findPublic().then(...);
 	res.set("menus", dao.myjson.menus.findPublic()).flush("startSession");
 }
-
-/**
- * Determine if the request is logged in session or if it is logged but has expired.
- * And set specific message error for each case.
- *
- * @function isLogged
- * @param      {Request}  req     The request object
- * @param      {Response} res     The resource object
- * @return     {boolean}  True if session is alive, False otherwise
- */
-function fnLogged(req, res) {
-    if (!req.logged())
-    	return !res.copy("msgError", "err401");
-    if (req.expired())
-    	return !res.copy("msgError", "errEndSession");
-	return true;
-}
-exports.isLogged = fnLogged;
 
 /**
  * Remove session and restore public menus, then check if request is ajax and response a JSON object with the message contained in "msgError" text, 
@@ -80,7 +62,7 @@ exports.logout = function(req, res) {
 };
 
 function fnAdmin(req, res) {
-    if (!fnLogged(req, res))
+    if (!sv.isLogged(req, res))
 		return fnLogout(req, res);
 	res.set("tplSection", "dist/sections/admin.html")
 		.set("steps", [{ pref: "/admin.html", text: res.data.lblAdmin }])

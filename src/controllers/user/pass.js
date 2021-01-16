@@ -1,7 +1,7 @@
 
 const dao = require("../../dao/Factory"); //bd connection
-const sv = require("../../lib/validator");
 const login = require("../public/login");
+const sv = require("../validators");
 
 function fnPassClear(req, res) {
 	return res.flush("oldPassErrText").flush("newPassErrText").flush("rePassErrText");
@@ -14,13 +14,13 @@ function fnPassView(req, res) {
 }
 
 exports.passView = function(req, res) {
-	if (!login.isLogged(req, res))
+	if (!sv.isLogged(req, res))
 		return login.logError(req, res);
 	fnPassView(req, fnPassClear(req, res));
 }
 
 exports.password = function(req, res) {
-	if (!login.isLogged(req, res))
+	if (!sv.isLogged(req, res))
 		return login.logError(req, res);
 
 	fnPassClear(req, res);

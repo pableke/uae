@@ -1,5 +1,5 @@
 
-<a href="#" class="nav-item nav-main sidebar-toggle d-phone">
+<a href="/" class="nav-item nav-main sidebar-toggle d-phone">
 	<img src="public/img/svg/book.svg" class="sidebar-icon" width="32" height="32" />
 	<img src="public/img/svg/arrow-left.svg" class="sidebar-icon d-none" width="32" height="32" />
 	@lblEmpresaNombre;
@@ -8,21 +8,21 @@
 <div id="sidebar" class="d-phone">
 	<ul class="menu menu-left">
 		<li repeat="menus" id="@_id;" parent="@id_padre;"><a href="@accion;" disabled="@mu_mask;">@nombre;</a></li>
-		<li>
-			<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+		<li class="disabled">
+			<a href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 		</li>
 	</ul>
 </div>
 
-<a href="#" class="nav-item nav-main d-none-phone">
+<a href="/" class="nav-item nav-main d-none-phone">
 	<img src="public/img/svg/book.svg" width="32" height="32" />
 	@lblEmpresaNombre;
 </a>
 
 <ul class="menu menu-top d-none-phone">
 	<li repeat="menus" id="@_id;" parent="@id_padre;"><a href="@accion;" disabled="@mu_mask;">@nombre;</a></li>
-	<li>
-		<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+	<li class="disabled">
+		<a href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 	</li>
 </ul>
 

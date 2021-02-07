@@ -116,15 +116,15 @@
 
 	function fnJoin(arr) { return arr.join(SEPARATOR); }; //join values
 	function eqSize(a, b) { return a.length == b.length; }; //check lengths
-	function fnSubmit() { fields.submitData(); }
+	//function fnSubmit() { fields.submitData(); }
 
 	$.fn.fBox = function(opts) { //init forms config
 		$.extend(opts, $.extend(settings, opts)); //opts == settings
 		opts.validators = $.extend(dv, opts.validators); //fn for validation
 		csserr = opts.tipNameTag + "." + opts.tipNameClass.split(/\s+/g).join("."); //error selector
 		//show server messages, set event handler for changed input, get form fields, re-style values and set focus
-		fields = this.inputs().clean().seterr("onload").change(function() { opts.changed = true; }).initData().setFocus();
-		return this.submit(fnSubmit); //set submit handler
+		fields = this.inputs().clean();//.seterr("onload").change(function() { opts.changed = true; }).initData().setFocus();
+		return this; //.submit(fnSubmit); //set submit handler
 	};
 
 	var oTIP = {};
@@ -213,7 +213,7 @@
 		var field = this.failures();
 		return !field.length || !viewtab(field);
 	};
-	$.fn.send = function(opts) {
+	/*$.fn.send = function(opts) {
 		var oAux = $.extend({}, opts); //specific options
 		var form = this.closest("form"); //form container
 		oAux.url = oAux.url || form.attr("action"); //resource
@@ -221,12 +221,12 @@
 		oAux.dataType = oAux.dataType || "json"; //what kind of response to expect
 		if (oAux.type != "post")
 			return $.ajax(oAux); //call to server
-		fnSubmit(); //simule onsubmit event before ajax send
+		//fnSubmit(); //simule onsubmit event before ajax send
 		oAux.data = new FormData(form[0]); //preload form data in client (files, dates, ...)
 		fields.isset("submit").css("color", "black").initData(); //re-init values
 		oAux.contentType = oAux.processData = false; //not to process the data
 		return $.ajax(oAux); //send ajax call to server
-	};
+	};*/
 
 	//*********************** tabs handler functions ********************//
 	function indextab(id) { return id ? +id.substr(id.lastIndexOf("-") + 1) : 0; }; //get index from id
@@ -259,7 +259,7 @@
 	$.fn.gotab = function(i) { gotab(i); return this; };
 	//*******************************************************************//
 
-	$.fn.counter = function() { //textarea characters counters
+	/*$.fn.counter = function() { //textarea characters counters
 		function fn() { $("#counter", this.parentNode).text(Math.abs(fAttr(this, "maxlength") - this.value.length)); };
 		return this.each(fn).unbind("keyup", fn).keyup(fn);
 	};
@@ -269,28 +269,16 @@
 		group = group.sortid().each(function(i, el) { el.value = values[i] || el.value; }); //order and set values
 		group.change(function() { self.val(fnJoin(group.get().map(val))); }); //update main
 		return self;
-	};
+	};*/
 
 	$.fn.cblist = function(group) {
 		var self = this; //self instance
-		var initval = self.val() || ""; //used when reset event
 		group.change(function() { //checkboxes subgroup change event
 			var aux = group.filter(":checked").get(); //checked
 			self.prop("checked", eqSize(group, aux));
 			self.val(fnJoin(aux.map(val))); //value list
 		});
-		function fnLoad(value) {
-			var values = value && split(value, SEPARATOR); //values list
-			group.each(function(i, el) { el.checked = (fnIO(values, el.value) > -1); });
-			self.attr("type", "checkbox").prop("checked", values && (group.length > 0) && eqSize(values, group));
-			return value; //return current value
-		};
-
-		return self.data({
-			init: fnLoad, style: fnLoad,
-			reset: function() { return initval; },
-			submit: function() { return self.val() && self.attr("type", "hidden").val(); }
-		}).click(function() {
+		return self.prop("checked", false).click(function() {
 			group.prop("checked", $(this).prop("checked")).first().change();
 		});
 	};

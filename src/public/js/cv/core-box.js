@@ -93,13 +93,14 @@ function intval(val) { return parseInt(val) || 0; };
 function floatval(val) { return parseFloat(val) || 0; };
 function round(num, d) { d = dNaN(d, 2); return +(Math.round(num + "e" + d) + "e-" + d); };
 function parseNumber(str, d, n) {
-	if (!str) return 0;
-	if (!isstr(str)) return str;
-	n = dNaN(n, 2); //default 2 decimals
-	var separator = str.lastIndexOf(d || ".");
-	var sign = (str.charAt(0) == "-") ? "-" : "";
-	return parseFloat(sign + ((separator < 0) ? str.replace(/\D+/g, "")
-								: (str.substr(0, separator).replace(/\D+/g, "") + ("." + str.substr(separator + 1, n)))));
+	str = fnTrim(str);
+	if (!str) return null;
+	let separator = str.lastIndexOf(d);
+	let sign = (str.charAt(0) == "-") ? "-" : "";
+	let whole = (separator < 0) ? str : str.substr(0, separator); //extract whole part
+	let decimal = (separator < 0) ? "" : (DOT + str.substring(separator + 1)); //decimal part
+	let num = parseFloat(sign + whole.replace(/\D+/g, "") + decimal);
+	return isNaN(num) ? null : round(num, n); //default 2 decimals
 };
 function fmtNumber(num, s, d, n) {
 	if (!isset(num)) return "";

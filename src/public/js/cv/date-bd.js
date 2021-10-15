@@ -6,8 +6,8 @@ Date.langs = {
 		monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 		dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 		dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-		dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]/*,
-		fest: []*/
+		dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+		dateFormat: "yy-mm-dd" //for jquery datepicker
 	},
 
 	es: { //spain
@@ -15,13 +15,9 @@ Date.langs = {
 		monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
 		dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
 		dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Juv", "Vie", "Sáb"],
-		dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"]/*,
-		fest: [
-			{ date: new Date(2018, 0, 1), name: "Año nuevo" },
-			{ date: new Date(2017, 1, 28), name: "Carnaval" },
-			{ date: new Date(2017, 0, 6), name: "Epifanía del Señor o Día de Reyes" },
-			{ date: new Date(2017, 0, 1), name: "Año nuevo" }
-		]*/
+		dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+		dateFormat: "dd/mm/yy", //for jquery datepicker
+		firstDay: 1 //Start with Monday
 	},
 
 	fr: { //france

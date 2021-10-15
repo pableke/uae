@@ -14,6 +14,7 @@ const AUTH = {
 // allow non secure apps to access gmail: https://myaccount.google.com/lesssecureapps
 const transporter = nodemailer.createTransport({
 	service: "gmail",
+	secure: true,
 	auth: {
 		user: process.env.GMAIL_USER,
 		pass: process.env.GMAIL_PASS
